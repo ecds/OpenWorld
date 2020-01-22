@@ -1,0 +1,138 @@
+export const THEME_COLOR       = '#DB504B';
+export const SECOND_COLOR      = '#FFFFFF';
+export const THIRD_COLOR       = '#E47975';
+export const TEXT_COLOR        = '#A1A1A1';
+
+/* map constants */
+export const MAP_CENTER        = [33.749038, -84.388466];
+export const MAP_MIN_ZOOM      = 11;
+export const DEFAULT_ZOOM      = 16;
+export const MAP_MAX_ZOOM      = 20;
+export const MAP_SW_MAX        = [33.53, -84.61];
+export const MAP_NE_MAX        = [34.03, -84.11];
+
+export const MAP_TILE_LAYERS = [
+    // 1000-SCALE
+    {
+        TILE_URL: 'http://tilemaps.s3-website-us-east-1.amazonaws.com/ATL28_200-1000mosaic/{z}/{x}/{y}.png',
+        SW_BOUND: [33.63298531, -84.51696580],
+        NE_BOUND: [33.93379544, -84.21603335],
+        MIN_ZOOM: 11,
+        MAX_NATV: 16, // MAX NATIVE ZOOM
+    },
+    // 200-SCALE
+    {
+        TILE_URL: 'http://tilemaps.s3-website-us-east-1.amazonaws.com/ATL1928_200mosaic3/{z}/{x}/{y}.png',
+        SW_BOUND: [33.73327062, -84.41714544],
+        NE_BOUND: [33.78337253, -84.31633406],
+        MIN_ZOOM: 14, 
+        MAX_NATV: 19, // MAX NATIVE ZOOM
+    },
+];
+
+// div icons for the map
+export const DIV_ICONS = [
+    {
+        CLASS_NAME: 'divIcons',
+        HTML:       '<i class="icon-radio-checked"/>',
+        ICON_SIZE:  [16, 16],
+    },
+]
+
+// overlay layers
+export const OVERLAYS = [
+    {
+        DESC: 'Overlay the utility holes present in Atlanta in 1928.<br /><p class="italics">Source: Atlanta Atlas, 1928.</p>',
+        ID: 'manholes',
+        ICON: 'icon-radio-checked',
+        LABEL: 'Utility Holes',
+        TAB: 'layers',
+        TYPE: 'cluster',
+        URL: 'https://geoserver.ecds.emory.edu/ATLMaps/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=ATLMaps:ATL28_Utility_Holes&outputFormat=application%2Fjson',
+        OPTIONS: {
+            DIV_ICON: 0,
+            POPUP_CONTENT: [
+                {
+                    CONTENT: '<b>Utility Hole</b>',
+                    TYPE: 'text',
+                    CONDITIONAL: false,
+                }, 
+                {
+                    CONTENT: '<br />Located on ',
+                    SUFFIX: '',
+                    TYPE: 'text',
+                    CONDITIONAL: true,
+                    PROPERTY: 'name_st',
+                },
+                {
+                    CONTENT: '<br />Elevation: ',
+                    SUFFIX: 'ft',
+                    TYPE: 'text',
+                    CONDITIONAL: true,
+                    PROPERTY: 'man_elev',
+                },
+            ],
+        }
+    },
+    {
+        DESC: 'City Boundaries of Atlanta, 1928.<br /><p class="italics">Source: Atlanta Atlas, 1928.</p>',
+        ID: 'boundary',
+        ICON: 'icon-border_all',
+        LABEL: 'City Boundary',
+        TAB: 'layers',
+        TYPE: 'polygon',
+        URL: 'https://geoserver.ecds.emory.edu/ATLMaps/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=ATLMaps:Atlanta%20City%20Limits&outputFormat=application%2Fjson',
+        OPTIONS: {
+            COLOR: 'black',
+            WEIGHT: 5,
+            FILL_COLOR: THIRD_COLOR,
+            FILL_OPACITY: 0.2,
+        }
+    },
+    {
+        DESC: 'Atlanta Road Network, 1928.<br /><p class="italics">Source: Undetermined.</p>',
+        ID: 'roads',
+        ICON: 'icon-road',
+        LABEL: 'Roads',
+        TAB: 'layers',
+        TYPE: 'sliced',
+        URL: 'https://geoserver.ecds.emory.edu/OpenWorldAtlanta/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=OpenWorldAtlanta:Atlanta1928_RoadSystem&outputFormat=application%2Fjson',
+        OPTIONS: {
+            COLOR: 'black',
+            FILL: false,
+            OPACITY: 1,
+            WEIGHT: 3,
+        }
+    },
+    {
+        DESC: 'Atlanta Streetcar Network, 1928.<br /><p class="italics">Source: Undetermined.</p>',
+        ID: 'streetcars',
+        ICON: 'icon-tram',
+        LABEL: 'Streetcars',
+        TAB: 'layers',
+        TYPE: 'paths',
+        URL: '',
+        OPTIONS: {
+            COLOR: 'green',
+            FILL: false,
+            OPACITY: 1,
+            WEIGHT: 3,
+        }
+    },
+    {
+        DESC: 'Buildings in Atlanta, 1928.<br /><p class="italics">Source: Undetermined.</p>',
+        ID: 'buildings',
+        ICON: 'icon-office',
+        LABEL: 'Buildings',
+        TAB: 'features',
+        TYPE: 'buildings',
+        URL: '',
+        OPTIONS: {
+            COLOR: 'cyan',
+            FILL: true,
+            OPACITY: 1,
+            WEIGHT: 1,
+        }
+    }
+]
+

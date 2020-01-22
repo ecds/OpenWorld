@@ -1,0 +1,48 @@
+[x] https://www.youtube.com/watch?v=uTOiHL7V63c
+[x] https://medium.com/@learnreact/container-components-c0e67432e005
+[x] https://medium.com/@samuelresua/easy-media-queries-in-styled-components-690b78f50053
+[x] https://stackoverflow.com/questions/53499361/how-do-i-call-a-method-from-another-class-component-in-react-js
+
+
+[x] try to extract layer control functionality to sidebar using original docs
+
+
+[x] consider putting map and utils in same file, or exporting layers to globally accesible lists to be rendered independently of the map file
+
+chrome.exe --user-data-dir="C:/Chrome dev session" --disable-web-security
+
+[x] for generalizability and performance, consider creating icon font for website instead of using png files
+
+need to figure out how to scroll through the overflowing stories
+
+REFACTOR:
+    pull css out of App.css, move it into Js files for each component, that way can use the constants from constants.js
+    pull components out, reorganize structure
+        stories, objects, galleries, etc
+    agree on common quotations, either "" or ''
+    agree on common variables, either var or let (prob let)
+
+    three.js for 3d objects maybe
+
+    different uses of buildings:
+        A ??? School, church, lumber company, rail company
+        B ? Seems to be one house next to a rail yard/trolley shed
+        C Commercial - red
+        D ? only 9 of these
+        F Apartments - brown
+        I Industrial - purple
+        M ? 'Pulman Company Shops'
+        N Institutional? - Blue
+        O 
+        P 
+        R Residential - yellow
+        S 
+        T 
+        U 
+        W 
+        X 
+        1
+
+
+need to do some code splitting https://create-react-app.dev/docs/code-splitting/
+buildings.json has duplicate building IDs, causes issues with colors
