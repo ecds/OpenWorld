@@ -2,11 +2,12 @@ import L from 'leaflet';
 import {} from 'leaflet.vectorgrid';
 import { MAP_MAX_ZOOM } from '../../../constants';
 
-const buildings = require('../../../data/Buildings.json');
+const data = require('../../../data/Buildings.json');
 
 var curr = null;
 var highlight;
 
+// TODO: extract highlight / select to Utils
 export function addBuildingsToMap(layer, map) {
     function clearHighlight() {
         if (highlight) {
@@ -70,8 +71,8 @@ export function addBuildingsToMap(layer, map) {
         }
     }
 
-    var vectorGrid = new L.vectorGrid.slicer(buildings, {
-        rendererFactory: L.canvas.tile,
+    var vectorGrid = new L.vectorGrid.slicer(data, {
+        rendererFactory: L.svg.tile,
         vectorTileLayerStyles: {
             sliced: style,
         },
@@ -79,9 +80,6 @@ export function addBuildingsToMap(layer, map) {
         maxZoom: MAP_MAX_ZOOM,
         getFeatureId: function(f) {
             return f.properties.BLDG_ID;
-        },
-        getBounds: function(f) {
-            return L.bounds(f.geometry.coordinates);
         }
     })		
     .on('mouseover', function(e) {
@@ -96,18 +94,18 @@ export function addBuildingsToMap(layer, map) {
     .on('mouseout', function(e) {
         clearHighlight();
     }) //TODO: ADD SELECT FUNCTION
-     .on('click', function(e) {
-        // console.log(e.layer.properties)
-        // var properties = e.layer.properties;
-        // if (highlight !== properties.BLDG_ID) 
-        //     clearHighlight();
-        
-        // var bounds = vectorGrid.getBounds();
-        
-        // map.fitBounds(bounds);
-        // //console.log(e.layer._pxBounds)
-        // vectorGrid.setFeatureStyle(properties.BLDG_ID, strongStyle(properties.use));
-     })
+    .on('click', function(e) {
+    // console.log(e.layer.properties)
+    // var properties = e.layer.properties;
+    // if (highlight !== properties.BLDG_ID) 
+    //     clearHighlight();
+    
+    // var bounds = vectorGrid.getBounds();
+    
+    // map.fitBounds(bounds);
+    // //console.log(e.layer._pxBounds)
+    // vectorGrid.setFeatureStyle(properties.BLDG_ID, strongStyle(properties.use));
+    })
     .addTo(layer);
     return;
 }
