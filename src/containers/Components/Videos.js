@@ -1,7 +1,10 @@
 import React from 'react';
-import { Row, Modal, Image } from 'react-bootstrap';
+import { Modal } from 'react-bootstrap';
 import styled from 'styled-components';
-import {THEME_COLOR} from '../../constants';
+import { THEME } from '../../constants';
+
+import ItemHeader from './ItemHeader.js';
+import ContentInfo from './ContentInfo.js';
 
 const Container = styled.div``;
 
@@ -10,31 +13,6 @@ const videos = [
     { id: "148751763" },
     { id: "37328349" }
 ];
-
-const videoThumbnail = {
-    width: "9.25em",
-    height: "5em",
-}
-
-const videoThumbnailImg = {
-    width: "9.25em",
-    height: "5em",
-    position: "relative",
-    objectFit: "cover",
-}
-
-const objectTitle = {
-    position: "relative",
-    display: "inline",
-    marginLeft: "1em",
-    marginTop: "auto",
-    marginBottom: "auto",
-    width: "calc(40vw - (12.25em / 1.4) - 1em)",
-    maxWidth: "calc(500px - (12.25em / 1.4) - 1em)",
-    flexGrow: 1,
-    color: "#444444",
-    fontSize: "1.4em",
-}
 
 const videoStyle = {
     position: "absolute",
@@ -68,8 +46,16 @@ class ModalVideo extends React.Component {
         </Modal.Header>
         <Modal.Body>
             <Container style={videoContainerStyle}>
-                <iframe title={this.props.title} src={`https://player.vimeo.com/video/${this.props.id}?autoplay=1&color=${THEME_COLOR.substring(1)}&byline=0&portrait=0`} 
-                    style={videoStyle} frameborder="0" allow="autoplay; fullscreen" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
+                <iframe 
+                    title={this.props.title} 
+                    src={`https://player.vimeo.com/video/${this.props.id}?autoplay=1&color=${THEME.MAIN.substring(1)}&byline=0&portrait=0`} 
+                    style={videoStyle} 
+                    frameborder="0" 
+                    allow="autoplay; fullscreen" 
+                    allowfullscreen="true" 
+                    mozallowfullscreen="true" 
+                    webkitallowfullscreen="true"
+                />
             </Container><script src="https://player.vimeo.com/api/player.js"></script>
         </Modal.Body>
       </Modal>
@@ -89,14 +75,14 @@ class VideoHeader extends React.Component {
     render() {
         return (
             <Container>
-                <Row onClick={() => this.setState({ show: true })}>
-                    <Container style={videoThumbnail}>
-                        <Image style={videoThumbnailImg} src={this.props.data.thumbnail} alt="Story thumbnail" />
-                    </Container>
-                    <Container style={objectTitle}>
-                        {this.props.data.title}
-                    </Container>
-                </Row>
+                <ItemHeader 
+                    key={this.props.data.id} 
+                    id={this.props.data.id} 
+                    square={false}
+                    imgSrc={this.props.data.img}
+                    title={this.props.data.title} 
+                    onClick={() => this.setState({ show: true })} 
+                />
                 <ModalVideo
                     show={this.state.show} 
                     title={this.props.data.title}
@@ -126,7 +112,7 @@ export default class Videos extends React.Component {
                 return result.json();
             })
             .then((data) => {
-                video.thumbnail = data.thumbnail_url;
+                video.img = data.thumbnail_url;
                 video.title = data.title;
             })
         })
@@ -135,7 +121,7 @@ export default class Videos extends React.Component {
     render() {
         return (
             <Container>
-                <span className={"contentInfo"}>{this.state.numVideos} video{this.state.numVideos === 1? '' : 's'} available</span>
+                <ContentInfo num={this.state.numVideos} singular={"video"} plural={"videos"} />
                 <Container className={"clickable-children scroll-no-show"}>{
                     this.state.videoList.map((video, key) => 
                         <VideoHeader key={video.id} id={video.id} data={video} />

@@ -46,3 +46,6 @@ REFACTOR:
 
 need to do some code splitting https://create-react-app.dev/docs/code-splitting/
 buildings.json has duplicate building IDs, causes issues with colors
+
+lotta work to be done for splitting theme from App.css file
+can fix the accordion by making my own https://www.w3schools.com/howto/howto_js_accordion.asp

@@ -1,5 +1,5 @@
 import L from 'leaflet';
-import { OVERLAYS, MAP_MAX_ZOOM } from '../../../constants';
+import { OVERLAYS, MAP_OPTIONS } from '../../../constants';
 
 export function addRoadsToMap(ind, layer) {
     var options = OVERLAYS[ind].OPTIONS;
@@ -10,7 +10,7 @@ export function addRoadsToMap(ind, layer) {
     })
     .then(function(myJson) {
         new L.vectorGrid.slicer(myJson, {
-            rendererFactory: L.svg.tile,
+            rendererFactory: L.canvas.tile,
             vectorTileLayerStyles: {
                 sliced: {
                     color: options.COLOR,
@@ -20,7 +20,7 @@ export function addRoadsToMap(ind, layer) {
                 }
             },
             interactive: false,
-            maxZoom: MAP_MAX_ZOOM,
+            maxZoom: MAP_OPTIONS.maxZoom,
             getFeatureId: function(f) {
                 return f.properties.OBJECTID;
             }

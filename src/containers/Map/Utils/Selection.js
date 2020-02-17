@@ -1,5 +1,5 @@
 export function highlightGeoJSON(layer) {
-    console.log(layer);
+    //console.log(layer);
 
     layer.setStyle({
         weight: 4

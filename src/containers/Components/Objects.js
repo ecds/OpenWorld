@@ -1,6 +1,8 @@
 import React from 'react';
-import { Row, Col } from 'react-bootstrap';
 import styled from 'styled-components';
+
+import ItemHeader from './ItemHeader.js';
+import ContentInfo from './ContentInfo.js';
 
 const Container = styled.div``;
 
@@ -16,47 +18,6 @@ const objects = [
         "img": "https://reactjs.org/logo-og.png",
     }, 
 ];
-
-const objectThumbnail = {
-    width: "9.25em",
-    height: "5em",
-}
-
-const objectThumbnailImg = {
-    width: "9.25em",
-    height: "5em",
-    position: "relative",
-    objectFit: "cover",
-}
-
-const objectTitle = {
-  position: "relative",
-  display: "inline",
-  marginLeft: "1em",
-  marginTop: "auto",
-  marginBottom: "auto",
-  width: "calc(40vw - (12.25em / 1.4) - 1em)",
-  maxWidth: "calc(500px - (12.25em / 1.4) - 1em)",
-  flexGrow: 1,
-  color: "#444444",
-  fontSize: "1.4em",
-}
-
-class ObjectHeader extends React.Component {
-    render() {
-        return (
-            <Row onClick={this.props.onClick}>
-                <div style={objectThumbnail}>
-                    <img style={objectThumbnailImg} src={this.props.data.img} alt="Story thumbnail" />
-                </div>
-                <div style={objectTitle}>
-                    {this.props.data.title}
-                    {this.props.data.unity? <span className="object-info">This will launch in Unity.</span> : ""}
-                </div>
-            </Row>
-        )
-    }
-}
 
 export default class Objects extends React.Component {
     constructor(props) {
@@ -79,10 +40,17 @@ export default class Objects extends React.Component {
     render() {
         return (
             <Container>
-                <span className={"contentInfo"}>{this.state.numObjects} 3D model{this.state.numObjects === 1? '' : 's'} available</span>
+                <ContentInfo num={this.state.numObjects} singular={"model in 3D"} plural={"models in 3D"} />
                 <Container className={""}>{
                     this.state.objectList.map((object, key) =>
-                        <ObjectHeader key={object.id} id={object.id} data={object} onClick={() => this.handleClick(object)} />
+                        <ItemHeader 
+                            key={object.id} 
+                            id={object.id} 
+                            square={false}
+                            imgSrc={object.img}
+                            title={object.title} 
+                            onClick={() => this.handleClick(object)} 
+                        />
                     )}
                 </Container>
             </Container>

@@ -1,12 +1,16 @@
 import React from 'react';
-import { Modal, Image, Carousel, Row } from 'react-bootstrap';
+import { Modal, Image, Carousel } from 'react-bootstrap';
 import styled from 'styled-components';
+
+import ItemHeader from './ItemHeader.js';
+import ContentInfo from './ContentInfo.js';
 
 const Container = styled.div``;
 
 const galleries = [
   {
-    title: "Test images",
+	title: "Test images",
+	id: "asdskfjaksdjl",
     imgs: [
       { url: "https://images.unsplash.com/photo-1451186859696-371d9477be93?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjI0MX0&auto=format&fit=crop&w=1052&q=80", },
       { url: "https://reactjs.org/logo-og.png", },
@@ -15,13 +19,6 @@ const galleries = [
     ],
   }
 ];
-
-const rowThumbnail = {
-  height: "4em",
-  width: "4em",
-  position: "relative",
-  objectFit: "cover",
-};
 
 const galleryImg = {
   height: "70vh",
@@ -75,14 +72,14 @@ class Gallery extends React.Component {
   render() {
     return (
       <Container>
-        <Row className="" onClick={() => this.setState({ show: true })}>
-            <Container>
-                <Image style={rowThumbnail} src={this.props.imgs[0].url} alt="Gallery thumbnail" />
-            </Container>
-            <div className="storyTitle">
-                {this.props.title}
-            </div>
-        </Row>
+        <ItemHeader 
+            key={this.props.key} 
+            id={this.props.id} 
+            square={true}
+            imgSrc={this.props.imgs[0].url}
+            title={this.props.title} 
+            onClick={() => this.setState({ show: true })} 
+        />
         <ModalCarousel 
           show={this.state.show} 
           title={this.props.title}
@@ -106,14 +103,14 @@ export default class Images extends React.Component {
 
   render() {
     return (
-    <>
-      <span className={"contentInfo"}>{this.state.numGalleries} galler{this.state.numGalleries === 1? 'y' : 'ies'} available</span>
-      <Container className={"clickable-children scroll-no-show"}>{
-        this.state.galleryList.map((gallery, key) =>
-          <Gallery key={key} title={gallery.title} imgs={gallery.imgs} />
-        )}
-      </Container>
-    </>
+    <Container>
+		<ContentInfo num={this.state.numGalleries} singular={"gallery"} plural={"galleries"} />
+		<Container className={"clickable-children scroll-no-show"}>{
+			this.state.galleryList.map((gallery, key) =>
+				<Gallery key={key} title={gallery.title} imgs={gallery.imgs} />
+			)}
+		</Container>
+	</Container>
     )
   }
 }
