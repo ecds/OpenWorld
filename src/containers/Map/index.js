@@ -13,20 +13,11 @@ import { addSimpleGeoJSONToMap } from './Layers/SimpleGeoJSON.js';
 import { addStreetcarsToMap } from './Layers/Streetcars.js';
 import { addRoadsToMap } from './Layers/Roads.js';
 
-import { MAP_CENTER, 
-		 DEFAULT_ZOOM, 
-		 MAP_MAX_ZOOM, 
-		 MAP_SW_MAX, 
-		 MAP_NE_MAX, 
+import { MAP_OPTIONS,
 		 MAP_TILE_LAYERS as layers, 
-		 THIRD_COLOR, 
-		 MAP_MIN_ZOOM,
-		 DIV_ICONS,
 		 OVERLAYS } from '../../constants/';
 
-// const buildings = require('../../data/Buildings.json');
-
-const Wrapper = styled.div `
+const Wrapper = styled.div`
 	width: auto;
 	height: calc(100vh - 56px);
 	position: absolute;
@@ -35,39 +26,10 @@ const Wrapper = styled.div `
 	z-index: 0;
 `;
 
-// ICONS 
-/*
-let divIcons = [];
-for (let i = 0; i < DIV_ICONS.length; i++) {
-	divIcons[i] = L.divIcon({
-		className: DIV_ICONS[i].CLASS_NAME,
-		html: 	   DIV_ICONS[i].HTML,
-		iconSize:  DIV_ICONS[i].ICON_SIZE,
-	})
-} */
-
 export default class Map extends React.Component {
-/*
-	test = (layer) => {
-		new L.geoJSON(buildings, {
-			fill: true,
-			fillOpacity: 0.3,
-			color: 'cyan',
-			fillColor: 'cyan',
-			opacity: 1,
-		}).addTo(layer);
-	}
-*/
     componentDidMount() {
 		// MAP CONSTRUCTION
-		this.map = L.map('map', {
-			center: 	 MAP_CENTER,
-			minZoom: 	 MAP_MIN_ZOOM,
-            zoom: 		 DEFAULT_ZOOM,
-			maxZoom:     MAP_MAX_ZOOM,
-			zoomControl: true,
-			maxBounds:   L.latLngBounds(MAP_SW_MAX, MAP_NE_MAX),
-        });
+		this.map = L.map('map', MAP_OPTIONS);
 
 		// BASE LAYER CONSTRUCTION
 		for (let i = 0; i < layers.length; i++) {
@@ -75,7 +37,7 @@ export default class Map extends React.Component {
 				bounds:			L.latLngBounds(layers[i].SW_BOUND, layers[i].NE_BOUND),
 				minZoom: 		layers[i].MIN_ZOOM,
 				maxNativeZoom: 	layers[i].MAX_NATV,
-				maxZoom:		MAP_MAX_ZOOM,
+				maxZoom:		MAP_OPTIONS.maxZoom,
 			})
 			.addTo(this.map);
 		}

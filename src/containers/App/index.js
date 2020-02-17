@@ -3,27 +3,23 @@ import Map from '../Map';
 import Tabs from '../Tabs';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import styled from 'styled-components';
+import styled, { ThemeProvider } from 'styled-components';
+import { THEME } from '../../constants';
 
 const AppWrapper = styled.div`
 	display: flex;
 	justify-content: center;
-	margin-top: 100px;
 `;
-
-const Container = styled.div``;
 
 export default class App extends React.Component {
 	render() {
 		return (
-			<AppWrapper>
-				<Container>
+			<ThemeProvider theme={THEME}>
+				<AppWrapper>
 					<Map />
-				</Container>
-				<Container>
 					<Tabs />
-				</Container>
-			</AppWrapper>
+				</AppWrapper>
+			</ThemeProvider>
 		);
 	}
 }

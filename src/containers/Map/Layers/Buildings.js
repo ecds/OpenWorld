@@ -1,6 +1,6 @@
 import L from 'leaflet';
 import {} from 'leaflet.vectorgrid';
-import { MAP_MAX_ZOOM } from '../../../constants';
+import { MAP_OPTIONS } from '../../../constants';
 
 const data = require('../../../data/Buildings.json');
 
@@ -48,11 +48,11 @@ export function addBuildingsToMap(layer, map) {
                 return 'cyan';
         }
     }
-
+// 0.15, 0.3
     function style(building) {
         return {
-            fillOpacity: 0.3,
-            opacity: 0.5,
+            fillOpacity: 0.15,
+            opacity: 0.3,
             fillColor: getColor(building.use),
             color: getColor(building.use),
             fill: true,
@@ -64,20 +64,20 @@ export function addBuildingsToMap(layer, map) {
         return {
             fillColor: getColor(use),
             color: getColor(use),
-            fillOpacity: 0.4,
+            fillOpacity: 0.3,
             weight: 2,
-            opacity: 0.7,
+            opacity: 0.5,
             fill: true,
         }
     }
 
     var vectorGrid = new L.vectorGrid.slicer(data, {
-        rendererFactory: L.svg.tile,
+        rendererFactory: L.canvas.tile,
         vectorTileLayerStyles: {
             sliced: style,
         },
         interactive: true,
-        maxZoom: MAP_MAX_ZOOM,
+        maxZoom: MAP_OPTIONS.maxZoom,
         getFeatureId: function(f) {
             return f.properties.BLDG_ID;
         }

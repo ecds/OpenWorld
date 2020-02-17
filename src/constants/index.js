@@ -1,16 +1,27 @@
-export const THEME_COLOR       = '#DB504B';
-export const SECOND_COLOR      = '#FFFFFF';
-export const THIRD_COLOR       = '#E47975';
-export const TEXT_COLOR        = '#A1A1A1';
+export const THEME = {
+    MAIN:   '#DB504B',
+    SECOND: '#FFFFFF',
+    THIRD:  '#E47975',
+    TEXT:   '#515151',
+}
 
 /* map constants */
-export const MAP_CENTER        = [33.749038, -84.388466];
+export const MAP_OPTIONS = {
+    center:      [33.749038, -84.388466],
+    minZoom:     11,
+    zoom:        16,
+    maxZoom:     20,
+    zoomControl: true,
+    maxBounds:   [[33.53, -84.61], [34.03, -84.11]],
+};
+/*
+export const MAP_CENTER        = [33.749038, -84.388466]; // currently the state capitol building
 export const MAP_MIN_ZOOM      = 11;
 export const DEFAULT_ZOOM      = 16;
 export const MAP_MAX_ZOOM      = 20;
 export const MAP_SW_MAX        = [33.53, -84.61];
 export const MAP_NE_MAX        = [34.03, -84.11];
-
+*/
 export const MAP_TILE_LAYERS = [
     // 1000-SCALE
     {
@@ -85,7 +96,7 @@ export const OVERLAYS = [
         OPTIONS: {
             COLOR: 'black',
             WEIGHT: 5,
-            FILL_COLOR: THIRD_COLOR,
+            FILL_COLOR: THEME.THIRD,
             FILL_OPACITY: 0.2,
         }
     },
@@ -134,6 +145,10 @@ export const OVERLAYS = [
             WEIGHT: 1,
         }
     }
+]
+
+export const TEXT = [
+
 ]
 
 export const COLORS = [

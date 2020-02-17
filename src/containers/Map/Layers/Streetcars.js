@@ -11,7 +11,7 @@ export function addStreetcarsToMap(ind, layer, map) {
     var colorIndex = Math.floor(Math.random() * 64);
 
     function getColor(feature, colorOptions, featureID) {
-        console.log(feature);
+        //console.log(feature);
         colorIndex = colorIndex % 64;
         if (typeof(colorOptions) === 'string' && feature.geometry.type === 'MultiLineString') {
             return COLORS[colorIndex++];

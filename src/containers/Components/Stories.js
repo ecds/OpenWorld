@@ -1,15 +1,18 @@
 import React from 'react';
-import { Row, } from 'react-bootstrap';
 import styled from 'styled-components';
 
-const Container = styled.div``;
+import ItemHeader from './ItemHeader.js';
+import ContentInfo from './ContentInfo.js';
+import BackArrow from './BackArrow.js';
 
-const rowThumbnail = {
-    height: "4em",
-    width: "4em",
-    position: "relative",
-    objectFit: "cover",
-}
+const Container = styled.div`
+    margin: ${props => props.margin ? props.margin : 0};
+`;
+
+const TextContainer = styled(Container)`
+    text-align: justify;
+    white-space: pre-line;
+`;
 
 const stories = [
     {
@@ -44,36 +47,20 @@ const stories = [
     }
 ];
 
-class StoryHeader extends React.Component {
-    render() {
-        return (
-            <Row className="" onClick={this.props.onClick}>
-                <Container>
-                    <img style={rowThumbnail} src={this.props.data.img} alt="Story thumbnail" />
-                </Container>
-                <div className="storyTitle">
-                    {this.props.data.title}
-                </div>
-            </Row>
-        )
-    }
-}
-
 class ExpandedStory extends React.Component {
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            story: this.props.story,
-        }
-    }
-
     render() {
         return (
             <Container>
-                <span className={"return"} onClick={this.props.onClick}>&#x1f82c; ALL STORIES</span>
-                <StoryHeader id={this.state.story.id} data={this.props.story} onClick={null}/>
-                <p className={"display-linebreak scroll-no-show"}>{this.props.story.content}</p>
+                <BackArrow onClick={this.props.onClick}>&#x1f82c; ALL STORIES</BackArrow>
+                <ItemHeader 
+                    imgSrc={this.props.story.img}
+                    title={this.props.story.title} 
+                    onClick={null} 
+                    square={true}  
+                />
+                <TextContainer margin="0 0 40px 0">
+                    {this.props.story.content}
+                </TextContainer>
             </Container>
         );
     }
@@ -104,12 +91,19 @@ export default class Stories extends React.Component {
             <Container> 
                 {
                     this.state.isStoryExpanded ? 
-                        <ExpandedStory poiId={this.state.poiId} story={this.state.story} onClick={() => this.handleClick(null)}/> :
+                        <ExpandedStory story={this.state.story} onClick={() => this.handleClick(null)}/> :
                         <Container>
-                            <span className={"contentInfo"}>{this.state.numStories} stor{this.state.numStories === 1? 'y' : 'ies'} available</span>
-                            <Container className={"clickable-children scroll-no-show"}>{
+                            <ContentInfo num={this.state.numStories} singular={"story"} plural={"stories"} />
+                            <Container margin="0 0 16px 0">{
                                 this.state.storyList.map((story, key) =>
-                                    <StoryHeader key={story.id} id={story.id} data={story} onClick={() => this.handleClick(story)} />
+                                    <ItemHeader 
+                                        key={story.id} 
+                                        id={story.id} 
+                                        square={true}
+                                        imgSrc={story.img}
+                                        title={story.title} 
+                                        onClick={() => this.handleClick(story)} 
+                                    />
                                 )}
                             </Container>
                         </Container>
