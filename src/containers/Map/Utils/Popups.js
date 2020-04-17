@@ -6,7 +6,7 @@ export function populatePopup(data, ind) {
 
     for (let j = 0; j < popupSrc.length; j++) {
         if (popupSrc[j].CONDITIONAL === true) {
-            if (data.properties[popupSrc[j].PROPERTY] != "") { // intentionally left as non strict
+            if (data.properties[popupSrc[j].PROPERTY] !== undefined) {
                 popupContent += popupSrc[j].CONTENT
                                 + data.properties[popupSrc[j].PROPERTY]
                                 + popupSrc[j].SUFFIX;

@@ -1,10 +1,10 @@
-import React from 'react';
-import Map from '../Map';
-import Tabs from '../Tabs';
+import React, { Suspense, lazy } from 'react';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import styled, { ThemeProvider } from 'styled-components';
-import { THEME } from '../../constants';
+import styled from 'styled-components';
+
+const Tabs = lazy(() => import('../Tabs'));
+const Map = lazy(() => import('../Map'));
 
 const AppWrapper = styled.div`
 	display: flex;
@@ -14,12 +14,12 @@ const AppWrapper = styled.div`
 export default class App extends React.Component {
 	render() {
 		return (
-			<ThemeProvider theme={THEME}>
-				<AppWrapper>
-					<Map />
+			<AppWrapper>
+				<Suspense fallback={<div>Loading...</div>}>
 					<Tabs />
-				</AppWrapper>
-			</ThemeProvider>
+					<Map />
+				</Suspense>
+			</AppWrapper>
 		);
 	}
 }

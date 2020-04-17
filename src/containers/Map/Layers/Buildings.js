@@ -1,14 +1,19 @@
 import L from 'leaflet';
 import {} from 'leaflet.vectorgrid';
-import { MAP_OPTIONS } from '../../../constants';
 
-const data = require('../../../data/Buildings.json');
+import { MAP_OPTIONS, OVERLAYS } from '../../../constants';
 
-var curr = null;
+import store from '../../../redux/store';
+import { updateInfo } from '../../../redux/actions';
+
+// // const data = require('../../../data/Buildings.json');
+// const data = require('../../../data/buildings_1928.json');
+
 var highlight;
+var selected;
 
 // TODO: extract highlight / select to Utils
-export function addBuildingsToMap(layer, map) {
+export function addBuildingsToMap(ind, layer, map) {
     function clearHighlight() {
         if (highlight) {
             vectorGrid.resetFeatureStyle(highlight);
@@ -30,7 +35,7 @@ export function addBuildingsToMap(layer, map) {
             case 'MFG':
                 return 'purple';
             case 'M':
-                return 'darkbrown';
+                return 'brown';
             case 'O':
                 return 'black';
             case 'P':
@@ -48,7 +53,7 @@ export function addBuildingsToMap(layer, map) {
                 return 'cyan';
         }
     }
-// 0.15, 0.3
+
     function style(building) {
         return {
             fillOpacity: 0.15,
@@ -71,41 +76,49 @@ export function addBuildingsToMap(layer, map) {
         }
     }
 
-    var vectorGrid = new L.vectorGrid.slicer(data, {
-        rendererFactory: L.canvas.tile,
-        vectorTileLayerStyles: {
-            sliced: style,
-        },
-        interactive: true,
-        maxZoom: MAP_OPTIONS.maxZoom,
-        getFeatureId: function(f) {
-            return f.properties.BLDG_ID;
-        }
-    })		
-    .on('mouseover', function(e) {
-        var properties = e.layer.properties;
+    var vectorGrid;
+
+    fetch(OVERLAYS[ind].URL)
+    .then((response) => { return response.json(); })
+    .then((data) => {
+        vectorGrid = new L.vectorGrid.slicer(data, {
+            rendererFactory: L.canvas.tile,
+            vectorTileLayerStyles: {
+                sliced: style,
+            },
+            interactive: true,
+            maxZoom: MAP_OPTIONS.maxZoom,
+            getFeatureId: function(f) {
+                return f.properties.BLDG_ID;
+            }
+        })		
+        .on('mouseover', function(e) {
+            var properties = e.layer.properties;
+
+            clearHighlight();
+
+            if (properties.BLDG_ID !== selected)
+                highlight = properties.BLDG_ID;
         
+            vectorGrid.setFeatureStyle(properties.BLDG_ID, strongStyle(properties.use));
+        })
+        .on('mouseout', function(e) {
+            if (highlight !== selected)
+                clearHighlight();
+        }) 
+        .on('click', function(e) {
+            store.dispatch(updateInfo({type: 'building', properties: e.layer.properties}));
+            var properties = e.layer.properties;
 
-        clearHighlight();
-        highlight = properties.BLDG_ID;
+            clearHighlight();
+            vectorGrid.resetFeatureStyle(selected);
 
-        vectorGrid.setFeatureStyle(properties.BLDG_ID, strongStyle(properties.use));
-    })
-    .on('mouseout', function(e) {
-        clearHighlight();
-    }) //TODO: ADD SELECT FUNCTION
-    .on('click', function(e) {
-    // console.log(e.layer.properties)
-    // var properties = e.layer.properties;
-    // if (highlight !== properties.BLDG_ID) 
-    //     clearHighlight();
-    
-    // var bounds = vectorGrid.getBounds();
-    
-    // map.fitBounds(bounds);
-    // //console.log(e.layer._pxBounds)
-    // vectorGrid.setFeatureStyle(properties.BLDG_ID, strongStyle(properties.use));
-    })
-    .addTo(layer);
+            selected = properties.BLDG_ID;
+            vectorGrid.setFeatureStyle(properties.BLDG_ID, strongStyle(properties.use));
+        })
+        .addTo(layer);
+    });
+
+    map.on('click', clearHighlight);
     return;
 }

@@ -1,153 +1,28 @@
-import React from 'react';
-import TabInfo from './TabInfo.js';
+import React, { Suspense, lazy } from 'react';
+import { connect } from 'react-redux';
 
-import { Accordion, Card, Collapse } from 'react-bootstrap';
-import Navbar from 'react-bootstrap/Navbar';
+import { Accordion, Collapse } from 'react-bootstrap';
 import HamburgerMenu from 'react-hamburger-menu';
 import styled from 'styled-components';
 
-import InfoButtonGroup from '../Components/InfoButtonGroup';
-
 import { THEME } from '../../constants';
+
+import Bottom from '../Components/Bottom';
+import ControlsContainer from '../Components/ControlsContainer';
+import StyledAccordion from '../Components/StyledAccordion';
+import StyledBrand from '../Components/StyledBrand';
+import StyledCard from '../Components/StyledCard';
+import StyledCardBody from '../Components/StyledCardBody';
+import StyledCardHeader from '../Components/StyledCardHeader';
+import StyledNavbar from '../Components/StyledNavbar';
+import TabInfo from './TabInfo';
+
+const InfoButtonGroup = lazy(() => import('../Components/InfoButtonGroup'));
+const ObjectInfo = lazy(() => import('../Components/ObjectInfo'));
+const InfoBox = lazy(() => import('./InfoBox'));
 
 const Container = styled.div`
 	min-width: 100vw;
-`;
-
-const ControlsContainer = styled.div`
-	label div span {
-		font-weight: bold;
-		position: relative;
-		left: 8px;
-	}
-
-	label div i {
-		height: 16px;
-		width: 16px;
-		background-size: 16px 16px;
-		position: relative;
-		float: left;
-		top: 0.3em;
-		left: 0;
-		color: ${props => props.theme.TEXT};
-	}
-
-	div {
-		border: none;
-		border-radius: 0;
-		box-shadow: none;
-	}
-	
-	div label:hover {
-		cursor: pointer;
-	}
-	
-	div input[type=checkbox] {
-		display: none;
-	}
-
-	div input[type=checkbox]:checked ~ i {
-		color: ${props => props.theme.MAIN};
-	}
-
-	div input[type=checkbox]:unchecked ~ i {
-		color: ${props => props.theme.TEXT};
-	}
-
-	div input[type=checkbox]:checked ~ span {
-		color: ${props => props.theme.MAIN};
-	}
-
-	div input[type=checkbox]:unchecked ~ span {
-		color: ${props => props.theme.TEXT};
-	}
-`;
-
-const StyledAccordion = styled(Accordion)`
-	&&& {
-		z-index: 999;
-		position: absolute;
-		border-radius: 0px;
-		right: 0;
-		top: 55.6px;
-		background-color: ${props => props.theme.MAIN};
-		color: ${props => props.theme.SECOND};
-		height: calc(100vh - 55.6px);
-	}
-`;
-
-const StyledCard = styled(Card)`
-	&&& {
-		border: none;
-		border-box: none;
-		border-radius: 0px;
-	}
-`;
-
-const StyledCardBody = styled(Card.Body)`
-	&&& {
-		height: calc((100vh) - (55.6px + (3*2em)));
-		padding: 0.5em 1.5em;
-		color: ${props => props.theme.TEXT};
-	}
-	
-	overflow-y: auto;
-	scrollbar-width: none;
-`;
-
-const StyledNavbar = styled(Navbar)`
-	&&& {
-		background-color: ${props => props.theme.MAIN};
-		color: ${props => props.theme.TEXT};
-		border-bottom: 1px solid rgba(0, 0, 0, 0.125);
-		z-index: 1000;
-		min-width: 100vw;
-	}
-
-	#menuControl {
-		position: fixed !important;
-		right: 18px;
-		margin-top: auto;
-		margin-bottom: auto;
-	}
-`;
-
-const StyledBrand = styled(Navbar.Brand)`
-	&&& {
-		color: ${props => props.theme.SECOND};
-		font-weight: bolder;
-		
-		:hover {
-			text-decoration: none;
-			color: ${props => props.theme.SECOND};
-			cursor: pointer;
-		}
-	}
-`;
-
-const StyledCardHeader = styled(Accordion.Toggle)`
-	&&& {
-		border: none;
-		border-bottom: 1px solid rgba(0,0,0,.125);
-		border-radius: 0;
-		margin: 0;
-		min-height: 2em;
-		max-height: 2em;
-		background-color: ${props => props.theme.MAIN};
-		color: ${props => props.theme.SECOND};
-		padding: 0.25em 1.5em;
-		font-weight: bolder;
-		cursor: pointer;
-		text-align: left;
-	}
-`;
-
-const Bottom = styled.div`
-	position: absolute;
-	bottom: 0;
-	height: 40px;
-	width: 100%;
-	background-image: linear-gradient(to top, ${props => props.theme.SECOND}FF, ${props => props.theme.SECOND}00);
 `;
 
 let hamburgerOptions = {
@@ -157,10 +32,10 @@ let hamburgerOptions = {
 	rotate: 0,
 	color: THEME.SECOND,
 	borderRadius: 4,
-	animationDuration: 0.25,
+	animationDuration: 0.3,
 }
 
-export default class Tabs extends React.Component {
+class Tabs extends React.Component {
 	constructor(props) {
 		super(props);
 
@@ -170,28 +45,30 @@ export default class Tabs extends React.Component {
 
 		this.state = {
 			activeKey: undefined,
+			lastActive: undefined,
 			open: true,
-			beforeResize: false,
+			media: 0,
 		}
 	}
 
 	updateState() {
-		if (window.innerWidth > 768) {
+		if (window.innerWidth > 768 && !this.state.open) {
 			this.setState({
-				beforeResize: this.state.open, 
 				open: true,
+				activeKey: this.state.lastActive,
+				lastActive: undefined,
 			});
-		} else {
+		} else if (window.innerWidth <= 768 && this.state.open) {
 			this.setState({
-				beforeResize: this.state.open, 
 				open: false,
+				lastActive: this.state.activeKey,
+				activeKey: undefined,
 			});
 		}
 	}
 
 	handleSelect(activeKey) {
-		if (activeKey != null)
-			this.setState({ activeKey: activeKey });
+		return false;
 	}
 
 	setOpen() {
@@ -207,21 +84,24 @@ export default class Tabs extends React.Component {
 		window.removeEventListener("resize", this.updateState);
 	}
 
+	componentDidUpdate() {
+		//console.log(this.props)
+	}
+
 	render() {
 		return (
 		<Container>
-			<StyledNavbar /*style={navbarStyle}* variant="red" >
-				<Navbar.Brand href="#">OpenWorld Atlanta</Navbar.Brand*/>
+			<StyledNavbar>
 				<StyledBrand>OpenWorld Atlanta</StyledBrand>
 				<div id="menuControl">
-					<HamburgerMenu id="menuControl" 
+					<HamburgerMenu 
 						isOpen={this.state.open} 
 						menuClicked={this.setOpen} 
 						{...hamburgerOptions} 
 					/>
 				</div>
 			</StyledNavbar>
-			<Collapse in={this.state.open}>
+			<Collapse in={this.state.open} timeout={300}>
 				<StyledAccordion onSelect={this.handleSelect} defaultActiveKey="0" activeKey={this.state.activeKey} id="sidebar" ref="Sidebar">
 					<StyledCard>
 						<StyledCardHeader variant="link" id="layersHeader" eventKey="0">
@@ -253,9 +133,15 @@ export default class Tabs extends React.Component {
 						</StyledCardHeader>
 						<Accordion.Collapse eventKey="2">
 							<StyledCardBody id="infoCardBody">
-								<TabInfo type={"info"} text={"Please select an object on the Map to view details."} />
-								<div id={"object-info"} />
-								<InfoButtonGroup />
+								{
+									this.props.info ? 
+									<Suspense fallback={<div>Loading...</div>}>
+										<ObjectInfo title={this.props.name} />
+										<InfoBox properties={this.props.info?.properties} type={this.props.info?.type} />
+										<InfoButtonGroup />
+									</Suspense> : 
+									<TabInfo type={"info"} text={"Please select a feature on the Map to view details."} /> 
+								}
 								<Bottom />
 							</StyledCardBody>
 						</Accordion.Collapse>
@@ -266,3 +152,14 @@ export default class Tabs extends React.Component {
 		);
 	}
 }
+
+const mapStateToProps = state => {
+	switch(state.infoSelector.type) {
+		case 'building':
+			return { info: state.infoSelector, name: state.infoSelector.properties?.name_28 };
+		default:
+			return { info: null, name: null }
+	}
+}
+
+export default connect(mapStateToProps, null)(Tabs);

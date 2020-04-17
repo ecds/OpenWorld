@@ -14,18 +14,11 @@ export const MAP_OPTIONS = {
     zoomControl: true,
     maxBounds:   [[33.53, -84.61], [34.03, -84.11]],
 };
-/*
-export const MAP_CENTER        = [33.749038, -84.388466]; // currently the state capitol building
-export const MAP_MIN_ZOOM      = 11;
-export const DEFAULT_ZOOM      = 16;
-export const MAP_MAX_ZOOM      = 20;
-export const MAP_SW_MAX        = [33.53, -84.61];
-export const MAP_NE_MAX        = [34.03, -84.11];
-*/
+
 export const MAP_TILE_LAYERS = [
     // 1000-SCALE
     {
-        TILE_URL: 'http://tilemaps.s3-website-us-east-1.amazonaws.com/ATL28_200-1000mosaic/{z}/{x}/{y}.png',
+        TILE_URL: 'https://s3.amazonaws.com/tilemaps/ATL28_1000tiles/{z}/{x}/{y}.png',
         SW_BOUND: [33.63298531, -84.51696580],
         NE_BOUND: [33.93379544, -84.21603335],
         MIN_ZOOM: 11,
@@ -33,10 +26,10 @@ export const MAP_TILE_LAYERS = [
     },
     // 200-SCALE
     {
-        TILE_URL: 'http://tilemaps.s3-website-us-east-1.amazonaws.com/ATL1928_200mosaic3/{z}/{x}/{y}.png',
+        TILE_URL: 'https://s3.amazonaws.com/tilemaps/ATL28_200tiles/{z}/{x}/{y}.png',
         SW_BOUND: [33.73327062, -84.41714544],
         NE_BOUND: [33.78337253, -84.31633406],
-        MIN_ZOOM: 14, 
+        MIN_ZOOM: 11, 
         MAX_NATV: 19, // MAX NATIVE ZOOM
     },
 ];
@@ -44,7 +37,6 @@ export const MAP_TILE_LAYERS = [
 // div icons for the map
 export const DIV_ICONS = [
     {
-        CLASS_NAME: 'divIcons',
         HTML:       '<i class="icon-radio-checked"/>',
         ICON_SIZE:  [16, 16],
     },
@@ -122,7 +114,7 @@ export const OVERLAYS = [
         LABEL: 'Streetcars',
         TAB: 'layers',
         TYPE: 'paths',
-        URL: '',
+        URL: 'https://atlanta.urbanspatialhistory.org/resources/layers/Streetcars.json',
         OPTIONS: {
             COLOR: 'green',
             FILL: false,
@@ -137,7 +129,7 @@ export const OVERLAYS = [
         LABEL: 'Buildings',
         TAB: 'features',
         TYPE: 'buildings',
-        URL: '',
+        URL: 'https://atlanta.urbanspatialhistory.org/resources/layers/buildings_1928.json',
         OPTIONS: {
             COLOR: 'cyan',
             FILL: true,
@@ -150,6 +142,35 @@ export const OVERLAYS = [
 export const TEXT = [
 
 ]
+
+export const TAGS = {
+    buildings: {
+        BLDG_ID: {
+            tag: 'Building ID',
+            tooltip: 'A unique identifier assigned to each building in the OpenWorld Atlanta database.',
+        },
+        Removed: {
+            tag: 'Removed',
+            tooltip: 'Indicates whether a building has been removed.',
+        },
+        calc_ht: {
+            tag: 'Height (m)',
+            tooltip: 'The calculated (or known) height of the building in meters.',
+        },
+        use: {
+            tag: 'Use',
+            tooltip: 'The building\'s zoning code. Legend to come.',
+        },
+        y_coord: {
+            tag: 'Latitude',
+            tooltip: '',
+        },
+        x_coord: {
+            tag: 'Longitude',
+            tooltip: '',
+        }
+    }
+}
 
 export const COLORS = [
     '#000000','#00FF00','#0000FF','#FF0000','#01FFFE','#FFA6FE','#FFDB66','#006401',
