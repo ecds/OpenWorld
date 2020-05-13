@@ -5,11 +5,11 @@ import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 
 const Container = styled.div`
     width: 33%;
-    padding-bottom: 1rem;
+    padding-bottom: 0.5rem;
 `;
 
 const Tag = styled.div`
-    font-weight: 400;
+    font-weight: 600;
     color: ${props => props.theme.MAIN};
 `;
 

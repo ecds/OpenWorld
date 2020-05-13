@@ -1,6 +1,9 @@
+import React from 'react';
 import styled from 'styled-components';
+import { OVERLAYS } from '../../../constants';
+import Buildings from '../../Map/Layers/Buildings';
 
-export default styled.div`
+const Wrapper = styled.div`
 	label > div > span {
 		font-weight: bold;
 		position: relative;
@@ -53,3 +56,20 @@ export default styled.div`
 		color: ${props => props.theme.TEXT};
 	}
 `;
+
+export default class ControlsContainer extends React.Component {
+	render() {
+		return (
+			<Wrapper>{
+				OVERLAYS.map((layer, ind) => {
+					switch(layer.type) {
+						case 'buildings':
+							return <Buildings {...layer} key={ind} />;
+						default:
+							break;
+					}
+				})
+			}</Wrapper>
+		)
+	}
+}

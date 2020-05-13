@@ -16,7 +16,6 @@ export const FontIcon = styled("i")`
 `;
 
 export function addIconToDOM(container, icon, theme) {
-    console.log(theme)
     var img = document.createElement("i");
     img.className = icon;
     img.setAttribute('style', `

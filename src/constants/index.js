@@ -1,3 +1,7 @@
+import React from 'react';
+import { MdRadioButtonChecked } from 'react-icons/md';
+import { FaCity } from 'react-icons/fa';
+
 export const THEME = {
     MAIN:   '#DB504B',
     SECOND: '#FFFFFF',
@@ -18,19 +22,17 @@ export const MAP_OPTIONS = {
 export const MAP_TILE_LAYERS = [
     // 1000-SCALE
     {
-        TILE_URL: 'https://s3.amazonaws.com/tilemaps/ATL28_1000tiles/{z}/{x}/{y}.png',
-        SW_BOUND: [33.63298531, -84.51696580],
-        NE_BOUND: [33.93379544, -84.21603335],
-        MIN_ZOOM: 11,
-        MAX_NATV: 16, // MAX NATIVE ZOOM
+        url: 'https://s3.amazonaws.com/tilemaps/ATL28_1000tiles/{z}/{x}/{y}.png',
+        bounds: [[33.93379544, -84.21603335], [33.63298531, -84.51696580]], 
+        minZoom: 11,
+        maxNativeZoom: 16, // MAX NATIVE ZOOM
     },
     // 200-SCALE
     {
-        TILE_URL: 'https://s3.amazonaws.com/tilemaps/ATL28_200tiles/{z}/{x}/{y}.png',
-        SW_BOUND: [33.73327062, -84.41714544],
-        NE_BOUND: [33.78337253, -84.31633406],
-        MIN_ZOOM: 11, 
-        MAX_NATV: 19, // MAX NATIVE ZOOM
+        url: 'https://s3.amazonaws.com/tilemaps/ATL28_200tiles/{z}/{x}/{y}.png',
+        bounds: [[33.78337253, -84.31633406], [33.73327062, -84.41714544]],
+        minZoom: 11, 
+        maxNativeZoom: 19, // MAX NATIVE ZOOM
     },
 ];
 
@@ -45,132 +47,146 @@ export const DIV_ICONS = [
 // overlay layers
 export const OVERLAYS = [
     {
-        DESC: 'Overlay the utility holes present in Atlanta in 1928.<br /><p class="italics">Source: Atlanta Atlas, 1928.</p>',
-        ID: 'manholes',
-        ICON: 'icon-radio-checked',
-        LABEL: 'Utility Holes',
-        TAB: 'layers',
-        TYPE: 'cluster',
-        URL: 'https://geoserver.ecds.emory.edu/ATLMaps/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=ATLMaps:ATL28_Utility_Holes&outputFormat=application%2Fjson',
-        OPTIONS: {
-            DIV_ICON: 0,
-            POPUP_CONTENT: [
+        desc: 'Overlay the utility holes present in Atlanta in 1928.',
+        attr: 'Source: Atlanta Atlas, 1928.',
+        id: 'manholes',
+        icon: <MdRadioButtonChecked />,
+        label: 'Utility Holes',
+        type: 'cluster',
+        url: 'https://geoserver.ecds.emory.edu/ATLMaps/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=ATLMaps:ATL28_Utility_Holes&outputFormat=application%2Fjson',
+        options: {
+            div_icon: DIV_ICONS[0],
+            popup_content: [
                 {
-                    CONTENT: '<b>Utility Hole</b>',
-                    TYPE: 'text',
+                    content: '<b>Utility Hole</b>',
+                    type: 'text',
                     CONDITIONAL: false,
                 }, 
                 {
-                    CONTENT: '<br />Located on ',
-                    SUFFIX: '',
-                    TYPE: 'text',
-                    CONDITIONAL: true,
-                    PROPERTY: 'name_st',
+                    content: '<br />Located on ',
+                    suffix: '',
+                    type: 'text',
+                    conditional: true,
+                    property: 'name_st',
+                    falsyValue: '',
                 },
                 {
-                    CONTENT: '<br />Elevation: ',
-                    SUFFIX: 'ft',
-                    TYPE: 'text',
-                    CONDITIONAL: true,
-                    PROPERTY: 'man_elev',
+                    content: '<br />Elevation: ',
+                    suffix: 'ft',
+                    type: 'text',
+                    conditional: true,
+                    property: 'man_elev',
+                    falsyValue: '',
                 },
             ],
         }
     },
     {
-        DESC: 'City Boundaries of Atlanta, 1928.<br /><p class="italics">Source: Atlanta Atlas, 1928.</p>',
-        ID: 'boundary',
-        ICON: 'icon-border_all',
-        LABEL: 'City Boundary',
-        TAB: 'layers',
-        TYPE: 'polygon',
-        URL: 'https://geoserver.ecds.emory.edu/ATLMaps/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=ATLMaps:Atlanta%20City%20Limits&outputFormat=application%2Fjson',
-        OPTIONS: {
-            COLOR: 'black',
-            WEIGHT: 5,
-            FILL_COLOR: THEME.THIRD,
-            FILL_OPACITY: 0.2,
+        desc: 'City Boundaries of Atlanta, 1928.',
+        attr: 'Source TBA',
+        id: 'boundary',
+        icon: 'icon-border_all',
+        label: 'City Boundary',
+        type: 'polygon',
+        url: 'https://geoserver.ecds.emory.edu/ATLMaps/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=ATLMaps:Atlanta%20City%20Limits&outputFormat=application%2Fjson',
+        options: {
+            color: 'black',
+            weight: 5,
+            fillColor: THEME.THIRD,
+            fillOpacity: 0.2,
         }
     },
     {
-        DESC: 'Atlanta Road Network, 1928.<br /><p class="italics">Source: Undetermined.</p>',
-        ID: 'roads',
-        ICON: 'icon-road',
-        LABEL: 'Roads',
-        TAB: 'layers',
-        TYPE: 'sliced',
-        URL: 'https://geoserver.ecds.emory.edu/OpenWorldAtlanta/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=OpenWorldAtlanta:Atlanta1928_RoadSystem&outputFormat=application%2Fjson',
-        OPTIONS: {
-            COLOR: 'black',
-            FILL: false,
-            OPACITY: 1,
-            WEIGHT: 3,
+        desc: 'Atlanta Road Network, 1928.',
+        attr: 'Source TBA',
+        id: 'roads',
+        icon: 'icon-road',
+        label: 'Roads',
+        type: 'vectorgrid',
+        url: 'https://geoserver.ecds.emory.edu/OpenWorldAtlanta/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=OpenWorldAtlanta:Atlanta1928_RoadSystem&outputFormat=application%2Fjson',
+        options: {
+            color: 'black',
+            fill: false,
+            opacity: 1,
+            weight: 3,
         }
     },
     {
-        DESC: 'Atlanta Streetcar Network, 1928.<br /><p class="italics">Source: Undetermined.</p>',
-        ID: 'streetcars',
-        ICON: 'icon-tram',
-        LABEL: 'Streetcars',
-        TAB: 'layers',
-        TYPE: 'paths',
-        URL: 'https://atlanta.urbanspatialhistory.org/resources/layers/Streetcars.json',
-        OPTIONS: {
-            COLOR: 'green',
-            FILL: false,
-            OPACITY: 1,
-            WEIGHT: 2,
+        desc: 'Atlanta Streetcar Network, 1928.',
+        attr: 'Source TBA',
+        id: 'streetcars',
+        icon: 'icon-tram',
+        label: 'Streetcars',
+        type: 'paths',
+        url: 'https://atlanta.urbanspatialhistory.org/resources/layers/Streetcars.json',
+        options: {
+            style: {
+                color: 'green',
+                fill: false,
+                opacity: 1,
+                weight: 2 
+            },
+            interactive: false,
+            unique: 'BLDG_ID',
         }
     },
     {
-        DESC: 'Buildings in Atlanta, 1928.<br /><p class="italics">Source: Undetermined.</p>',
-        ID: 'buildings',
-        ICON: 'icon-office',
-        LABEL: 'Buildings',
-        TAB: 'features',
-        TYPE: 'buildings',
-        URL: 'https://atlanta.urbanspatialhistory.org/resources/layers/buildings_1928.json',
-        OPTIONS: {
-            COLOR: 'cyan',
-            FILL: true,
-            OPACITY: 1,
-            WEIGHT: 1,
+        desc: 'Buildings in Atlanta, 1928',
+        attr: 'Source TBA',
+        id: 'buildings',
+        icon: <FaCity />,
+        label: 'Buildings',
+        type: 'buildings',
+        url: 'https://atlanta.urbanspatialhistory.org/resources/layers/buildings_1928.json',
+        options: {
+            color: 'cyan',
+            fill: true,
+            opacity: 1,
+            weight: 1,
+            interactive: true,
         }
     }
-]
+];
 
 export const TEXT = [
 
-]
+];
 
 export const TAGS = {
     buildings: {
         BLDG_ID: {
             tag: 'Building ID',
+            falsyValue: '',
             tooltip: 'A unique identifier assigned to each building in the OpenWorld Atlanta database.',
         },
         Removed: {
             tag: 'Removed',
+            falsyValue: '',
             tooltip: 'Indicates whether a building has been removed.',
         },
-        calc_ht: {
-            tag: 'Height (m)',
+        bldg_ht: {
+            tag: 'Height (ft)',
+            fallback: 'calc_ht',
+            falsyValue: 0,
             tooltip: 'The calculated (or known) height of the building in meters.',
         },
         use: {
             tag: 'Use',
+            falsyValue: '',
             tooltip: 'The building\'s zoning code. Legend to come.',
         },
         y_coord: {
             tag: 'Latitude',
+            falsyValue: '',
             tooltip: '',
         },
         x_coord: {
             tag: 'Longitude',
+            falsyValue: '',
             tooltip: '',
         }
     }
-}
+};
 
 export const COLORS = [
     '#000000','#00FF00','#0000FF','#FF0000','#01FFFE','#FFA6FE','#FFDB66','#006401',
@@ -181,4 +197,4 @@ export const COLORS = [
     '#0E4CA1','#91D0CB','#BE9970','#968AE8','#BB8800','#43002C','#DEFF74','#00FFC6',
     '#FFE502','#620E00','#008F9C','#98FF52','#7544B1','#B500FF','#00FF78','#FF6E41',
     '#005F39','#6B6882','#5FAD4E','#A75740','#A5FFD2','#FFB167','#009BFF','#E85EBE'
-]
+];

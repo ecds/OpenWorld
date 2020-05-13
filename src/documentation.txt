@@ -1,0 +1,49 @@
+documentation: 
+    getting started
+        download from github, npm install, npm install, cd client, npm install
+    running the dev server
+        npm start in top level folder
+        open another terminal
+        cd to client
+        npm start
+    constants file
+        overlays:
+            contains info about layers
+        map constants
+        tags to populate info tab
+        theming
+    adding layers to the map
+        data
+            data should be in geoJSON format
+        add all relevant information to the constants file
+            desc is what appears under the label to describe the layer to the user
+            id is unique identifier used for redux actions. must be unique or problems will arise
+            icon --- need to fix this
+            tab --- need to remove, legacy
+            type --- need to change, tells the map which type of layer to create
+            label is the title of the layer that's shown to the user
+            url is the endpoint of the data that's to be displayed
+            options
+                popup content
+                    if this layer should have popups, the POPUP_CONTENT object tells the application how to structure it.
+                    each item in the array is a line of the popup
+                    content is what is written, the first entry of the array should be the top line of the popup
+                    type is legacy, don't worry about it
+                    suffix is a string that follows the feature info, useful for units
+                    conditional tells the app that the popup should expect a value from the properties of the feature
+                    property tells the popup util where to find the value to put on that line
+                    falsyValue tells the util when to ignore the value
+        populating the info tab
+            if the layer has data that should populate the info tab, a few things need to happen:
+                dispatch the "updateLayer" action with a string as first argument and the properties object of the geoJSON feature as the second argument
+                update the TAGS object, key should be the string provided as first argument to the dispatch call, value is another object, where the keys of this object are the names of the properties of the geoJSON file that you want to display in the info tab, the tag is the label to be shown to the user, tooltip displays information about the field, falsy value is the value of the field that will result in not being displayed (e.g. a height of 0 feet is likely false information, so don't display it). fallback field is mostly unnecessary, unless you have a property with a backup value for the same information. falsy value should be the same for fallback as it is for the original field.
+                if there's an api call to be made, dispatch the fetchResources action with the api call endpoint as the argument
+        if the layer type doesn't exist
+            write all the relevant code to handle the layer in Leaflet
+            add type to the switch in map construction
+    future improvements: 
+        switch to react Leaflet
+        dynamically load layers 
+            pull out layer selection population code from map componentDidMount(), move to layers tab, add layer on click
+        rework icons so not using icon fonts that are inflexible
+        add localization / language support

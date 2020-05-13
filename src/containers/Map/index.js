@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { createRef } from 'react';
 import L from 'leaflet';
 import {} from 'leaflet.markercluster';
 import {} from 'leaflet.vectorgrid';
@@ -10,7 +10,7 @@ import styled from 'styled-components';
 import { connect } from 'react-redux';
 import { addLayer, toggleLayer } from '../../redux/actions';
 
-import { addBuildingsToMap } from './Layers/Buildings';
+import { addBuildingsToMap } from './Layers/old_Buildings';
 import { addClusterToMap } from './Layers/MarkerCluster';
 import { addSimpleGeoJSONToMap } from './Layers/SimpleGeoJSON';
 import { addStreetcarsToMap } from './Layers/Streetcars';
@@ -44,21 +44,13 @@ const Wrapper = styled.div`
 class Map extends React.Component {
 	constructor(props) {
 		super(props);
-
-		this.state = { apiResponse: "" }
 	}
 
-	// callAPI() {
-	// 	fetch("http://localhost:9000/resources")
-	// 		.then(res => res.json())
-	// 		.then(res => {this.setState({apiResponse: res.data}); console.log(res)})
-	// 		.catch(err => console.log(err));
-	// }
-
     componentDidMount() {
-		//this.callAPI()
 		// MAP CONSTRUCTION
 		this.map = L.map('map', MAP_OPTIONS);
+		// mapRef = createRef();
+		// plugin = createRef();
 
 		// BASE LAYER CONSTRUCTION
 		for (let i = 0; i < layers.length; i++) {
@@ -76,6 +68,8 @@ class Map extends React.Component {
 		for (let i = 0; i < OVERLAYS.length; i++) {
 			let layerGroup = L.layerGroup([]);
 
+			let flag = false;
+			
 			switch(OVERLAYS[i].TYPE) {
 				case 'cluster':
 					addClusterToMap(i, layerGroup);
@@ -95,7 +89,8 @@ class Map extends React.Component {
 				default:
 					break;
 			}
-
+			
+			if (flag === true) console.log('hihi');
 			overlays[OVERLAYS[i].LABEL] = layerGroup;
 		}
 
@@ -144,12 +139,12 @@ class Map extends React.Component {
 		}
 	}
 	
-	// componentDidUpdate() {
-	// 	console.log(this.props)
-	// }
+	componentDidUpdate() {
+		//console.log(this.props)
+	}
 
 	render() {
-		return <Wrapper id="map" />
+		return <Wrapper id="map" ref={this.mapRef} />
 	}
 }
 
