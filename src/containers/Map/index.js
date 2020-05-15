@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { createRef } from 'react';
 import L from 'leaflet';
 import {} from 'leaflet.markercluster';
 import {} from 'leaflet.vectorgrid';
@@ -7,15 +7,19 @@ import 'leaflet.markercluster/dist/MarkerCluster.css';
 import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
 import styled from 'styled-components';
 
-import { addBuildingsToMap } from './Layers/Buildings.js';
-import { addClusterToMap } from './Layers/MarkerCluster.js';
-import { addSimpleGeoJSONToMap } from './Layers/SimpleGeoJSON.js';
-import { addStreetcarsToMap } from './Layers/Streetcars.js';
-import { addRoadsToMap } from './Layers/Roads.js';
+import { connect } from 'react-redux';
+import { addLayer, toggleLayer } from '../../redux/actions';
+
+import { addBuildingsToMap } from './Layers/old_Buildings';
+import { addClusterToMap } from './Layers/MarkerCluster';
+import { addSimpleGeoJSONToMap } from './Layers/SimpleGeoJSON';
+import { addStreetcarsToMap } from './Layers/Streetcars';
+import { addRoadsToMap } from './Layers/Roads';
 
 import { MAP_OPTIONS,
 		 MAP_TILE_LAYERS as layers, 
 		 OVERLAYS } from '../../constants/';
+		
 
 const Wrapper = styled.div`
 	width: auto;
@@ -24,12 +28,29 @@ const Wrapper = styled.div`
 	left: 0;
 	bottom: 0;
 	z-index: 0;
-`;
 
-export default class Map extends React.Component {
+	@media (max-width: 768px) {
+		min-width: 100vw;
+		max-width: 100vw;
+	}
+
+	@media (min-width: 769px) {
+		min-width: calc(100% - 500px);
+		width: 60vw;
+		max-width: calc(100% - 400px);
+	}
+`;
+// TODO: convert to react-leaflet so layers can dispatch "toggleLayer", cleans code too
+class Map extends React.Component {
+	constructor(props) {
+		super(props);
+	}
+
     componentDidMount() {
 		// MAP CONSTRUCTION
 		this.map = L.map('map', MAP_OPTIONS);
+		// mapRef = createRef();
+		// plugin = createRef();
 
 		// BASE LAYER CONSTRUCTION
 		for (let i = 0; i < layers.length; i++) {
@@ -43,10 +64,12 @@ export default class Map extends React.Component {
 		}
 
 		// OVERLAY LAYERS
-		var overlays = {};
+		let overlays = {};
 		for (let i = 0; i < OVERLAYS.length; i++) {
-			var layerGroup = L.layerGroup([]);
+			let layerGroup = L.layerGroup([]);
 
+			let flag = false;
+			
 			switch(OVERLAYS[i].TYPE) {
 				case 'cluster':
 					addClusterToMap(i, layerGroup);
@@ -61,45 +84,48 @@ export default class Map extends React.Component {
 					addStreetcarsToMap(i, layerGroup, this.map);
 					break;
 				case 'buildings':
-					addBuildingsToMap(layerGroup, this.map);
+					addBuildingsToMap(i, layerGroup, this.map);
 					break;
 				default:
 					break;
 			}
-
+			
+			if (flag === true) console.log('hihi');
 			overlays[OVERLAYS[i].LABEL] = layerGroup;
 		}
 
 		// CONTROLS
-		var control = L.control.layers(null, overlays, {collapsed: false, autoZIndex: false});
+		let control = L.control.layers(null, overlays, {collapsed: false, autoZIndex: false});
 		control.addTo(this.map);
 		
-		var htmlObject = control.getContainer();
-		var parent = document.getElementById('layersControls');
+		let htmlObject = control.getContainer();
+		let parent = document.getElementById('layersControls');
 
 		parent.appendChild(htmlObject);
 		
 		L.control.scale().addTo(this.map);
 
 		// DYNAMICALLY LOAD LAYERS
-		var inputContainer = document.getElementsByClassName("leaflet-control-layers-overlays");
+		let inputContainer = document.getElementsByClassName("leaflet-control-layers-overlays");
 
-		var inputs = inputContainer[0].childNodes;
+		let inputs = inputContainer[0].childNodes;
 		parent.firstChild.remove();
-		var len = inputs.length;
+		let len = inputs.length;
 
-		for(var i = 0; i < len; i++) {
-			var container = inputs[i].firstChild;
-			var obj = OVERLAYS[i];
-			var layer = document.createElement("div");
+		for(let i = 0; i < len; i++) {
+			let container = inputs[i].firstChild;
+			let input = container.firstChild;
+				input.id = "input-layer" + i;
+			let obj = OVERLAYS[i];
+			let layer = document.createElement("div");
 				layer.className = "layerController";
 				layer.id = "layer" + i;
-			var desc = document.createElement("p");
+			let desc = document.createElement("p");
 				desc.innerHTML = obj.DESC;
 				desc.className = "layerDesc";
-			var img = document.createElement("i");
+			let img = document.createElement("i");
 				img.className = obj.ICON;
-			var label = document.createElement("label");
+			let label = document.createElement("label");
 
 			container.appendChild(img);
 			container.appendChild(desc);
@@ -107,10 +133,23 @@ export default class Map extends React.Component {
 			layer.appendChild(label);
 
 			parent.appendChild(layer);
+			
+			this.props.addLayer({ id: layer.id, content: OVERLAYS[i].LABEL });
+			layer.onclick = this.props.toggleLayer({ id: layer.id });
 		}
-    }
+	}
+	
+	componentDidUpdate() {
+		//console.log(this.props)
+	}
 
 	render() {
-		return <Wrapper id="map" />
+		return <Wrapper id="map" ref={this.mapRef} />
 	}
 }
+
+const mapStateToProps = state => {
+	return { state };
+}
+
+export default connect(mapStateToProps, {addLayer, toggleLayer})(Map);

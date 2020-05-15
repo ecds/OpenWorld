@@ -16,7 +16,7 @@ chrome.exe --user-data-dir="C:/Chrome dev session" --disable-web-security
 need to figure out how to scroll through the overflowing stories
 
 REFACTOR:
-    pull css out of App.css, move it into Js files for each component, that way can use the constants from constants.js
+x    pull css out of App.css, move it into Js files for each component, that way can use the constants from constants.js
     pull components out, reorganize structure
         stories, objects, galleries, etc
     agree on common quotations, either "" or ''
@@ -29,13 +29,13 @@ REFACTOR:
         B ? Seems to be one house next to a rail yard/trolley shed
         C Commercial - red
         D ? only 9 of these
-        F Apartments - brown
+        F - Multi-Family residential
         I Industrial - purple
         M ? 'Pulman Company Shops'
         N Institutional? - Blue
         O 
-        P 
-        R Residential - yellow
+        P - Institutional ?
+        R - Single Family residential
         S 
         T 
         U 
@@ -45,7 +45,10 @@ REFACTOR:
 
 
 need to do some code splitting https://create-react-app.dev/docs/code-splitting/
-buildings.json has duplicate building IDs, causes issues with colors
 
-lotta work to be done for splitting theme from App.css file
+lotta work to be done for splitting theme from App.css file ---- done!
 can fix the accordion by making my own https://www.w3schools.com/howto/howto_js_accordion.asp
+
+
+https://s3.amazonaws.com/tilemaps/ATL28_1000tiles/16/17410/26229.png
+for whatever reason, this tile is blank

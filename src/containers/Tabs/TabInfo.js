@@ -5,7 +5,7 @@ const Container = styled.div``;
 
 const descStyle = {};
 const infoStyle = {
-	fontSize: "12px",
+	fontSize: "0.8rem",
 	textAlign: "center",
 };
 

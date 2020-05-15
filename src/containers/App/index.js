@@ -1,10 +1,13 @@
-import React from 'react';
-import Map from '../Map';
-import Tabs from '../Tabs';
+import React, { Suspense, lazy } from 'react';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import styled, { ThemeProvider } from 'styled-components';
-import { THEME } from '../../constants';
+import styled from 'styled-components';
+import Map from '../Map/new'; 
+import MapProvider from '../Map/MapProvider';
+//import Tabs from '../Tabs';
+
+//const Map = lazy(() => import('../Map'));
+const Tabs = lazy(() => import('../Tabs'));
 
 const AppWrapper = styled.div`
 	display: flex;
@@ -12,14 +15,27 @@ const AppWrapper = styled.div`
 `;
 
 export default class App extends React.Component {
+	constructor(props) {
+		super(props);
+
+		this.state = { mapLoaded: false };
+	}
+
+	componentDidMount() {
+		this.setState({ mapLoaded: true });
+	}
+
 	render() {
 		return (
-			<ThemeProvider theme={THEME}>
-				<AppWrapper>
+			<AppWrapper>
+				<MapProvider>
 					<Map />
-					<Tabs />
-				</AppWrapper>
-			</ThemeProvider>
+					{this.state.mapLoaded && 
+					<Suspense fallback={<div>Loading...</div>}>
+						<Tabs />
+					</Suspense>}
+				</MapProvider>
+			</AppWrapper>
 		);
 	}
 }
