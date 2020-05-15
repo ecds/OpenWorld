@@ -22,6 +22,7 @@ export default class InfoBox extends React.Component {
                     } else if (this.props.properties[value.fallback] && this.props.properties[value.fallback] !== value.falsyValue) {
                         return <PropBox key={key} tag={value.tag} value={this.props.properties[value.fallback]} tooltip={value.tooltip} />;
                     }
+                    return null;
                 })
             }</PropsContainer>
         )

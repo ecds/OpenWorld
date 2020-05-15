@@ -1,7 +1,7 @@
 import React, { Suspense, lazy } from 'react';
 import { connect } from 'react-redux';
 
-import { Accordion, Collapse } from 'react-bootstrap';
+import { Collapse } from 'react-bootstrap';
 import HamburgerMenu from 'react-hamburger-menu';
 import styled from 'styled-components';
 
@@ -11,10 +11,9 @@ import StyledBrand from '../Components/StyledBrand';
 import StyledNavbar from '../Components/StyledNavbar';
 
 import Sidebar from '../Components/Sidebar';
+import Spinner from '../Components/Spinner';
 
 const InfoButtonGroup = lazy(() => import('../Components/InfoButtonGroup'));
-const ObjectInfo = lazy(() => import('../Components/ObjectInfo'));
-const InfoBox = lazy(() => import('./InfoBox'));
 
 const Container = styled.div`
 	min-width: 100vw;
@@ -48,7 +47,25 @@ class ErrorBoundary extends React.Component {
 	}
 	  return this.props.children; 
 	}
-  }
+}
+
+const LoadingContainer = styled.div`
+	width: 100%;
+
+	div {
+		margin: auto;
+		display: block;
+		text-align: center;
+	}
+`;
+
+class Loading extends React.Component {
+	render() {
+		return <LoadingContainer>
+			<Spinner color={'main'}/>
+		</LoadingContainer>
+	}
+}
 
 class Tabs extends React.Component {
 	constructor(props) {
@@ -56,7 +73,6 @@ class Tabs extends React.Component {
 
 		this.updateState = this.updateState.bind(this);
 		this.setOpen = this.setOpen.bind(this);
-		this.handleSelect = this.handleSelect.bind(this);
 
 		this.state = {
 			activeKey: undefined,
@@ -82,10 +98,6 @@ class Tabs extends React.Component {
 		}
 	}
 
-	handleSelect(activeKey) {
-		return false;
-	}
-
 	setOpen() {
 		this.setState({ open: !this.state.open });
 	}
@@ -99,15 +111,14 @@ class Tabs extends React.Component {
 		window.removeEventListener("resize", this.updateState);
 	}
 
-	componentDidUpdate() {
-		//console.log(this.props)
-	}
-
 	render() {
 		return (
 		<Container>
 			<StyledNavbar>
-				<StyledBrand>OpenWorld Atlanta</StyledBrand>
+				<img src={'/logo192.png'} width={'48px'} height={'48px'} alt={'logo'}/>
+				<StyledBrand>
+					OpenWorld Atlanta
+				</StyledBrand>
 				<div id="menuControl">
 					<HamburgerMenu 
 						isOpen={this.state.open} 
@@ -119,7 +130,7 @@ class Tabs extends React.Component {
 			<Collapse in={this.state.open} timeout={300}>
 				<Sidebar>
 					<ErrorBoundary>
-						<Suspense fallback={<div>idk</div>}>
+						<Suspense fallback={<Loading />}>
 							<InfoButtonGroup />
 						</Suspense>
 					</ErrorBoundary>
@@ -127,10 +138,6 @@ class Tabs extends React.Component {
 			</Collapse>
 		</Container>
 		);
-	}
-
-	componentDidUpdate() {
-		//console.log(this.props);
 	}
 }
 

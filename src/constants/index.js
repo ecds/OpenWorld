@@ -1,6 +1,6 @@
 import React from 'react';
-import { MdRadioButtonChecked } from 'react-icons/md';
-import { FaCity } from 'react-icons/fa';
+import { MdRadioButtonChecked, MdTram } from 'react-icons/md';
+import { FaCity, FaBorderAll, FaRoad, FaTrain } from 'react-icons/fa';
 
 export const THEME = {
     MAIN:   '#DB504B',
@@ -55,7 +55,7 @@ export const OVERLAYS = [
         type: 'cluster',
         url: 'https://geoserver.ecds.emory.edu/ATLMaps/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=ATLMaps:ATL28_Utility_Holes&outputFormat=application%2Fjson',
         options: {
-            div_icon: DIV_ICONS[0],
+            div_icon: <MdRadioButtonChecked />,
             popup_content: [
                 {
                     content: '<b>Utility Hole</b>',
@@ -76,7 +76,7 @@ export const OVERLAYS = [
                     type: 'text',
                     conditional: true,
                     property: 'man_elev',
-                    falsyValue: '',
+                    falsyValue: 0,
                 },
             ],
         }
@@ -85,7 +85,7 @@ export const OVERLAYS = [
         desc: 'City Boundaries of Atlanta, 1928.',
         attr: 'Source TBA',
         id: 'boundary',
-        icon: 'icon-border_all',
+        icon: <FaBorderAll />,
         label: 'City Boundary',
         type: 'polygon',
         url: 'https://geoserver.ecds.emory.edu/ATLMaps/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=ATLMaps:Atlanta%20City%20Limits&outputFormat=application%2Fjson',
@@ -94,15 +94,16 @@ export const OVERLAYS = [
             weight: 5,
             fillColor: THEME.THIRD,
             fillOpacity: 0.2,
+            opacity: 1,
         }
     },
     {
         desc: 'Atlanta Road Network, 1928.',
         attr: 'Source TBA',
         id: 'roads',
-        icon: 'icon-road',
+        icon: <FaRoad />,
         label: 'Roads',
-        type: 'vectorgrid',
+        type: 'roads',
         url: 'https://geoserver.ecds.emory.edu/OpenWorldAtlanta/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=OpenWorldAtlanta:Atlanta1928_RoadSystem&outputFormat=application%2Fjson',
         options: {
             color: 'black',
@@ -115,19 +116,15 @@ export const OVERLAYS = [
         desc: 'Atlanta Streetcar Network, 1928.',
         attr: 'Source TBA',
         id: 'streetcars',
-        icon: 'icon-tram',
+        icon: <MdTram />,
         label: 'Streetcars',
         type: 'paths',
         url: 'https://atlanta.urbanspatialhistory.org/resources/layers/Streetcars.json',
         options: {
-            style: {
-                color: 'green',
-                fill: false,
-                opacity: 1,
-                weight: 2 
-            },
-            interactive: false,
-            unique: 'BLDG_ID',
+            color: 'green',
+            fill: false,
+            opacity: 1,
+            weight: 2 
         }
     },
     {
@@ -139,11 +136,23 @@ export const OVERLAYS = [
         type: 'buildings',
         url: 'https://atlanta.urbanspatialhistory.org/resources/layers/buildings_1928.json',
         options: {
-            color: 'cyan',
-            fill: true,
-            opacity: 1,
-            weight: 1,
             interactive: true,
+            unique: 'BLDG_ID'
+        }
+    },
+    {
+        desc: 'Railways in Atlanta, 1928',
+        attr: '',
+        id: 'railways',
+        icon: <FaTrain />,
+        label: 'Railways',
+        type: 'railways',
+        url: 'https://atlanta.urbanspatialhistory.org/resources/layers/Railways.json',
+        options: {
+            color: 'green',
+            fill: false,
+            opacity: 1,
+            weight: 2 
         }
     }
 ];

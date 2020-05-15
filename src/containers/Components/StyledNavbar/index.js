@@ -8,6 +8,7 @@ export default styled(Navbar)`
         border-bottom: 1px solid rgba(0, 0, 0, 0.125);
         z-index: 1000;
         min-width: 100vw;
+        height: 55.6px;
     }
 
     #menuControl {
