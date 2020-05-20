@@ -1,61 +1,14 @@
 import React from 'react';
 import styled from 'styled-components';
 import { OVERLAYS } from '../../../constants';
+
 import Buildings from '../../Map/Layers/Buildings';
+import Roads from '../../Map/Layers/Roads';
+import MarkerCluster from '../../Map/Layers/MarkerCluster';
+import Polygon from '../../Map/Layers/Polygon';
+import Railways from '../../Map/Layers/Railways';
 
-const Wrapper = styled.div`
-	label > div > span {
-		font-weight: bold;
-		position: relative;
-		left: 8px;
-	}
-
-	label > div > i {
-		height: 16px;
-		width: 16px;
-		background-size: 16px 16px;
-		position: relative;
-		float: left;
-		top: 0.3em;
-		left: 0;
-		color: ${props => props.theme.TEXT};
-	}
-
-	label > div > p {
-		position: relative;
-		left: 24px;
-	}
-
-	div {
-		border: none;
-		border-radius: 0;
-		box-shadow: none;
-	}
-	
-	div label:hover {
-		cursor: pointer;
-	}
-	
-	div input[type=checkbox] {
-		display: none;
-	}
-
-	div input[type=checkbox]:checked ~ i {
-		color: ${props => props.theme.MAIN};
-	}
-
-	div input[type=checkbox]:unchecked ~ i {
-		color: ${props => props.theme.TEXT};
-	}
-
-	div input[type=checkbox]:checked ~ span {
-		color: ${props => props.theme.MAIN};
-	}
-
-	div input[type=checkbox]:unchecked ~ span {
-		color: ${props => props.theme.TEXT};
-	}
-`;
+const Wrapper = styled.div``;
 
 export default class ControlsContainer extends React.Component {
 	render() {
@@ -65,8 +18,16 @@ export default class ControlsContainer extends React.Component {
 					switch(layer.type) {
 						case 'buildings':
 							return <Buildings {...layer} key={ind} />;
+						case 'roads':
+							return <Roads {...layer} key={ind} />;
+						case 'cluster':
+							return <MarkerCluster {...layer} key={ind} />;
+						case 'polygon':
+							return <Polygon {...layer} key={ind} />;
+						case 'railways':
+							return <Railways {...layer} key={ind} />;
 						default:
-							break;
+							return null;
 					}
 				})
 			}</Wrapper>

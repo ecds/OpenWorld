@@ -8,7 +8,7 @@ const Row = styled.div`
     margin: 0.5rem 0 0.5rem 0;
 `;
 
-const Thumbnail = styled("img")`
+const Thumbnail = styled.img`
     height: 4rem;
     width: 4rem;
     position: relative;
@@ -57,8 +57,6 @@ export default class MediaItemList extends React.Component {
             onClick: null,
         }
     }
-
-    
 
     render() {
         return (<>

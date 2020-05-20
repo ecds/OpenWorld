@@ -9,7 +9,7 @@ import { updateInfo, fetchResources } from '../../../redux/actions';
 import { MAP_OPTIONS } from '../../../constants';
 import GenericLayer from '../../Components/GenericLayer';
 
-const data = require('../../../data/buildings_1928.json');
+//const data = require('../../../data/buildings_1928.json');
 
 export default class Buildings extends React.Component {
     constructor(props) {
@@ -129,9 +129,10 @@ export default class Buildings extends React.Component {
 
     initialize = (map) => {
         this.setState({ dataLoading: true });
-        //fetch(this.props.url)
-        //.then(response => { return response.json() })
-       // .then(data => {
+
+        fetch(this.props.url)
+        .then(response => { return response.json() })
+        .then(data => {
             let layer = new L.vectorGrid.slicer(data, {
                 rendererFactory: L.canvas.tile,
                 vectorTileLayerStyles: {
@@ -156,7 +157,7 @@ export default class Buildings extends React.Component {
             });
 
 			map.addLayer(layer);
-        //});
+        });
     }
 
 	handleClick = (map) => {
@@ -185,6 +186,7 @@ export default class Buildings extends React.Component {
                         icon={this.props.icon}
                         onClick={() =>  this.handleClick(map)}
                         active={this.state.active}
+                        loading={this.state.dataLoading}
                     />
                 }}
             </MapContext.Consumer>

@@ -12,7 +12,7 @@ export function addStreetcarsToMap(ind, layer, map) {
 
     function getColor(feature, colorOptions, featureID) {
         colorIndex = colorIndex % 64;
-        if (typeof(colorOptions) === 'string' && feature.geometry.type === 'MultiLineString') {
+        if (typeof(colorOptions) === 'string') {
             return COLORS[colorIndex++];
         } else if (featureID !== null){
             return colorOptions[featureID];

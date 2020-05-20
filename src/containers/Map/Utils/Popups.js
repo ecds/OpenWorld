@@ -1,18 +1,16 @@
-import { OVERLAYS } from '../../../constants';
-
-export function populatePopup(data, ind) {
+export function populatePopup(data, popup_content) {
     let popupContent = '';
-    let popupSrc = OVERLAYS[ind].OPTIONS.POPUP_CONTENT;
+    let popupSrc = popup_content;
 
     for (let j = 0; j < popupSrc.length; j++) {
-        if (popupSrc[j].CONDITIONAL === true) {
-            if (data.properties[popupSrc[j].PROPERTY] !== popupSrc[j].falsyValue) {
-                popupContent += popupSrc[j].CONTENT
-                                + data.properties[popupSrc[j].PROPERTY]
-                                + popupSrc[j].SUFFIX;
+        if (popupSrc[j].conditional === true) {
+            if (data.properties[popupSrc[j].property] !== popupSrc[j].falsyValue) {
+                popupContent += popupSrc[j].content
+                                + data.properties[popupSrc[j].property]
+                                + popupSrc[j].suffix;
             } 
         } else {
-            popupContent += popupSrc[j].CONTENT;
+            popupContent += popupSrc[j].content;
         }
     }
 

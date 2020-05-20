@@ -5,6 +5,7 @@ export default styled(Navbar.Brand)`
     &&& {
         color: ${props => props.theme.SECOND};
         font-weight: bolder;
+        margin-left: 1rem;
         
         :hover {
             text-decoration: none;
@@ -12,6 +13,7 @@ export default styled(Navbar.Brand)`
             cursor: pointer;
         }
     }
+
 
     @media (max-width: 768px) { 
         ~ div {
