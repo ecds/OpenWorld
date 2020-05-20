@@ -115,7 +115,7 @@ class Tabs extends React.Component {
 		return (
 		<Container>
 			<StyledNavbar>
-				<img src={'/logo192.png'} width={'48px'} height={'48px'} alt={'logo'}/>
+				<img src={'/logo192.png'} width={'40px'} height={'40px'} alt={'logo'}/>
 				<StyledBrand>
 					OpenWorld Atlanta
 				</StyledBrand>

@@ -25,7 +25,7 @@ export const MAP_TILE_LAYERS = [
         url: 'https://s3.amazonaws.com/tilemaps/ATL28_1000tiles/{z}/{x}/{y}.png',
         bounds: [[33.93379544, -84.21603335], [33.63298531, -84.51696580]], 
         minZoom: 11,
-        maxNativeZoom: 16, // MAX NATIVE ZOOM
+        maxNativeZoom: 16, 
     },
     // 200-SCALE
     {
@@ -46,6 +46,80 @@ export const DIV_ICONS = [
 
 // overlay layers
 export const OVERLAYS = [
+    {
+        desc: 'City Boundaries of Atlanta, 1928.',
+        attr: 'Source TBA',
+        id: 'boundary',
+        icon: <FaBorderAll />,
+        label: 'City Boundary',
+        type: 'polygon',
+        url: 'https://geoserver.ecds.emory.edu/ATLMaps/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=ATLMaps:Atlanta%20City%20Limits&outputFormat=application%2Fjson',
+        options: {
+            color: 'black',
+            weight: 5,
+            fillColor: THEME.THIRD,
+            fillOpacity: 0.2,
+            opacity: 1,
+        }
+    },
+    {
+        desc: 'Atlanta Road Network, 1928.',
+        attr: 'Source TBA',
+        id: 'roads',
+        icon: <FaRoad />,
+        label: 'Roads',
+        type: 'roads',
+        url: 'https://geoserver.ecds.emory.edu/OpenWorldAtlanta/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=OpenWorldAtlanta:Atlanta1928_RoadSystem&outputFormat=application%2Fjson',
+        options: {
+            color: 'black',
+            fill: false,
+            opacity: 1,
+            weight: 3,
+        }
+    },
+    {
+        desc: 'Railways in Atlanta, Today',
+        attr: '',
+        id: 'railways',
+        icon: <FaTrain />,
+        label: 'Railways Today',
+        type: 'railways',
+        url: 'https://atlanta.urbanspatialhistory.org/resources/layers/Railways.json',
+        options: {
+            color: 'green',
+            fill: false,
+            opacity: 1,
+            weight: 2 
+        }
+    },
+    {
+        desc: 'Buildings in Atlanta, 1928',
+        attr: 'Source TBA',
+        id: 'buildings',
+        icon: <FaCity />,
+        label: 'Buildings',
+        type: 'buildings',
+        url: 'https://atlanta.urbanspatialhistory.org/resources/layers/buildings_1928.json',
+        options: {
+            interactive: true,
+            unique: 'BLDG_ID'
+        }
+    },
+    {
+        desc: 'Atlanta Streetcar Network, 1928.',
+        attr: 'Source TBA',
+        id: 'streetcars',
+        icon: <MdTram />,
+        label: 'Streetcars',
+        type: 'paths',
+        url: 'https://atlanta.urbanspatialhistory.org/resources/layers/Streetcars.json',
+        options: {
+            color: 'green',
+            fill: false,
+            opacity: 1,
+            weight: 2 
+        }
+    },
     {
         desc: 'Overlay the utility holes present in Atlanta in 1928.',
         attr: 'Source: Atlanta Atlas, 1928.',
@@ -79,80 +153,6 @@ export const OVERLAYS = [
                     falsyValue: 0,
                 },
             ],
-        }
-    },
-    {
-        desc: 'City Boundaries of Atlanta, 1928.',
-        attr: 'Source TBA',
-        id: 'boundary',
-        icon: <FaBorderAll />,
-        label: 'City Boundary',
-        type: 'polygon',
-        url: 'https://geoserver.ecds.emory.edu/ATLMaps/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=ATLMaps:Atlanta%20City%20Limits&outputFormat=application%2Fjson',
-        options: {
-            color: 'black',
-            weight: 5,
-            fillColor: THEME.THIRD,
-            fillOpacity: 0.2,
-            opacity: 1,
-        }
-    },
-    {
-        desc: 'Atlanta Road Network, 1928.',
-        attr: 'Source TBA',
-        id: 'roads',
-        icon: <FaRoad />,
-        label: 'Roads',
-        type: 'roads',
-        url: 'https://geoserver.ecds.emory.edu/OpenWorldAtlanta/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=OpenWorldAtlanta:Atlanta1928_RoadSystem&outputFormat=application%2Fjson',
-        options: {
-            color: 'black',
-            fill: false,
-            opacity: 1,
-            weight: 3,
-        }
-    },
-    {
-        desc: 'Atlanta Streetcar Network, 1928.',
-        attr: 'Source TBA',
-        id: 'streetcars',
-        icon: <MdTram />,
-        label: 'Streetcars',
-        type: 'paths',
-        url: 'https://atlanta.urbanspatialhistory.org/resources/layers/Streetcars.json',
-        options: {
-            color: 'green',
-            fill: false,
-            opacity: 1,
-            weight: 2 
-        }
-    },
-    {
-        desc: 'Buildings in Atlanta, 1928',
-        attr: 'Source TBA',
-        id: 'buildings',
-        icon: <FaCity />,
-        label: 'Buildings',
-        type: 'buildings',
-        url: 'https://atlanta.urbanspatialhistory.org/resources/layers/buildings_1928.json',
-        options: {
-            interactive: true,
-            unique: 'BLDG_ID'
-        }
-    },
-    {
-        desc: 'Railways in Atlanta, 1928',
-        attr: '',
-        id: 'railways',
-        icon: <FaTrain />,
-        label: 'Railways',
-        type: 'railways',
-        url: 'https://atlanta.urbanspatialhistory.org/resources/layers/Railways.json',
-        options: {
-            color: 'green',
-            fill: false,
-            opacity: 1,
-            weight: 2 
         }
     }
 ];
