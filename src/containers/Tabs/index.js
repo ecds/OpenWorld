@@ -2,12 +2,14 @@ import React, { Suspense, lazy } from 'react';
 import { connect } from 'react-redux';
 
 import { Collapse } from 'react-bootstrap';
+import { Button } from "react-bootstrap";
 import HamburgerMenu from 'react-hamburger-menu';
 import styled from 'styled-components';
 
 import { THEME } from '../../constants';
 
 import StyledBrand from '../Components/StyledBrand';
+import Credit from '../Components/Credit';
 import StyledNavbar from '../Components/StyledNavbar';
 
 import Sidebar from '../Components/Sidebar';
@@ -68,77 +70,143 @@ class Loading extends React.Component {
 }
 
 class Tabs extends React.Component {
-	constructor(props) {
-		super(props);
+  constructor(props) {
+    super(props);
 
-		this.updateState = this.updateState.bind(this);
-		this.setOpen = this.setOpen.bind(this);
+    this.updateState = this.updateState.bind(this);
+    this.setOpen = this.setOpen.bind(this);
 
-		this.state = {
-			activeKey: undefined,
-			lastActive: undefined,
-			open: true,
-			media: 0,
-		}
-	}
+    this.state = {
+      activeKey: undefined,
+      lastActive: undefined,
+      open: true,
+      media: 0,
+      modalOpen: false,
+    };
+  }
 
-	updateState() {
-		if (window.innerWidth > 768 && !this.state.open) {
-			this.setState({
-				open: true,
-				activeKey: this.state.lastActive,
-				lastActive: undefined,
-			});
-		} else if (window.innerWidth <= 768 && this.state.open) {
-			this.setState({
-				open: false,
-				lastActive: this.state.activeKey,
-				activeKey: undefined,
-			});
-		}
-	}
+  updateState() {
+    if (window.innerWidth > 768 && !this.state.open) {
+      this.setState({
+        open: true,
+        activeKey: this.state.lastActive,
+        lastActive: undefined,
+      });
+    } else if (window.innerWidth <= 768 && this.state.open) {
+      this.setState({
+        open: false,
+        lastActive: this.state.activeKey,
+        activeKey: undefined,
+      });
+    }
+  }
 
-	setOpen() {
-		this.setState({ open: !this.state.open });
-	}
+  setOpen() {
+    this.setState({ open: !this.state.open });
+  }
 
-	componentDidMount() {
-		this.updateState();
-		window.addEventListener("resize", this.updateState);
-	}
+  componentDidMount() {
+    this.updateState();
+    window.addEventListener("resize", this.updateState);
+  }
 
-	componentWillUnmount() {
-		window.removeEventListener("resize", this.updateState);
-	}
+  componentWillUnmount() {
+    window.removeEventListener("resize", this.updateState);
+  }
 
-	render() {
-		return (
-		<Container>
-			<StyledNavbar>
-				<img src={'/logo192.png'} width={'40px'} height={'40px'} alt={'logo'}/>
-				<StyledBrand>
-					OpenWorld Atlanta
-				</StyledBrand>
-				<div id="menuControl">
-					<HamburgerMenu 
-						isOpen={this.state.open} 
-						menuClicked={this.setOpen} 
-						{...hamburgerOptions} 
-					/>
-				</div>
-			</StyledNavbar>
-			<Collapse in={this.state.open} timeout={300}>
-				<Sidebar>
-					<ErrorBoundary>
-						<Suspense fallback={<Loading />}>
-							<InfoButtonGroup />
-						</Suspense>
-					</ErrorBoundary>
-				</Sidebar>
-			</Collapse>
-		</Container>
-		);
-	}
+  toggleModal = () => {
+    this.setState((prevState) => ({
+      modalOpen: !prevState.modalOpen,
+    }));
+	};
+	
+  render() {
+    return (
+      <Container>
+        <StyledNavbar>
+          <style type="text/css">
+            {`
+							.owa-btn-outline {
+								background-color: ${THEME.MAIN} !important;
+								border-color: white !important;
+								opacity: 90%;
+							}
+
+							.owa-btn-outline:hover {
+								transition: ease-in-out 150ms;
+								opacity: 100%;
+							}
+
+							.owa-ecds-logo {
+								position: absolute;
+								right: 0;
+								padding: 2px 15px;
+								height: 40px;
+								opacity: 90%;
+								cursor: pointer;
+							}
+
+							.owa-ecds-logo:hover {
+								transition: ease-in-out 150ms;
+								opacity: 100%;
+							}
+
+							.owa-ecds-logo-container {
+								position: absolute;
+								top: 7px;
+								right: 0;
+							}
+
+							@media (max-width: 768px) {
+								.owa-ecds-logo {
+									display: none;
+								}
+							}
+
+						`}
+          </style>
+          <img
+            src={"/logo192.png"}
+            width={"40px"}
+            height={"40px"}
+            alt={"logo"}
+          />
+          <StyledBrand>OpenWorld Atlanta</StyledBrand>
+          <a href="https://ecds.emory.edu/" alt="ECDS Website" className="owa-ecds-logo-container">
+						<img src={"/ecds.svg"} alt={"logo"} className="owa-ecds-logo" />
+					</a>
+          <Button
+            className="owa-btn-outline"
+            onClick={this.toggleModal}
+						size="sm"
+          >
+            About OWA
+          </Button>
+
+          <Credit
+            modalOpen={this.state.modalOpen}
+            toggleModal={this.toggleModal}
+          ></Credit>
+          <div id="menuControl">
+            <HamburgerMenu
+              isOpen={this.state.open}
+              menuClicked={this.setOpen}
+              {...hamburgerOptions}
+            />
+          </div>
+        </StyledNavbar>
+        <Collapse in={this.state.open} timeout={300}>
+          <Sidebar>
+            <ErrorBoundary>
+              <Suspense fallback={<Loading />}>
+                <InfoButtonGroup />
+              </Suspense>
+            </ErrorBoundary>
+          </Sidebar>
+        </Collapse>
+      </Container>
+    );
+  }
 }
 
 const mapStateToProps = state => {
