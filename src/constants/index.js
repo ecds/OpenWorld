@@ -20,18 +20,21 @@ export const MAP_OPTIONS = {
 };
 
 export const MAP_TILE_LAYERS = [
+    {
+        url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Shaded_Relief/MapServer/tile/{z}/{y}/{x}'
+    },
     // 1000-SCALE
     {
         url: 'https://s3.amazonaws.com/tilemaps/ATL28_1000tiles/{z}/{x}/{y}.png',
-        bounds: [[33.93379544, -84.21603335], [33.63298531, -84.51696580]], 
+        bounds: [[33.93379544, -84.21603335], [33.63298531, -84.51696580]],
         minZoom: 11,
-        maxNativeZoom: 16, 
+        maxNativeZoom: 16,
     },
     // 200-SCALE
     {
         url: 'https://s3.amazonaws.com/tilemaps/ATL28_200tiles/{z}/{x}/{y}.png',
         bounds: [[33.78337253, -84.31633406], [33.73327062, -84.41714544]],
-        minZoom: 11, 
+        minZoom: 11,
         maxNativeZoom: 19, // MAX NATIVE ZOOM
     },
 ];
@@ -84,12 +87,12 @@ export const OVERLAYS = [
         icon: <FaTrain />,
         label: 'Railways Today',
         type: 'railways',
-        url: 'https://atlanta.urbanspatialhistory.org/resources/layers/Railways.json',
+        url: 'https://geoserver.ecds.emory.edu/ATLMaps/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=ATLMaps:railways-today&maxFeatures=5000&outputFormat=application%2Fjson',
         options: {
             color: 'green',
             fill: false,
             opacity: 1,
-            weight: 2 
+            weight: 2
         }
     },
     {
@@ -99,7 +102,7 @@ export const OVERLAYS = [
         icon: <FaCity />,
         label: 'Buildings',
         type: 'buildings',
-        url: 'https://atlanta.urbanspatialhistory.org/resources/layers/buildings_1928.json',
+        url: 'https://geoserver.ecds.emory.edu/gwc/service/tms/1.0.0/ATLMaps:buildings_1928@EPSG:900913@pbf/{z}/{x}/{-y}.pbf',
         options: {
             interactive: true,
             unique: 'BLDG_ID'
@@ -117,42 +120,7 @@ export const OVERLAYS = [
             color: 'green',
             fill: false,
             opacity: 1,
-            weight: 2 
-        }
-    },
-    {
-        desc: 'Overlay the utility holes present in Atlanta in 1928.',
-        attr: 'Source: Atlanta Atlas, 1928.',
-        id: 'manholes',
-        icon: <MdRadioButtonChecked />,
-        label: 'Utility Holes',
-        type: 'cluster',
-        url: 'https://geoserver.ecds.emory.edu/ATLMaps/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=ATLMaps:ATL28_Utility_Holes&outputFormat=application%2Fjson',
-        options: {
-            div_icon: <MdRadioButtonChecked />,
-            popup_content: [
-                {
-                    content: '<b>Utility Hole</b>',
-                    type: 'text',
-                    CONDITIONAL: false,
-                }, 
-                {
-                    content: '<br />Located on ',
-                    suffix: '',
-                    type: 'text',
-                    conditional: true,
-                    property: 'name_st',
-                    falsyValue: '',
-                },
-                {
-                    content: '<br />Elevation: ',
-                    suffix: 'ft',
-                    type: 'text',
-                    conditional: true,
-                    property: 'man_elev',
-                    falsyValue: 0,
-                },
-            ],
+            weight: 2
         }
     }
 ];

@@ -29,7 +29,7 @@ export default class Railways extends React.Component {
         let options = this.props.options;
         let curr = null;
         let companies = {};
-    
+
         function getColor(featureID) {
             colorIndex = colorIndex % 64;
             if (!companies[featureID]) {
@@ -37,13 +37,14 @@ export default class Railways extends React.Component {
             }
             return companies[featureID];
         }
-    
+
         fetch(this.props.url)
         .then(response => { return response.json(); })
         .then(data => {
             let layerObj = L.geoJSON(data, {
                 style: function(feature) { return { ...options, color: getColor(feature.properties.NAME) }},
                 onEachFeature: function(feature, layer) {
+                console.log("Railways -> initialize -> feature, layer", feature, layer)
                     layer.on({
                         'mouseover': function (e) {
                             highlightGeoJSON(e.target);
@@ -56,16 +57,17 @@ export default class Railways extends React.Component {
                         }
                     })
                 }
-            })    
+            })
+            console.log("Railways -> initialize -> layerObj", layerObj, map)
 
-            this.setState({ 
-                data: data, 
-                dataLoaded: true, 
-                dataLoading: false, 
-                active: true, 
-                layer: layerObj  
+            this.setState({
+                data: data,
+                dataLoaded: true,
+                dataLoading: false,
+                active: true,
+                layer: layerObj
             });
-            
+
             map.addLayer(layerObj);
         });
     }
@@ -89,10 +91,11 @@ export default class Railways extends React.Component {
         return (
             <MapContext.Consumer>
                 {({map}) => {
-                    return <GenericLayer 
-                        title={this.props.label} 
+                    return <GenericLayer
+                        title={this.props.label}
+                        id={this.props.id}
                         attr={this.props.attr}
-                        desc={this.props.desc} 
+                        desc={this.props.desc}
                         icon={this.props.icon}
                         onClick={() =>  this.handleClick(map)}
                         active={this.state.active}

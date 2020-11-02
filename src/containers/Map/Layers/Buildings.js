@@ -27,7 +27,7 @@ export default class Buildings extends React.Component {
 
         this.clearHighlight = this.clearHighlight.bind(this);
     }
-    
+
     //#region Styling and Events
     getColor = (use) => {
         if (use) {
@@ -102,10 +102,10 @@ export default class Buildings extends React.Component {
 
         if (properties.BLDG_ID !== this.state.selected)
             this.setState({ highlight: properties.BLDG_ID });
-    
+
         this.state.layer.setFeatureStyle(properties.BLDG_ID, this.strongStyle(properties));
     }
-    
+
     onMouseout = (e) => {
         if (this.state.highlight !== this.state.selected)
             this.clearHighlight();
@@ -118,7 +118,7 @@ export default class Buildings extends React.Component {
             store.dispatch(updateInfo({type: 'building', properties: properties}));
             store.dispatch(fetchResources(`/resources?id=${properties.BLDG_ID}`));
         }
-        
+
         this.clearHighlight();
         this.state.layer.resetFeatureStyle(this.state.selected);
 
@@ -130,13 +130,15 @@ export default class Buildings extends React.Component {
     initialize = (map) => {
         this.setState({ dataLoading: true });
 
-        fetch(this.props.url)
-        .then(response => { return response.json() })
-        .then(data => {
-            let layer = new L.vectorGrid.slicer(data, {
-                rendererFactory: L.canvas.tile,
+        // fetch(this.props.url)
+        // .then(response => { return response.json() })
+        // .then(data => {
+            let layer = new L.vectorGrid.protobuf(this.props.url, {
+                rendererFactory: L.svg.tile,
                 vectorTileLayerStyles: {
-                    sliced: this.style,
+                    buildings_1928: properties => {
+                        return this.style(properties);
+                    },
                 },
                 interactive: this.props.options.interactive,
                 maxZoom: MAP_OPTIONS.maxZoom,
@@ -146,23 +148,22 @@ export default class Buildings extends React.Component {
             })
             .on('mouseover', (e) => this.onMouseover(e))
             .on('mouseout', (e) => this.onMouseout(e))
-            .on('click', (e) => this.onClick(e));            
+            .on('click', (e) => this.onClick(e));
 
-			this.setState({ 
-                data: data, 
-                dataLoaded: true, 
-                dataLoading: false, 
-                active: true, 
-                layer: layer  
+			this.setState({
+                dataLoaded: true,
+                dataLoading: false,
+                active: true,
+                layer: layer
             });
 
 			map.addLayer(layer);
-        });
+        // });
     }
 
 	handleClick = (map) => {
-        // console.log(this.props)
-		if (this.state.data === null) {
+        console.log(this.props, this.state.active)
+		if (!this.state.dataLoaded) {
             this.initialize(map);
             return;
 		}
@@ -179,10 +180,11 @@ export default class Buildings extends React.Component {
         return (
             <MapContext.Consumer>
                 {({map}) => {
-                    return <GenericLayer 
-                        title={this.props.label} 
+                    return <GenericLayer
+                        title={this.props.label}
+                        id={this.props.id}
                         attr={this.props.attr}
-                        desc={this.props.desc} 
+                        desc={this.props.desc}
                         icon={this.props.icon}
                         onClick={() =>  this.handleClick(map)}
                         active={this.state.active}

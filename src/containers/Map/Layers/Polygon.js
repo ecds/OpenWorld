@@ -25,16 +25,16 @@ export default class Polygon extends React.Component {
                 interactive: false,
             })
 
-            this.setState({ 
-                data: data, 
-                dataLoaded: true, 
-                dataLoading: false, 
-                active: true, 
-                layer: layer  
+            this.setState({
+                data: data,
+                dataLoaded: true,
+                dataLoading: false,
+                active: true,
+                layer: layer
             });
-            
+
             map.addLayer(layer);
-            
+
         });
     }
 
@@ -52,15 +52,16 @@ export default class Polygon extends React.Component {
 		}
 		this.setState({ active: !this.state.active });
     }
-    
+
     render () {
         return (
             <MapContext.Consumer>
                 {({map}) => {
-                    return <GenericLayer 
-                        title={this.props.label} 
+                    return <GenericLayer
+                        title={this.props.label}
+                        id={this.props.id}
                         attr={this.props.attr}
-                        desc={this.props.desc} 
+                        desc={this.props.desc}
                         icon={this.props.icon}
                         onClick={() =>  this.handleClick(map)}
                         active={this.state.active}
@@ -69,5 +70,5 @@ export default class Polygon extends React.Component {
                 }}
             </MapContext.Consumer>
         )
-    }    
+    }
 }
