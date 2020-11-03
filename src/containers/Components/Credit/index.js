@@ -25,10 +25,14 @@ class Credit extends React.Component {
       <div>
         <style type="text/css">
           {`
-            .tab-content {
-              padding: 1rem 0;
-              color: ${THEME.TEXT} !important;
+            label {
+              cursor: pointer;
             }
+
+            .tab-content {
+                padding: 1rem 0;
+                color: ${THEME.TEXT} !important;
+              }
 
             .modal-footer {
               color: ${THEME.TEXT} !important;
