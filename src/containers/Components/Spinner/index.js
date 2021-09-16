@@ -5,7 +5,7 @@ import styled from 'styled-components';
 
 const Wrapper = styled.div`
     display: inline;
-    
+
     .lds-ring {
         display: inline-block;
         position: relative;
@@ -45,11 +45,10 @@ const Wrapper = styled.div`
             transform: rotate(360deg);
         }
     }
-`;  
+`;
 
 export default class Spinner extends React.Component {
     render() {
-        console.log(this.props)
         return <Wrapper {...this.props}>
             <div className="lds-ring"><div></div><div></div><div></div><div></div></div>
         </Wrapper>

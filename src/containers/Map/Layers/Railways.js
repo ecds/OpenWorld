@@ -44,7 +44,6 @@ export default class Railways extends React.Component {
             let layerObj = L.geoJSON(data, {
                 style: function(feature) { return { ...options, color: getColor(feature.properties.NAME) }},
                 onEachFeature: function(feature, layer) {
-                console.log("Railways -> initialize -> feature, layer", feature, layer)
                     layer.on({
                         'mouseover': function (e) {
                             highlightGeoJSON(e.target);
@@ -58,7 +57,6 @@ export default class Railways extends React.Component {
                     })
                 }
             })
-            console.log("Railways -> initialize -> layerObj", layerObj, map)
 
             this.setState({
                 data: data,

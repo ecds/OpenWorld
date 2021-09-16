@@ -39,7 +39,6 @@ const Attribution = styled(Description)`
 
 export default class GenericLayer extends React.Component {
     render() {
-        console.log("GenericLayer -> render -> this.props.onClick", this.props)
         return (
             <Container>
                 <label htmlFor={`${this.props.id}-toggle`}>

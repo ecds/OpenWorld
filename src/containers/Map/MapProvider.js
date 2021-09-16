@@ -13,6 +13,7 @@ export default class MapProvider extends React.Component {
     };
 
     render() {
+
         return (
             <MapContext.Provider value={{ map: this.state.map, setMap: this.setMap }}>
                 {this.props.children}

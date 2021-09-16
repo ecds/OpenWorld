@@ -29,13 +29,13 @@ export default class PropBox extends React.Component {
                 }
             >
                 <Container>
-                    <Value>{this.props.value}</Value>
                     <Tag>{this.props.tag}</Tag>
+                    <Value>{this.props.value}</Value>
                 </Container>
             </OverlayTrigger> :
             <Container>
-                <Value>{this.props.value}</Value>
                 <Tag>{this.props.tag}</Tag>
+                <Value>{this.props.value}</Value>
             </Container>
         )
     }

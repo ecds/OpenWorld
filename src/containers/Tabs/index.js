@@ -36,18 +36,18 @@ class ErrorBoundary extends React.Component {
 	  super(props);
 	  this.state = { hasError: false };
 	}
-  
-	static getDerivedStateFromError(error) {    // Update state so the next render will show the fallback UI.    
-		return { hasError: true };  
+
+	static getDerivedStateFromError(error) {    // Update state so the next render will show the fallback UI.
+		return { hasError: true };
 	}
-	componentDidCatch(error, errorInfo) {    // You can also log the error to an error reporting service    
-		//console.log(error, errorInfo);  
+	componentDidCatch(error, errorInfo) {    // You can also log the error to an error reporting service
+		//console.log(error, errorInfo);
 	}
 	render() {
-	  if (this.state.hasError) {      // You can render any custom fallback UI      
-		return <h1>Something went wrong.</h1>;    
+	  if (this.state.hasError) {      // You can render any custom fallback UI
+		return <h1>Something went wrong.</h1>;
 	}
-	  return this.props.children; 
+	  return this.props.children;
 	}
 }
 
@@ -114,12 +114,7 @@ class Tabs extends React.Component {
     window.removeEventListener("resize", this.updateState);
   }
 
-  toggleModal = () => {
-    this.setState((prevState) => ({
-      modalOpen: !prevState.modalOpen,
-    }));
-	};
-	
+
   render() {
     return (
       <Container>
@@ -172,21 +167,11 @@ class Tabs extends React.Component {
             alt={"logo"}
           />
           <StyledBrand>OpenWorld Atlanta</StyledBrand>
+          <Credit />
           <a href="https://ecds.emory.edu/" alt="ECDS Website" className="owa-ecds-logo-container">
 						<img src={"/ecds.svg"} alt={"logo"} className="owa-ecds-logo" />
 					</a>
-          <Button
-            className="owa-btn-outline"
-            onClick={this.toggleModal}
-						size="sm"
-          >
-            About OWA
-          </Button>
 
-          <Credit
-            modalOpen={this.state.modalOpen}
-            toggleModal={this.toggleModal}
-          ></Credit>
           <div id="menuControl">
             <HamburgerMenu
               isOpen={this.state.open}
