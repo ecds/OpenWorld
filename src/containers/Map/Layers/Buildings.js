@@ -27,7 +27,7 @@ export default class Buildings extends React.Component {
 
         this.clearHighlight = this.clearHighlight.bind(this);
     }
-    
+
     //#region Styling and Events
     getColor = (use) => {
         if (use) {
@@ -51,7 +51,7 @@ export default class Buildings extends React.Component {
                 case 'FD':
                     return 'blue';
                 case 'R':
-                    return 'yellow';
+                    return 'green';
                 case 'T':
                     return 'lightgray';
                 case 'U':
@@ -73,18 +73,16 @@ export default class Buildings extends React.Component {
             fillColor: this.getColor(building.use),
             color: this.getColor(building.use),
             fill: true,
-            weight: 1,
+            weight: 1
         };
     }
 
     strongStyle = (building) => {
         return {
-            fillColor: this.getColor(building.use),
-            color: this.getColor(building.use),
+            ...this.style(building),
             fillOpacity: 0.3,
             weight: 2,
-            opacity: 0.5,
-            fill: true,
+            opacity: 0.5
         }
     }
 
@@ -100,69 +98,84 @@ export default class Buildings extends React.Component {
 
         this.clearHighlight();
 
+        // This was just an idea to show building data on as a person moves there mouse around the map
+        // const popup = L.popup()
+        //     .setContent(
+        //         `<p>${properties.BLDG_ID}</p>`
+        //     )
+        //     .setLatLng(e.latlng)
+        //     .openOn(this.state.map);
+
         if (properties.BLDG_ID !== this.state.selected)
             this.setState({ highlight: properties.BLDG_ID });
-    
+
         this.state.layer.setFeatureStyle(properties.BLDG_ID, this.strongStyle(properties));
     }
-    
+
     onMouseout = (e) => {
         if (this.state.highlight !== this.state.selected)
             this.clearHighlight();
     }
 
     onClick = (e) => {
-        var properties = e.layer.properties;
+        const properties = e.layer.properties;
+
+        const popup = L.popup()
+            .setContent(
+                `<p>${properties.BLDG_ID}!!!!!!</p>`
+            )
+            .setLatLng(e.latlng)
+            .openOn(this.state.map);
+
+        popup.on('remove', () => {
+            this.state.layer.resetFeatureStyle(this.state.selected);
+        });
 
         if (this.state.selected !== properties.BLDG_ID) {
             store.dispatch(updateInfo({type: 'building', properties: properties}));
             store.dispatch(fetchResources(`/resources?id=${properties.BLDG_ID}`));
         }
-        
+
         this.clearHighlight();
         this.state.layer.resetFeatureStyle(this.state.selected);
 
         this.setState({ selected: properties.BLDG_ID });
         this.state.layer.setFeatureStyle(properties.BLDG_ID, this.strongStyle(properties));
     }
-    //#endregion
 
     initialize = (map) => {
         this.setState({ dataLoading: true });
 
-        fetch(this.props.url)
-        .then(response => { return response.json() })
-        .then(data => {
-            let layer = new L.vectorGrid.slicer(data, {
-                rendererFactory: L.canvas.tile,
-                vectorTileLayerStyles: {
-                    sliced: this.style,
+        let layer = new L.vectorGrid.protobuf(this.props.url, {
+            rendererFactory: L.svg.tile,
+            vectorTileLayerStyles: {
+                buildings_1928: properties => {
+                    return this.style(properties);
                 },
-                interactive: this.props.options.interactive,
-                maxZoom: MAP_OPTIONS.maxZoom,
-                getFeatureId: function(f) {
-                    return f.properties.BLDG_ID;
-                }
-            })
-            .on('mouseover', (e) => this.onMouseover(e))
-            .on('mouseout', (e) => this.onMouseout(e))
-            .on('click', (e) => this.onClick(e));            
+            },
+            interactive: this.props.options.interactive,
+            maxZoom: MAP_OPTIONS.maxZoom,
+            getFeatureId: function(f) {
+                return f.properties.BLDG_ID;
+            }
+        })
+        .on('mouseover', (e) => this.onMouseover(e))
+        .on('mouseout', (e) => this.onMouseout(e))
+        .on('click', (e) => this.onClick(e));
 
-			this.setState({ 
-                data: data, 
-                dataLoaded: true, 
-                dataLoading: false, 
-                active: true, 
-                layer: layer  
-            });
-
-			map.addLayer(layer);
+        this.setState({
+            dataLoaded: true,
+            dataLoading: false,
+            active: true,
+            layer: layer,
+            map
         });
+
+        map.addLayer(layer);
     }
 
 	handleClick = (map) => {
-        // console.log(this.props)
-		if (this.state.data === null) {
+		if (!this.state.dataLoaded) {
             this.initialize(map);
             return;
 		}
@@ -179,10 +192,11 @@ export default class Buildings extends React.Component {
         return (
             <MapContext.Consumer>
                 {({map}) => {
-                    return <GenericLayer 
-                        title={this.props.label} 
+                    return <GenericLayer
+                        title={this.props.label}
+                        id={this.props.id}
                         attr={this.props.attr}
-                        desc={this.props.desc} 
+                        desc={this.props.desc}
                         icon={this.props.icon}
                         onClick={() =>  this.handleClick(map)}
                         active={this.state.active}

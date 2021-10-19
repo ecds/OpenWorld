@@ -35,7 +35,7 @@ export default class MarkerCluster extends React.Component {
         .then(response => { return response.json() })
         .then(data => {
             for (let i = 0; i < data.features.length; i++) {
-                let m = L.marker(new L.latLng(data.features[i].geometry.coordinates[1], 
+                let m = L.marker(new L.latLng(data.features[i].geometry.coordinates[1],
                                             data.features[i].geometry.coordinates[0]),
                                             {icon: divIcon}); // WILL CAUSE PROBLEMS IF OVERLAYS NOT PROPERLY DEFINED
 
@@ -45,18 +45,18 @@ export default class MarkerCluster extends React.Component {
                     m.on('mouseover', function() { this.openTooltip() }); // DO NOT USE ARROW FUNCTIONS HERE
                     m.on('mouseout', function() { this.closeTooltip() });
                 }
-                
-                layer.addLayer(m);
-            }        
 
-            this.setState({ 
-                data: data, 
-                dataLoaded: true, 
-                dataLoading: false, 
-                active: true, 
-                layer: layer  
+                layer.addLayer(m);
+            }
+
+            this.setState({
+                data: data,
+                dataLoaded: true,
+                dataLoading: false,
+                active: true,
+                layer: layer
             });
-            
+
             map.addLayer(layer);
         });
     }
@@ -75,15 +75,16 @@ export default class MarkerCluster extends React.Component {
 		}
 		this.setState({ active: !this.state.active });
     }
-    
+
     render () {
         return (
             <MapContext.Consumer>
                 {({map}) => {
-                    return <GenericLayer 
-                        title={this.props.label} 
+                    return <GenericLayer
+                        title={this.props.label}
+                        id={this.props.id}
                         attr={this.props.attr}
-                        desc={this.props.desc} 
+                        desc={this.props.desc}
                         icon={this.props.icon}
                         onClick={() =>  this.handleClick(map)}
                         active={this.state.active}

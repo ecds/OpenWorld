@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { FaCheckSquare, FaRegSquare } from 'react-icons/fa';
 
 import Spinner from '../Spinner';
 
@@ -38,22 +39,27 @@ const Attribution = styled(Description)`
 
 export default class GenericLayer extends React.Component {
     render() {
-        console.log(this.props.loading)
         return (
-            <Container onClick={this.props.onClick}>
-                <Icon active={this.props.active}>
-                    {this.props.loading ? 
-                    <Spinner
-                        width={'16px'}
-                        height={'16px'}
-                        thickness={'4px'}
-                        margin={'2px auto auto auto'}
-                    /> : 
-                    this.props.icon}
-                </Icon>
-                <Label active={this.props.active}>{this.props.title}</Label>
-                <Description>{this.props.desc}</Description>
-                <Attribution>{this.props.attr}</Attribution>
+            <Container>
+                <label htmlFor={`${this.props.id}-toggle`}>
+                    <input className="layer-checkbox" type="checkbox" id={`${this.props.id}-toggle`} checked={this.props.active} onChange={this.props.onClick} />
+                    <Icon active={this.props.active}>
+                        {this.props.loading ?
+                            <Spinner
+                                width={'16px'}
+                                height={'16px'}
+                                thickness={'4px'}
+                                margin={'2px auto auto auto'}
+                            /> :
+                            this.props.active ?
+                                <FaCheckSquare /> :
+                                <FaRegSquare />
+                        }
+                    </Icon>
+                    <Label active={this.props.active}>{this.props.title}</Label>
+                    <Description>{this.props.desc}</Description>
+                    <Attribution>{this.props.attr}</Attribution>
+                </label>
             </Container>
         )
     }

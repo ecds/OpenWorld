@@ -32,6 +32,7 @@ class Map extends React.Component {
     componentDidMount() {
         const map = this.mapRef.current.leafletElement;
         this.props.setMap(map);
+        setTimeout(() => { map.invalidateSize() }, 100)
     };
 
     render() {

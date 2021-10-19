@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react'
 import ReactDOM from "react-dom";
 
 import { THEME } from "../../../constants";
@@ -11,24 +11,59 @@ import ModalTitle from "react-bootstrap/ModalTitle";
 import Tabs from "react-bootstrap/Tabs";
 import Tab from "react-bootstrap/Tab";
 import Button from "react-bootstrap/Button";
+import cookies from "react-cookies";
 
 
 class Credit extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { key: "info" };
-    this.modalOpen = props.modalOpen;
+    this.state = {
+      key: "info",
+      suppress: cookies.load('suppressIntro') == 'true',
+      modalOpen: false,
+    };
+
+    this.setSuppressCookie = this.setSuppressCookie.bind(this);
+    this.toggleModal = this.toggleModal.bind(this);
+  }
+
+  componentWillMount() {
+    if (!this.state.suppress) {
+      this.setState({
+        modalOpen: true
+      });
+      // this.props.modalOpen = true;
+    }
+  }
+
+  toggleModal() {
+    this.setState((prevState) => ({
+      modalOpen: !prevState.modalOpen,
+    }));
+	}
+
+  setSuppressCookie(event) {
+    if (this.state.suppress) {
+      cookies.remove('suppressIntro');
+    } else {
+      cookies.save('suppressIntro', true);
+    }
+    this.setState({ suppress: !this.state.suppress });
   }
 
   render() {
     return (
-      <div>
+      <section className="modalButton">
         <style type="text/css">
           {`
-            .tab-content {
-              padding: 1rem 0;
-              color: ${THEME.TEXT} !important;
+            label {
+              cursor: pointer;
             }
+
+            .tab-content {
+                padding: 1rem 0;
+                color: ${THEME.TEXT} !important;
+              }
 
             .modal-footer {
               color: ${THEME.TEXT} !important;
@@ -74,10 +109,17 @@ class Credit extends React.Component {
 
           `}
         </style>
+        <Button
+          className="owa-btn-outline"
+          onClick={this.toggleModal}
+          size="sm"
+        >
+          About OWA
+        </Button>
         <Modal
           size="lg"
-          show={this.props.modalOpen}
-          onHide={this.props.toggleModal}
+          show={this.state.modalOpen}
+          onHide={this.toggleModal}
         >
           <ModalHeader closeButton>
             <ModalTitle>About OpenWorld Atlanta</ModalTitle>
@@ -328,10 +370,44 @@ class Credit extends React.Component {
                     </p>
                   </div>
                 </div>
+
+                <div className="row owa-sponsorship-row">
+                  <div className="col-12">
+                    <div className="owa-about-title">
+                      <a
+                        href="https://ecds.emory.edu/about/staff/varner-jay.html"
+                        alt="Jay Varner"
+                        className="owa-about-link"
+                      >
+                        Jay S. Varner
+                      </a>
+                    </div>
+                    <p>
+                      As a software engineer at ECDS, Jay takes the great ideas from the Emory community and turns them into code.
+                    </p>
+                    <p>
+                      Primarily working in Ruby, Python, and JavaScript, he strives to develop usable and accessible applications to aid and showcase scholarly research. He enjoys creating new ways for people to interact with old stuff.
+                    </p>
+                    <p>
+                      Jay also holds a master's degree in User Experience Design from Kent State University.
+                    </p>
+                  </div>
+                </div>
               </Tab>
             </Tabs>
           </ModalBody>
           <ModalFooter>
+            <div className="container-fluid">
+             <input type="checkbox" className="form-check-input" value={this.state.suppress} checked={this.state.suppress} onChange={this.setSuppressCookie} id="suppress" />
+             <label className="form-check-label" htmlFor="suppress">Don't show again*</label>
+            </div>
+            <div className="container-fluid">
+              <p className="text-muted">
+                * By checking, you agree to accept a cookie for this setting.
+                <br />
+                You can review our <a href="https://digitalscholarship.emory.edu/about/privacy-policy.html" target="_blank">privacy policy</a> for more information.
+              </p>
+            </div>
             Sponsored by{" "}
             <a
               href="https://ecds.emory.edu"
@@ -342,7 +418,7 @@ class Credit extends React.Component {
             </a>
           </ModalFooter>
         </Modal>
-      </div>
+      </section>
     );
   }
 }
