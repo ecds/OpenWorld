@@ -154,6 +154,9 @@ export default class Annexations extends React.Component {
           }
         );
       }
+      if (layer.year > newYear && map.hasLayer(annexation.layerObject)) {
+        annexation.layerObject.removeFrom(map);
+      }
       if (newYear >= this.state.maxYear) {
         // layer.layerObject.getLayers().forEach(layer => layer.closePopup());
         this.state.currentAnnexation.layerObject.removeFrom(map);
