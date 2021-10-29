@@ -2,7 +2,6 @@ import React, { Suspense, lazy } from 'react';
 import { connect } from 'react-redux';
 
 import { Collapse } from 'react-bootstrap';
-import { Button } from "react-bootstrap";
 import HamburgerMenu from 'react-hamburger-menu';
 import styled from 'styled-components';
 
