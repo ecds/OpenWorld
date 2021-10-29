@@ -96,18 +96,18 @@ class InfoButtonGroup extends React.Component {
                     <StyledPane eventKey={1}>
                         <ControlsContainer id="layersControls"/>
                         <hr />
-                        {
+                        {/* {
                             this.props.info ?
-                            <Suspense fallback={<div>Loading...</div>}>
+                             <Suspense fallback={<div>Loading...</div>}>
                                 <ObjectInfo title={this.props.name} />
                                 <InfoBox properties={this.props.info?.properties} type={this.props.info?.type} />
                                 {this.props.media?.length > 0 ? <MediaList media={this.props.media} /> : null}
                             </Suspense> :
                             <TabInfo type={"info"} text={"Please select a feature on the Map to view details."} />
-                        }
+                        } */}
                     </StyledPane>
                     <StyledPane eventKey={2}>
-                        {
+                        {/* {
                             this.props.info ?
                             <Suspense fallback={<div>Loading...</div>}>
                                 <ObjectInfo title={this.props.name} />
@@ -115,7 +115,7 @@ class InfoButtonGroup extends React.Component {
                                 {this.props.media?.length > 0 ? <MediaList media={this.props.media} /> : null}
                             </Suspense> :
                             <TabInfo type={"info"} text={"Please select a feature on the Map to view details."} />
-                        }
+                        } */}
                     </StyledPane>
                     <Bottom />
                 </Tab.Content>
