@@ -99,12 +99,12 @@ export default class Buildings extends React.Component {
         this.clearHighlight();
 
         // This was just an idea to show building data on as a person moves there mouse around the map
-        // const popup = L.popup()
-        //     .setContent(
-        //         `<p>${properties.BLDG_ID}</p>`
-        //     )
-        //     .setLatLng(e.latlng)
-        //     .openOn(this.state.map);
+        const popup = L.popup()
+            .setContent(
+                `<p>${properties.BLDG_ID}</p>`
+            )
+            .setLatLng(e.latlng)
+            .openOn(this.state.map);
 
         if (properties.BLDG_ID !== this.state.selected)
             this.setState({ highlight: properties.BLDG_ID });
@@ -120,9 +120,17 @@ export default class Buildings extends React.Component {
     onClick = (e) => {
         const properties = e.layer.properties;
 
+        let popupContent = '<table class="table"><tbody>';
+
+        for (const [key, value] of Object.entries(properties)) {
+            popupContent += `<tr><th scope="row">${key}</th><td>${value}</td></tr>`
+        }
+
+        popupContent += '</tbody></table>'
+
         const popup = L.popup()
             .setContent(
-                `<p>${properties.BLDG_ID}!!!!!!</p>`
+                popupContent
             )
             .setLatLng(e.latlng)
             .openOn(this.state.map);
@@ -159,9 +167,10 @@ export default class Buildings extends React.Component {
                 return f.properties.BLDG_ID;
             }
         })
-        .on('mouseover', (e) => this.onMouseover(e))
-        .on('mouseout', (e) => this.onMouseout(e))
         .on('click', (e) => this.onClick(e));
+        // This was just an idea to show building data on as a person moves there mouse around the map
+        // .on('mouseover', (e) => this.onMouseover(e))
+        // .on('mouseout', (e) => this.onMouseout(e))
 
         this.setState({
             dataLoaded: true,
