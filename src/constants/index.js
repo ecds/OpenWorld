@@ -249,37 +249,37 @@ export const AnnexDetails = {
     "1847": {
       year: 1847,
       acreage: "2,010.60",
-      areas: "City was incorporated at a 1 mile radius of the zero mile marker of the Western & Atlantic Railroad."
+      areas: "Atlanta was founded at the end of the Western & Atlantic railroad line in 1837 and was then called Terminus. In 1843, it was named Marthasville after Georgia Governor Wilson Lumpkin’s daughter. Then in 1847 in became incorporated as City of Atlanta and delineated at a 1-mile (1.6 km) radius from the zero mile marker that was located at what is now Five Points. The city encompassed just over 2,000 acres."
     },
     "1854": {
       year: 1854,
       acreage: 69,
-      areas: "Atlanta was divived into five wards."
+      areas: "The  first official city hall was built at the current site of the Georgia State Capitol. The city was divided into five wards. The First Ward was all of the land west of the Western & Atlantic Railroad and Whitehall Street. The Second Ward included the land south of the Georgia Railroad between McDonough and Whitehall Streets. The Third Ward included the new city hall and occupied the land south of the Georgia Railroad and east of McDonough Street. The Fourth Ward was the land north of the Georgia Railroad and east of Ivy Street and the Fifth Ward was west of Ivy Street and North of the Western & Atlantic Railroad. An area of 64 acres was expanded to the southwest following Whitehall Street."
     },
     "1863": {
       year: 1863,
       acreage: 286,
-      areas: ""
+      areas: "To the southeast 286 acres were annexed in an area south of the Georgia Railroad in a wedge between what is now Oakland Cemetery and Grant Park. The area includes portions of present day Glenwood Park, Grant Park, and Ormewood Park."
     },
     "1866": {
       year: 1866,
       acreage: "2,476",
-      areas: "City was expanded one-and-a-half mile radius from the Union Depot."
+      areas: "The city limits were expanded to a one and a half mile radius from the Union Depot. This added 2,476 acres to the city."
     },
     "1889": {
       year: 1889,
       acreage: "1,547",
-      areas: "City was expanded one-and-three-quarter mile radius from the Union Depot."
+      areas: "The city limits were expanded 1,547 acres at a one and three quarter mile from the Union Depot."
     },
     "1894": {
       year: 1894,
       acreage: 665,
-      areas: "West End annexed and became the seventh ward of the city."
+      areas: "The West End was originally a crossroads of Newnan and Sandtown Roads that grew into a frontier outpost.  In the late 1800s, it increasing improved its connectivity of rail and roads to Atlanta and it grew to become one of Atlanta’s wealthy suburban areas. In 1894, its 665 acres were annexed and it became the seventh ward of the city."
     },
     "1895": {
       year: 1895,
       acreage: 143,
-      areas: ""
+      areas: "The city gained 143 acres to the northeast extending beyond Old Fourth Ward and north of the Georgia Railroad Line. This area includes present day Freedom Parkway, Inman Park, and ended its expansion at what is now Moreland Avenue in Little Five Points."
     },
     "1904": {
       year: 1904,
@@ -289,47 +289,47 @@ export const AnnexDetails = {
     "1909": {
       year: 1909,
       acreage: "2,612",
-      areas: "A ninth ward was formed out of Copenhill, Durid Hills, East Atlanta, Edgewood, and Reynoldstown."
+      areas: "A large expansion of 2,612 acres was made to the east of city and was designated a ninth ward. It included the areas of Copenhill, Druid Hills, East Atlanta, Edgewood, and Reynoldstown."
     },
     "1910": {
       year: 1910,
       acreage: "5,606",
-      areas: "Expansion to the North and West including Ansley Park, up Peachtree Street to Southern Buckhead, Georgia Tech, Washington Park, Westview,  and others."
+      areas: "Another large expansion of 3,150 acres occurred to the north and the western parts of the city. To the north up Peachtree from 15th Street to include the areas of Ansley Park and Sherwood Forest and the northern section of what is now the Georgia Tech campus up to 14th Street. Then the Bankhead area east of the Louisville and Nashville Railroad Line. To the West the area between Washington Park and Westview Cemetery and down to the Cascade Heights area. To the south and southwest another 2,011 acres were annexed including Adair Park, Oakland City, and the area that became Pittsburgh and up to the southern edge of Grant Park. Also added was the area of Brownwood Park just south of East Atlanta Village."
     },
     "1913": {
       year: 1913,
       acreage: 197,
-      areas: ""
+      areas: "The area that is now Capitol View was annexed adding 197 acres."
     },
     "1914": {
       year: 1914,
       acreage: 9,
-      areas: ""
+      areas: "A small sliver, 9 acres, to the east of the city was annexed that is just to the west of Lake Claire and north of the Georgia Railroad Line. "
     },
     "1915": {
       year: 1915,
       acreage: 75,
-      areas: ""
+      areas: "Between Piedmont and Orme Park following Monroe Drive 75 acres was annexed to the north-northeast of the city."
     },
     "1916": {
       year: 1916,
       acreage: 103,
-      areas: ""
+      areas: "To the east of Orme Park in the northeastern part of the city 103 acres was added in the area that is the commercial district of present day Virginia Highlands."
     },
     "1922": {
       year: 1922,
       acreage: "2,481",
-      areas: "Kirkwood, Ormewood Park"
+      areas: "Another large annexation of 2,481 acres occurred primarily to the eastern section of the city including the rest of the Virginia Highlands, the southern part of the Morningside-Lenox Park area, the remaining portions of Lake Claire, Kirkwood, and Ormewood Park. To the southeast a small area just north of the Federal Penitentiary called Chosewood Park and on the west side of the city a small area to the southeast of Westview Cemetery was added."
     },
     "1923": {
       year: 1923,
       acreage: 411,
-      areas: ""
+      areas: "On the southwest part of the city 411 acres were annexed in the areas of Utoy Creek and along Cascade Road just to the east of Greenwood Cemetery."
     },
     "1925": {
       year: 1925,
       acreage: "1,164",
-      areas: ""
+      areas: "Several sections around the perimeter of the city were annexed totaling 1,164 acres. To the northeast a large section of what is now Druid Hills to the northwest Grove Park and the area that is now the Westside Reservoir Park was added. Three small sections to the west of the city were also added, two sections were added to expanding residential neighborhoods, and a long tract following Avon Avenue."
     },
     "1926": {
       year: 1926,
