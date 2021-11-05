@@ -10,3 +10,8 @@ body {
   margin: -14px 0 0 -10px !important;
   font: 16px/1.5 "Helvetica Neue", Arial, Helvetica, sans-serif;
 }
+
+.ow-toast-container > .toast {
+  font-size: 1.25rem;
+  min-width: 25vw;
+}
