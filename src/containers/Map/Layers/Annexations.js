@@ -113,7 +113,9 @@ export default class Annexations extends React.Component {
     const annexPane = map.createPane('annexation')
     boundaryPane.style.zIndex = 450;
     annexPane.style.zIndex = 475;
-    const newYear = parseInt(event.target.value);
+    const eventYear = parseInt(event.target.value);
+    const newYear = (eventYear >= this.state.currentYear) ? eventYear : Math.max(...this.state.annexations.filter(l => l.year < eventYear).map(l => parseInt(l.year)));
+    console.log("🚀 ~ file: Annexations.js ~ line 122 ~ Annexations ~ handleChange ~ newYear", newYear)
     this.setState(
       {
         currentYear: event.target.value
@@ -200,7 +202,7 @@ export default class Annexations extends React.Component {
   renderLayerInfo() {
     if (this.state.currentBoundary) {
       return (
-        <div style={{bottom: "2rem", position: "fixed", left: "2rem", minWidth: "25vw"}}>
+        <div className="ow-toast-container" style={{bottom: "2rem", position: "fixed", left: "2rem"}}>
               <Toast onClose={this.toggleToast} show={this.state.showToast} animation={true} delay={3000}>
               <Toast.Header>
                 <strong style={{color: this.state.currentBoundary.activeColor}} className="mr-auto">Area annexed in {this.state.currentBoundary.year}</strong>
