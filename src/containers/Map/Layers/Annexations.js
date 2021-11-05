@@ -115,7 +115,6 @@ export default class Annexations extends React.Component {
     annexPane.style.zIndex = 475;
     const eventYear = parseInt(event.target.value);
     const newYear = (eventYear >= this.state.currentYear) ? eventYear : Math.max(...this.state.annexations.filter(l => l.year <= eventYear).map(l => parseInt(l.year)));
-    console.log("🚀 ~ file: Annexations.js ~ line 122 ~ Annexations ~ handleChange ~ newYear", newYear)
     this.setState(
       {
         currentYear: event.target.value
