@@ -12,6 +12,7 @@ body {
 }
 
 .ow-toast-container > .toast {
+  background-color: hsla(0,0%,100%,0.55);
   font-size: 1.25rem;
   min-width: 25vw;
 }
