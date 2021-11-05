@@ -334,42 +334,42 @@ export const AnnexDetails = {
     "1926": {
       year: 1926,
       acreage: 408,
-      areas: ""
+      areas: "There were several smaller additions totaling to 408 acres around the perimeter of the city. To the north four tracts including a strip near directly to the east of the City of Atlanta Water Works, a strip just north of Piedmont Park and along Rock Springs Road, and a strip along Rosedale Road near Callanwolde Fine Arts Center. To the west three areas to the east of Westview and Greenwood Cemeteries were added and to the south three tracks including Chosewood Park, and other residential expansions."
     },
     "1928": {
       year: 1928,
       acreage: "1,429",
-      areas: "East Lake, Chosewood Park"
+      areas: "East Lake except for the golf course and a residential area directly to the east of Ansley Park was added totaling to 1,429 acres."
     },
     "1930": {
       year: 1930,
       acreage: 31,
-      areas: ""
+      areas: "A 31 acre residential tract was added adjacent to Westview Cemetery’s eastside."
     },
     "1932": {
       year: 1932,
       acreage: 110,
-      areas: ""
+      areas: "A tract of 110 acres was added to the city in the area north of Rock Springs Road in the Morningside-Lenox Park area."
     },
     "1934": {
       year: 1934,
       acreage: 24,
-      areas: ""
+      areas: "A small tract of 24 acres was added to city which is located to the southeast of the intersections of Rock Springs Road and North Highland Avenue."
     },
     "1940": {
       year: 1940,
       acreage: 150,
-      areas: ""
+      areas: "The southern portion of the area annexed in 1934 was added to city which is located to the southeast of the intersections of Rock Springs Road and North Highland Avenue. To the west a large tract of what is now John A. White Park was added. Both tracts added 150 acres to the city."
     },
     "1943": {
       year: 1943,
       acreage: 13,
-      areas: ""
+      areas: "A small tract of 13 acres was added to the south of Olmsted Linear Park in the Lake Claire area of the city."
     },
     "1945": {
       year: 1945,
       acreage: 355,
-      areas: ""
+      areas: "To the east of Ansley Park the city was expanded further north in the Morningside-Lenox Park area and an area along Sugar Creek was added just north of Glenwood Avenue. Both tracts added 355 acres to the city."
     }
   }
 
