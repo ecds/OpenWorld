@@ -66,6 +66,7 @@ export default class Polygon extends React.Component {
                         onClick={() =>  this.handleClick(map)}
                         active={this.state.active}
                         loading={this.state.dataLoading}
+                        color={this.props.activeColor}
                     />
                 }}
             </MapContext.Consumer>

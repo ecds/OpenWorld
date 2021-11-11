@@ -1,5 +1,6 @@
 import React from 'react';
 import { FaCity, FaRoad, FaTrain } from 'react-icons/fa';
+import chroma from 'chroma-js';
 
 export const THEME = {
     MAIN:   '#DB504B',
@@ -97,7 +98,7 @@ export const OVERLAYS = [
 ];
 
 export const Boundaries = () => {
-    const layerTitles = ['Annex_1847_whole', 'Annex_1854_whole', 'Annex_1863_whole', 'Annex_1866_whole', 'Annex_1889_whole', 'Annex_1894_whole', 'Annex_1895_whole', 'Annex_1909_whole', 'Annex_1910_whole', 'Annex_1913_whole', 'Annex_1914_whole', 'Annex_1915_whole', 'Annex_1916_whole', 'Annex_1922_whole', 'Annex_1923_whole', 'Annex_1925_whole', 'Annex_1926_whole', 'Annex_1928_whole', 'Annex_1930_whole', 'Annex_1932_whole', 'Annex_1934_whole', 'Annex_1940_whole', 'Annex_1943_whole', 'Annex_1945_whole'];
+    const layerTitles = ['Annex_1847_whole', 'Annex_1854_whole', 'Annex_1863_whole', 'Annex_1866_whole', 'Annex_1889_whole', 'Annex_1894_whole', 'Annex_1895_whole', 'Annex_1904_whole', 'Annex_1909_whole', 'Annex_1910_whole', 'Annex_1913_whole', 'Annex_1914_whole', 'Annex_1915_whole', 'Annex_1916_whole', 'Annex_1922_whole', 'Annex_1923_whole', 'Annex_1925_whole', 'Annex_1926_whole', 'Annex_1928_whole', 'Annex_1930_whole', 'Annex_1932_whole', 'Annex_1934_whole', 'Annex_1940_whole', 'Annex_1943_whole', 'Annex_1945_whole'];
     const layers = []
     layerTitles.forEach((layer, index) => {
         const year = layer.split('_')[1];
@@ -131,7 +132,7 @@ export const Boundaries = () => {
 
 
 export const AnnexLayers = function() {
-    const layerTitles = ['Annex_1847_part', 'Annex_1854_part', 'Annex_1863_part', 'Annex_1866_part', 'Annex_1889_part', 'Annex_1894_part', 'Annex_1895_part', 'Annex_1909_part', 'Annex_1910_part', 'Annex_1913_part', 'Annex_1914_part', 'Annex_1915_part', 'Annex_1916_part', 'Annex_1922_part', 'Annex_1923_part', 'Annex_1925_part', 'Annex_1926_part', 'Annex_1928_part', 'Annex_1930_part', 'Annex_1932_part', 'Annex_1934_part', 'Annex_1940_part', 'Annex_1943_part', 'Annex_1945_part']
+    const layerTitles = ['Annex_1847_part', 'Annex_1854_part', 'Annex_1863_part', 'Annex_1866_part', 'Annex_1889_part', 'Annex_1894_part', 'Annex_1895_part', 'Annex_1904_part', 'Annex_1909_part', 'Annex_1910_part', 'Annex_1913_part', 'Annex_1914_part', 'Annex_1915_part', 'Annex_1916_part', 'Annex_1922_part', 'Annex_1923_part', 'Annex_1925_part', 'Annex_1926_part', 'Annex_1928_part', 'Annex_1930_part', 'Annex_1932_part', 'Annex_1934_part', 'Annex_1940_part', 'Annex_1943_part', 'Annex_1945_part']
     // const colors = chroma.scale(['#D32F2F','#D81B60', '#8E24AA', '#0288D1', '#00ACC1', '#3949AB', '#7CB342']).mode('lab').colors(layerTitles.length)
     // const colors = chroma.brewer.Paired.concat(chroma.brewer.Set3);
     const colors = [
@@ -383,3 +384,72 @@ export const COLORS = [
     '#FFE502','#620E00','#008F9C','#98FF52','#7544B1','#B500FF','#00FF78','#FF6E41',
     '#005F39','#6B6882','#5FAD4E','#A75740','#A5FFD2','#FFB167','#009BFF','#E85EBE'
 ];
+
+const StreetcarLines = {
+    1924: [
+        '1924_Route_1',
+        '1924_Route_2',
+        '1924_Route_3',
+        '1924_Route_4',
+        '1924_Route_5',
+        '1924_Route_6',
+        '1924_Route_7',
+        '1924_Route_8',
+        '1924_Route_9',
+        '1924_Route_10',
+        '1924_Route_11',
+        '1924_Route_12',
+        '1924_Route_13',
+        '1924_Route_14',
+        '1924_Route_15',
+        '1924_Route_16',
+        '1924_Route_17',
+        '1924_Route_18',
+        '1924_Route_19',
+        '1924_Route_20',
+        '1924_Route_21',
+        '1924_Route_22',
+        '1924_Route_23',
+        '1924_Route_24',
+        '1924_Sidings',
+        '1924_SupportBuildings'
+    ]
+};
+
+export const StreetcarLayers = function(year) {
+    const layers = [];
+    const colors = chroma.bezier(['orange', 'darkblue', 'deeppink']).scale().colors(StreetcarLines[year].length);
+    StreetcarLines[year].forEach((line, index) => {
+
+
+        layers.push(
+            {
+                id: line,
+                icon: null,
+                label: line.split('_').slice(1).join(' '),
+                type: 'line',
+                url: `https://geoserver.ecds.emory.edu/StreetcarRoutes/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=StreetcarRoutes:${line}&maxFeatures=500&outputFormat=application%2Fjson`,
+                clickable: true,
+                onMap: false,
+                activeColor: colors[index],
+                options: {
+                    color: colors[index],
+                    weight: 4
+                }
+            }
+        );
+    });
+
+    return {
+        desc: `Streetcar Lines in ${year}`,
+        attr: 'Source TBA',
+        id: `streetcar${year}`,
+        icon: null,
+        label: `Streetcar Lines in ${year}`,
+        type: 'annexations',
+        activeColor: THEME.MAIN,
+        layers
+    }
+}
+
+export const StreetcarLines1924 = StreetcarLayers(1924)

@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import { OVERLAYS } from '../../../constants';
+import LayerGroup from '../LayerGroup';
+import { OVERLAYS, StreetcarLayers } from '../../../constants';
 import Buildings from '../../Map/Layers/Buildings';
 import Roads from '../../Map/Layers/Roads';
 import MarkerCluster from '../../Map/Layers/MarkerCluster';
@@ -32,12 +33,8 @@ export default class ControlsContainer extends React.Component {
 						}
 					})
 			  },
-				{/* {
-					OVERLAY_GROUPS.map((group, index) => {
-						return <LayerGroup {...group} key={index} />
-					})
-				} */}
 				<Annexations />
+				<LayerGroup {...StreetcarLayers(1924)} />
 			</Wrapper>
 		)
 	}

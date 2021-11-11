@@ -38,18 +38,27 @@ export default class Railways extends React.Component {
             return companies[featureID];
         }
 
+        const label = this.props.label
+
         fetch(this.props.url)
         .then(response => { return response.json(); })
         .then(data => {
             let layerObj = L.geoJSON(data, {
-                style: function(feature) { return { ...options, color: getColor(feature.properties.NAME) }},
+                style: function(feature) { return { color: getColor(feature.properties.NAME), ...options }},
                 onEachFeature: function(feature, layer) {
+                    layer.bindPopup(`<p>${label}</p>`)
                     layer.on({
                         'mouseover': function (e) {
+                        console.log("🚀 ~ file: Railways.js ~ line 52 ~ Railways ~ e", e.latlng)
                             highlightGeoJSON(e.target);
+                            // layer.getPopup().setLatLng(e.latlng).open;
+                            layer.openPopup(e.latlng);
+                            layer.bringToFront();
                         },
                         'mouseout': function (e) {
                             dehighlightGeoJSON(layerObj, e.target, curr);
+                            layer.closePopup();
+                            layer.bringToBack();
                         },
                         'click': function(e) {
                             curr = selectGeoJSON(layerObj, e.target, map,  curr);
@@ -98,6 +107,7 @@ export default class Railways extends React.Component {
                         onClick={() =>  this.handleClick(map)}
                         active={this.state.active}
                         loading={this.state.dataLoading}
+                        color={this.props.activeColor}
                     />
                 }}
             </MapContext.Consumer>

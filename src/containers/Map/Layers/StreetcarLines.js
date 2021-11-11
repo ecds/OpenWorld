@@ -1,20 +1,11 @@
-/* !!!!!!!!!
-
-NOTE: THIS IS NOT USED!
-
-This was the first iteration of adding the annexations one-by-one or as a group.
-
-It is unlikely this will be used, but keeping this around just in case.
-
-
 import React from 'react';
 import MapContext from '../MapContext';
 import L from 'leaflet';
-import { OVERLAYS, OVERLAY_GROUPS } from '../../../constants';
+import { StreetcarLayers } from '../../../constants';
 import { layer } from '@fortawesome/fontawesome-svg-core';
 import Toast from 'react-bootstrap/Toast'
 
-export default class AnnexationIndividual extends React.Component {
+export default class StreetcarLines extends React.Component {
   constructor(props) {
     super(props);
 
@@ -34,7 +25,7 @@ export default class AnnexationIndividual extends React.Component {
 
   componentDidMount() {
     const layers = []
-    OVERLAY_GROUPS[0].layers.forEach((layer) => {
+    StreetcarLayers.forEach((layer) => {
 
       fetch(layer.url)
         .then(response => {
@@ -47,8 +38,8 @@ export default class AnnexationIndividual extends React.Component {
             pane: layer.id
           });
 
-          leafletLayer.on('popupopen', this.show);
-          leafletLayer.on('popupclose', this.hide);
+          // leafletLayer.on('popupopen', this.show);
+          // leafletLayer.on('popupclose', this.hide);
 
           layers.push(
             {
@@ -115,7 +106,6 @@ export default class AnnexationIndividual extends React.Component {
               {({map}) => {
                 return  (
                   <div>
-                    <style type="text/css">{`.annexation-range-input { width: 100%; }`}</style>
                     <div>Year: {this.state.currentYear}</div>
                     <input className="form-control-range annexation-range-input" type="range" min="1840" max="1945" onChange={(e) => this.handleChange(e, map)} />
                     <div style={{bottom: "2rem", position: "fixed", left: "2rem", minWidth: "25vw"}}>
@@ -142,4 +132,3 @@ export default class AnnexationIndividual extends React.Component {
       )
   }
 }
-*/

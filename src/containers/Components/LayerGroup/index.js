@@ -1,11 +1,12 @@
 import React, { useContext } from 'react';
-import Collapse from 'react-bootstrap/Collapse'
-import { Card, Col, Row } from "react-bootstrap";
+import Accordion from 'react-bootstrap/Accordion'
+import { AccordionContext, Button, Card, Col, Row } from "react-bootstrap";
+import { useAccordionToggle } from 'react-bootstrap/AccordionToggle';
 import "bootstrap/dist/css/bootstrap.min.css";
-import { FaCheckSquare, FaRegSquare } from 'react-icons/fa';
-import Spinner from '../Spinner';
+import { FaCheckSquare, FaRegSquare, FaChevronDown, FaChevronUp } from 'react-icons/fa';
 import GenericLayer, { Container, Icon, Label, Description, Attribution } from "../GenericLayer";
 import Polygon from '../../Map/Layers/Polygon';
+import Railways from '../../Map/Layers/Railways';
 
 export default class LayerGroup extends GenericLayer {
   constructor(props) {
@@ -19,6 +20,8 @@ export default class LayerGroup extends GenericLayer {
     this.handleClick = this.handleClick.bind(this);
     this.addRemoveLayers = this.addRemoveLayers.bind(this);
     this.toggleCollapsed = this.toggleCollapsed.bind(this);
+    this.toggleButton = this.toggleButton.bind(this);
+    this.checkAll = this.checkAll.bind(this);
 
   }
 
@@ -31,7 +34,7 @@ export default class LayerGroup extends GenericLayer {
       {
         active: !this.state.active
       },
-      // this.addRemoveLayers
+      this.addRemoveLayers
     );
   }
 
@@ -49,40 +52,28 @@ export default class LayerGroup extends GenericLayer {
 
   render() {
     return (
-      <Container>
+      <Accordion defaultActiveKey="">
         <Card>
           <Card.Header>
-            <Row onClick={() => this.toggleCollapsed()}>
-              <Col>
-                <Label htmlFor={`${this.props.id}-toggle`} active={this.state.active}>
+            <Row>
+              <Col xs="auto">
                   <input className="layer-checkbox" type="checkbox" id={`${this.props.id}-toggle`} checked={this.state.active} onChange={this.handleClick} />
-                  <Icon active={this.state.active}>
-                    {this.props.loading ?
-                      <Spinner
-                        width={'16px'}
-                        height={'16px'}
-                        thickness={'4px'}
-                        margin={'2px auto auto auto'}
-                      /> :
-                      this.state.active ?
-                        <FaCheckSquare /> :
-                        <FaRegSquare />
-                    }
-                  </Icon>
-                  &nbsp;
-                  {this.props.label}
-                </Label>
+                  <this.checkAll eventKey="0" poop={this.state.active} />
                 <Description>{this.props.desc}</Description>
                 <Attribution>{this.props.attr}</Attribution>
               </Col>
-              <Col xs lg="1"></Col>
+              <Col className="text-center">
+                <this.toggleButton eventKey="0" />
+              </Col>
             </Row>
           </Card.Header>
-          <Collapse  in={this.state.accordionActive}>
+          <Accordion.Collapse eventKey="0">
             <Card.Body>
               {
                 this.props.layers.map((layer, index) => {
                   switch(layer.type) {
+                    case 'line':
+                      return <Railways {...layer} key={index} groupActive={this.state.active} />;
                     case 'polygon':
                       return <Polygon {...layer} key={index} groupActive={this.state.active} />;
                     default:
@@ -91,10 +82,73 @@ export default class LayerGroup extends GenericLayer {
                 })
               }
             </Card.Body>
-          </Collapse>
+          </Accordion.Collapse>
         </Card>
-      </Container>
+      </Accordion>
 
     )
-}
+  }
+
+  checkAll({ eventKey, poop, callback }) {
+    const currentEventKey = useContext(AccordionContext);
+
+    const decoratedOnClick = useAccordionToggle(
+      eventKey,
+      () => callback && callback(eventKey),
+    );
+
+    return (
+      <Label htmlFor={`${this.props.id}-toggle`} active={this.state.active} onClick={!currentEventKey ? decoratedOnClick : null}>
+        <Icon active={this.state.active}>
+          {this.state.active ?
+            <FaCheckSquare /> :
+            <FaRegSquare />
+          }
+        </Icon>
+        &nbsp;
+        {this.props.label}
+
+      </Label>
+    )
+  }
+
+  toggleButton({ eventKey, callback }) {
+    const currentEventKey = useContext(AccordionContext);
+
+    const decoratedOnClick = useAccordionToggle(
+      eventKey,
+      () => callback && callback(eventKey),
+    );
+
+    const isCurrentEventKey = currentEventKey === eventKey;
+
+    return (
+      <Container>
+        <Row className="no-gutters">
+          <Col>
+            <Button
+              variant="link"
+              size="sm"
+              onClick={decoratedOnClick}
+              block
+            >
+              {isCurrentEventKey ? <FaChevronUp /> : <FaChevronDown />}
+            </Button>
+          </Col>
+        </Row>
+        <Row className="no-gutters">
+          <Col>
+            <Button
+              variant="link"
+              size="sm"
+              onClick={decoratedOnClick}
+              block
+            >
+              {isCurrentEventKey ? "Collapse" : "Expand"}
+            </Button>
+          </Col>
+        </Row>
+      </Container>
+    );
+  }
 }

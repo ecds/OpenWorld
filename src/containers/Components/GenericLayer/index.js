@@ -49,7 +49,7 @@ export default class GenericLayer extends React.Component {
         return (
             <Container>
                 {/* <label> */}
-                    <Label htmlFor={`${this.props.id}-toggle`} active={this.props.active} activeColor={this.props.activeColor}>
+                    <Label htmlFor={`${this.props.id}-toggle`} active={this.props.active} activeColor={this.props.activeColor} style={{color:this.props.color}}>
                         <input className="layer-checkbox" type="checkbox" id={`${this.props.id}-toggle`} checked={this.props.active} onChange={this.props.onClick} />
                         <Icon active={this.props.active}>
                             {this.props.loading ?

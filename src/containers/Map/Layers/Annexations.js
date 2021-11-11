@@ -27,6 +27,7 @@ export default class Annexations extends React.Component {
     this.toggleToast = this.toggleToast.bind(this);
     this.activateFeature = this.activateFeature.bind(this);
     this.deactivateFeature = this.deactivateFeature.bind(this);
+    this.layerInfo = this.layerInfo.bind(this);
   }
 
   componentDidMount() {
@@ -190,7 +191,7 @@ export default class Annexations extends React.Component {
                 <style type="text/css">{`.annexation-range-input { width: 100%; }`}</style>
                 <label htmlFor="annexations-by-year">City Boundaries in <em>{this.state.currentYear}</em></label>
                 <input id="annexations-by-year" className="form-control-range annexation-range-input" type="range" min={this.state.minYear} max={this.state.maxYear} onChange={(e) => this.handleChange(e, map)} />
-                {this.renderLayerInfo()}
+                <this.layerInfo />
               </Container>
               )
           }}
@@ -198,7 +199,7 @@ export default class Annexations extends React.Component {
     )
   }
 
-  renderLayerInfo() {
+  layerInfo() {
     if (this.state.currentBoundary) {
       return (
         <div className="ow-toast-container" style={{bottom: "2rem", position: "fixed", left: "2rem"}}>
@@ -211,6 +212,8 @@ export default class Annexations extends React.Component {
             </Toast>
         </div>
       )
+    } else {
+      return null;
     }
   }
 }
