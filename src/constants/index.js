@@ -340,7 +340,7 @@ export const AnnexDetails = {
     "1928": {
       year: 1928,
       acreage: "1,429",
-      areas: "East Lake except for the golf course and a residential area directly to the east of Ansley Park was added totaling to 1,429 acres."
+      areas: "This added a large tract southeast of the city, East Lake except for the golf course and a residential area directly to the east of Ansley Park was added totaling to 1,429 acres."
     },
     "1930": {
       year: 1930,
