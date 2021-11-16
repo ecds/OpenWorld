@@ -193,23 +193,6 @@ export const AnnexLayers = function() {
     return layers;
 }
 
-export const OVERLAY_GROUPS = [
-    {
-        desc: 'City Annexations 1847-1945',
-        attr: 'Source TBA',
-        id: 'annexations',
-        icon: null,
-        label: 'Annexations',
-        type: 'annexations',
-        activeColor: THEME.MAIN,
-        layers: AnnexLayers()
-    }
-];
-
-export const TEXT = [
-
-];
-
 export const TAGS = {
     buildings: {
         BLDG_ID: {

@@ -1,9 +1,8 @@
 import React from 'react';
 import MapContext from '../MapContext';
 import L from 'leaflet';
-import Toast from 'react-bootstrap/Toast'
 import { Boundaries, AnnexLayers, AnnexDetails } from '../../../constants';
-import { Container } from '../../Components/GenericLayer';
+import { Container, Label } from '../../Components/GenericLayer';
 
 export default class Annexations extends React.Component {
   constructor(props) {
@@ -16,7 +15,6 @@ export default class Annexations extends React.Component {
       boundaries: [],
       annexations: [],
       currentBoundary: null,
-      showToast: false,
       mapCenter: L.latLng(33.75499844096392, -84.38624382019044),
       bounds: new L.latLngBounds(),
       activeFeature: null
@@ -24,10 +22,8 @@ export default class Annexations extends React.Component {
 
     this.handleChange = this.handleChange.bind(this);
     this.onEachFeature = this.onEachFeature.bind(this);
-    this.toggleToast = this.toggleToast.bind(this);
     this.activateFeature = this.activateFeature.bind(this);
     this.deactivateFeature = this.deactivateFeature.bind(this);
-    this.layerInfo = this.layerInfo.bind(this);
   }
 
   componentDidMount() {
@@ -125,34 +121,39 @@ export default class Annexations extends React.Component {
     map.fitBounds(map.getBounds().extend(this.state.bounds, { animate: true }));
 
     this.state.boundaries.forEach((layer, index) => {
+      const layerInfo = {
+        title: `Area annexed in ${layer.year}`,
+        body: AnnexDetails[layer.year].areas,
+        type: 'annex'
+      };
+
       const annexation = this.state.annexations[index];
+
       if (parseInt(layer.year) === newYear && !map.hasLayer(layer.layerObject)) {
+        this.props.updateLayerInfo(layerInfo);
         layer.layerObject.addTo(map);
         annexation.layerObject.addTo(map);
         if (this.state.currentBoundary) {
           this.state.currentBoundary.layerObject.removeFrom(map);
         }
         if (this.state.currentAnnexation) {
-          // this.state.currentAnnexation.layerObject.removeFrom(map);
           this.state.currentAnnexation.layerObject.setStyle({fillOpacity: 0, color: 'transparent'})
         }
         annexation.layerObject.setStyle({fillOpacity: 0.7});
         this.setState(
           {
             currentBoundary: layer,
-            currentAnnexation: annexation,
-            showToast: true
+            currentAnnexation: annexation
           }
         );
-        // layer.layerObject.getLayers().forEach(layer => layer.openPopup(annexation.layerObject.getBounds().getCenter()));
       } else if (newYear <= this.state.minYear && this.state.currentBoundary) {
+        this.props.updateLayerInfo({ type: 'annex' });
         this.state.currentBoundary.layerObject.removeFrom(map);
         this.state.currentAnnexation.layerObject.removeFrom(map);
         this.setState(
           {
             currentBoundary: null,
-            currentAnnexation: null,
-            showToast: false
+            currentAnnexation: null
           }
         );
       }
@@ -164,8 +165,7 @@ export default class Annexations extends React.Component {
         this.state.currentAnnexation.layerObject.removeFrom(map);
         this.setState(
           {
-            currentAnnexation: null,
-            showToast: false
+            currentAnnexation: null
           }
         );
       }
@@ -177,43 +177,19 @@ export default class Annexations extends React.Component {
     layer.bindPopup(`<h3>${feature.properties.YEAR}</h3><p>${AnnexDetails[feature.properties.YEAR].areas}</p>`);
   }
 
-  toggleToast() {
-    this.setState({showToast: !this.state.showToast});
-  }
-
-
   render() {
     return (
       <MapContext.Consumer>
           {({map}) => {
             return  (
               <Container>
-                <style type="text/css">{`.annexation-range-input { width: 100%; }`}</style>
-                <label htmlFor="annexations-by-year">City Boundaries in <em>{this.state.currentYear}</em></label>
-                <input id="annexations-by-year" className="form-control-range annexation-range-input" type="range" min={this.state.minYear} max={this.state.maxYear} onChange={(e) => this.handleChange(e, map)} />
-                <this.layerInfo />
+                <Label htmlFor="annexations-by-year">City Boundaries in <em>{this.state.currentYear}</em>
+                  <input id="annexations-by-year" className="form-control-range annexation-range-input" type="range" min={this.state.minYear} max={this.state.maxYear} onChange={(e) => this.handleChange(e, map)} />
+                </Label>
               </Container>
               )
           }}
       </MapContext.Consumer>
     )
-  }
-
-  layerInfo() {
-    if (this.state.currentBoundary) {
-      return (
-        <div className="ow-toast-container" style={{bottom: "2rem", position: "fixed", left: "2rem"}}>
-              <Toast onClose={this.toggleToast} show={this.state.showToast} animation={true} delay={3000}>
-              <Toast.Header>
-                <strong style={{color: this.state.currentBoundary.activeColor}} className="mr-auto">Area annexed in {this.state.currentBoundary.year}</strong>
-                <small></small>
-              </Toast.Header>
-              <Toast.Body>{AnnexDetails[this.state.currentBoundary.year].areas}</Toast.Body>
-            </Toast>
-        </div>
-      )
-    } else {
-      return null;
-    }
   }
 }

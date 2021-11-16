@@ -21,6 +21,7 @@ export const Label = styled.label`
     position: relative;
     left: 8px;
     color: ${props => props.active ? props.activeColor : props.theme.TEXT};
+    width: 100%;
 `;
 
 export const Description = styled.p`

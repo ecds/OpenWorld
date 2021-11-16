@@ -13,3 +13,8 @@ body {
 .layer-checkbox {
   visibility: hidden;
 }
+
+.leaflet-div-icon {
+  background: none !important;
+  border: none !important;
+}

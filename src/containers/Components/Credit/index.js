@@ -383,7 +383,7 @@ class Credit extends React.Component {
                       </a>
                     </div>
                     <p>
-                      As a software engineer at ECDS, Jay takes the great ideas from the Emory community and turns them into code.
+                      As the lead software engineer at ECDS, Jay takes the great ideas from the Emory community and turns them into code.
                     </p>
                     <p>
                       Primarily working in Ruby, Python, and JavaScript, he strives to develop usable and accessible applications to aid and showcase scholarly research. He enjoys creating new ways for people to interact with old stuff.

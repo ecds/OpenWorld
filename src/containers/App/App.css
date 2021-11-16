@@ -11,7 +11,7 @@ body {
   font: 16px/1.5 "Helvetica Neue", Arial, Helvetica, sans-serif;
 }
 
-.ow-toast-container > .toast {
+.ow-toast-container .toast {
   background-color: hsla(0,0%,100%,0.55);
   font-size: 1.25rem;
   min-width: 25vw;
