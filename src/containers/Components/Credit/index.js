@@ -2,7 +2,7 @@ import React from 'react'
 import ReactDOM from "react-dom";
 
 import { THEME } from "../../../constants";
-
+import { Row, Col } from "react-bootstrap";
 import Modal from "react-bootstrap/Modal";
 import ModalBody from "react-bootstrap/ModalBody";
 import ModalHeader from "react-bootstrap/ModalHeader";
@@ -10,9 +10,11 @@ import ModalFooter from "react-bootstrap/ModalFooter";
 import ModalTitle from "react-bootstrap/ModalTitle";
 import Tabs from "react-bootstrap/Tabs";
 import Tab from "react-bootstrap/Tab";
+import Nav from 'react-bootstrap/Nav'
 import Button from "react-bootstrap/Button";
+import Form from 'react-bootstrap/Form'
 import cookies from "react-cookies";
-
+import StyledNavLink from '../StyledNavLink';
 
 class Credit extends React.Component {
   constructor(props) {
@@ -53,68 +55,9 @@ class Credit extends React.Component {
 
   render() {
     return (
-      <section className="modalButton">
-        <style type="text/css">
-          {`
-            label {
-              cursor: pointer;
-            }
-
-            .tab-content {
-                padding: 1rem 0;
-                color: ${THEME.TEXT} !important;
-              }
-
-            .modal-footer {
-              color: ${THEME.TEXT} !important;
-            }
-
-            .owa-about-link {
-              color: ${THEME.MAIN} !important;
-            }
-
-            .nav-item.nav-link {
-              padding: 0.5rem 1rem;
-              color: ${THEME.MAIN} !important;
-              font-weight: bold;
-            }
-
-            .nav-item.nav-link.active {
-              color: white !important;
-              background-color: ${THEME.MAIN} !important;
-            }
-
-            .nav-item.nav-link:focus {
-              border-color: ${THEME.MAIN} !important;
-            }
-
-            .navbar-nav {
-              flex-direction: initial;
-            }
-
-            .owa-about-title {
-              font-weight: bold;
-              font-size: 1.05rem;
-              padding-bottom: 0.25rem;
-            }
-
-            .owa-sponsorship-row {
-              margin: 1rem 0;
-            }
-
-            .owa-btn {
-              background-color: ${THEME.MAIN} !important;
-              border: ${THEME.MAIN} !important;
-            }
-
-          `}
-        </style>
-        <Button
-          className="owa-btn-outline"
-          onClick={this.toggleModal}
-          size="sm"
-        >
-          About OWA
+      <span>
+        <Button className="ps-0" variant="link" onClick={this.toggleModal}>
+          About
         </Button>
         <Modal
           size="lg"
@@ -130,8 +73,9 @@ class Credit extends React.Component {
               id="owa-controlled-tab"
               activeKey={this.state.key}
               onSelect={(key) => this.setState({ key })}
+              className="nav mb-3"
             >
-              <Tab eventKey="info" title="OpenWorld Atlanta">
+              <Tab eventKey="info" title="OpenWorld Atlanta" className="p-3">
                 <p>
                   OpenWorld Atlanta seeks to provide engaging 3D and dynamic
                   interfaces to the wealth of data extracted by the Emory Center
@@ -176,7 +120,7 @@ class Credit extends React.Component {
                 <div className="row owa-sponsorship-row">
                   <div className="col-4">
                     <img
-                      src="LOGO_emory.png"
+                      src="/LOGO_emory.png"
                       alt="Emory Logo"
                       style={{
                         width: "100%",
@@ -215,7 +159,7 @@ class Credit extends React.Component {
                 <div className="row owa-sponsorship-row">
                   <div className="col-4">
                     <img
-                      src="LOGO_Kazringa.png"
+                      src="/LOGO_Kazringa.png"
                       alt="Kaziranga Logo"
                       style={{
                         width: "100%",
@@ -238,7 +182,7 @@ class Credit extends React.Component {
                 <div className="row owa-sponsorship-row">
                   <div className="col-4">
                     <img
-                      src="LOGO_UNIFESP.png"
+                      src="/LOGO_UNIFESP.png"
                       alt="UNIFESP Logo"
                       style={{
                         width: "100%",
@@ -263,7 +207,7 @@ class Credit extends React.Component {
                 <div className="row owa-sponsorship-row">
                   <div className="col-4">
                     <img
-                      src="LOGO_Yonsei.jpg"
+                      src="/LOGO_Yonsei.jpg"
                       style={{
                         width: "100%",
                       }}
@@ -398,10 +342,11 @@ class Credit extends React.Component {
           </ModalBody>
           <ModalFooter>
             <div className="container-fluid">
-             <input type="checkbox" className="form-check-input" value={this.state.suppress} checked={this.state.suppress} onChange={this.setSuppressCookie} id="suppress" />
-             <label className="form-check-label" htmlFor="suppress">Don't show again*</label>
-            </div>
-            <div className="container-fluid">
+            <Form>
+              <Form.Group>
+                <Form.Check type="checkbox" label="Don't show again*" checked={this.state.suppress} onChange={this.setSuppressCookie}/>
+              </Form.Group>
+            </Form>
               <p className="text-muted">
                 * By checking, you agree to accept a cookie for this setting.
                 <br />
@@ -418,7 +363,7 @@ class Credit extends React.Component {
             </a>
           </ModalFooter>
         </Modal>
-      </section>
+      </span>
     );
   }
 }

@@ -46,10 +46,9 @@ export default class Railways extends React.Component {
             let layerObj = L.geoJSON(data, {
                 style: function(feature) { return { color: getColor(feature.properties.NAME), ...options }},
                 onEachFeature: function(feature, layer) {
-                    layer.bindPopup(`<p>${label}</p>`)
+                    layer.bindPopup(`<h1 style="color: ${layer.options.color};">${label}</h1>`)
                     layer.on({
                         'mouseover': function (e) {
-                        console.log("🚀 ~ file: Railways.js ~ line 52 ~ Railways ~ e", e.latlng)
                             highlightGeoJSON(e.target);
                             // layer.getPopup().setLatLng(e.latlng).open;
                             layer.openPopup(e.latlng);
@@ -98,6 +97,8 @@ export default class Railways extends React.Component {
         return (
             <MapContext.Consumer>
                 {({map}) => {
+                  if (map) {
+
                     return <GenericLayer
                         title={this.props.label}
                         id={this.props.id}
@@ -109,6 +110,9 @@ export default class Railways extends React.Component {
                         loading={this.state.dataLoading}
                         color={this.props.activeColor}
                     />
+                  } else {
+                      return(<span>Loading...</span>)
+                  }
                 }}
             </MapContext.Consumer>
         )

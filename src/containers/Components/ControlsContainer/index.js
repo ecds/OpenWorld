@@ -10,6 +10,8 @@ import Polygon from '../../Map/Layers/Polygon';
 import Railways from '../../Map/Layers/Railways';
 import Annexations from '../../Map/Layers/Annexations';
 import Wards from '../../Map/Layers/Wards';
+import { Accordion, Card } from 'react-bootstrap';
+import { FaCity, FaDrawPolygon, FaSubway } from 'react-icons/fa';
 
 const Wrapper = styled.div``;
 
@@ -40,13 +42,13 @@ export default class ControlsContainer extends React.Component {
 
 	render() {
 		return (
-			<div>
 			<Wrapper>
-				{
+				<Accordion>
+				{/* {
 					OVERLAYS.map((layer, ind) => {
 						switch(layer.type) {
 							case 'buildings':
-								return <Buildings {...layer} key={ind} />;
+								return
 							case 'roads':
 								return <Roads {...layer} key={ind} />;
 							case 'cluster':
@@ -59,31 +61,32 @@ export default class ControlsContainer extends React.Component {
 								return null;
 						}
 					})
-			  },
-				<Annexations updateLayerInfo={this.updateLayerInfo} />
-				<Wards updateLayerInfo={this.updateLayerInfo} />
-						</Wrapper>
-				<LayerGroup {...StreetcarLayers(1924)} />
-        <div className="ow-toast-container" style={{bottom: "2rem", position: "absolute", left: "2rem", zIndex: -1}}>
-				<div className="overflow-auto" style={{maxHeight: "85vh"}}>
-					<div className="overflow-hidden">
-					{
-						this.state.layers.map((layer, index) => {
-							return (<Toast show={layer.show} key={index} onClose={(e) => this.closeToast(e, index)} animation={true}>
-								<Toast.Header>
-									<strong className="mr-auto">{layer.title}</strong>
-									<small></small>
-								</Toast.Header>
-								<Toast.Body>
-									{layer.body}
-								</Toast.Body>
-							</Toast>)
-						})
-					}
-					</div>
-					</div>
-				</div>
-				</div>
+			  }, */}
+				<Accordion.Item eventKey="0">
+					<Accordion.Header>
+					<FaCity style={{marginRight: ".25rem"}} /> Buildings
+					</Accordion.Header>
+					<Accordion.Body>
+						{/* <Buildings {...layer} key={ind} />; */}
+					</Accordion.Body>
+				</Accordion.Item>
+				<Accordion.Item eventKey="1">
+					<Accordion.Header><FaDrawPolygon style={{marginRight: ".25rem"}} /> City Boundaries</Accordion.Header>
+					<Accordion.Body>
+						<Annexations updateLayerInfo={this.updateLayerInfo} />
+            <Wards updateLayerInfo={this.updateLayerInfo} />
+					</Accordion.Body>
+					</Accordion.Item>
+					<Accordion.Item eventKey="2">
+						<Accordion.Header>
+						<FaSubway style={{marginRight: ".25rem"}} /> Transportation
+						</Accordion.Header>
+						<Accordion.Body>
+							<LayerGroup {...StreetcarLayers(1924)} />
+						</Accordion.Body>
+					</Accordion.Item>
+				</Accordion>
+			</Wrapper>
 		)
 	}
 }

@@ -1,7 +1,8 @@
 import React from 'react';
-import MapContext from '../MapContext';
+import MapContext from '../../../containers/Map/MapContext';
 import L from 'leaflet';
 import { Container, Label } from '../../Components/GenericLayer';
+import { Form } from 'react-bootstrap';
 
 const WardYears = [1854, 1871, 1874, 1883];
 
@@ -184,7 +185,7 @@ export default class Wards extends React.Component {
             return  (
               <Container>
                 <Label htmlFor="wards-by-year">City Wards in <em>{this.state.currentYear}</em>
-                 <input id="wards-by-year" className="form-control-range ward-range-input" type="range" min={this.state.minYear} max={this.state.maxYear} onChange={(e) => this.handleChange(e, map)} />
+                 <Form.Range id="wards-by-year" className="form-control-range ward-range-input" type="range" min={this.state.minYear} max={this.state.maxYear} onChange={(e) => this.handleChange(e, map)} />
                 </Label>
               </Container>
               )

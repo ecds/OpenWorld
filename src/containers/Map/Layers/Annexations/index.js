@@ -1,26 +1,40 @@
 import React from 'react';
-import MapContext from '../MapContext';
+import MapContext from '../../MapContext';
 import L from 'leaflet';
-import { Boundaries, AnnexLayers, AnnexDetails } from '../../../constants';
-import { Container, Label } from '../../Components/GenericLayer';
+import { Button } from "react-bootstrap";
+import Form from 'react-bootstrap/Form'
+import { Boundaries, AnnexLayers, AnnexDetails, YEARS } from './data';
+import { Container, Label } from '../../../Components/GenericLayer';
+import TimeSlider from '../../../Components/TimeSlider';
+import LayerDetails from '../../../Components/LayerDetails';
+import Offcanvas from 'react-bootstrap/Offcanvas'
+import { FaCaretLeft, FaCaretSquareLeft } from 'react-icons/fa';
 
 export default class Annexations extends React.Component {
-  constructor(props) {
+  constructor(props, state) {
     super(props);
 
     this.state = {
-      currentYear: '1837',
+      currentYear: YEARS[0] - 1,
       maxYear: '2021',
-      minYear: '1837',
+      minYear: YEARS[0],
+      firstYear: null,
+      lastYear: null,
       boundaries: [],
       annexations: [],
       currentBoundary: null,
       mapCenter: L.latLng(33.75499844096392, -84.38624382019044),
       bounds: new L.latLngBounds(),
-      activeFeature: null
+      activeFeature: null,
+      currentDetails: null,
+      mapObject: null,
+      show: true,
+      label: 'City Boundaries in'
     }
 
+    this.initialize = this.initialize.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.handleHide = this.handleHide.bind(this);
     this.onEachFeature = this.onEachFeature.bind(this);
     this.activateFeature = this.activateFeature.bind(this);
     this.deactivateFeature = this.deactivateFeature.bind(this);
@@ -29,7 +43,9 @@ export default class Annexations extends React.Component {
   componentDidMount() {
     this.setState(
       {
+        firstYear: Math.min.apply(null, AnnexLayers().map((layer) => parseInt(layer.year))),
         minYear: Math.min.apply(null, AnnexLayers().map((layer) => parseInt(layer.year))) - 1,
+        lastYear: Math.max.apply(null, AnnexLayers().map((layer) => parseInt(layer.year))),
         maxYear: Math.max.apply(null, AnnexLayers().map((layer) => parseInt(layer.year))) + 1
       }
     );
@@ -90,6 +106,17 @@ export default class Annexations extends React.Component {
     });
   }
 
+  componentWillUnmount() {
+    this.state.boundaries.forEach((layer, index) => {
+      layer.layerObject.removeFrom(this.state.mapObject);
+      this.state.annexations[index].layerObject.removeFrom(this.state.mapObject);
+    });
+  };
+
+  initialize(setYear) {
+    setYear(this.state.minYear);
+  }
+
   activateFeature(event) {
     if (this.state.activeFeature) {
       this.state.activeFeature.closePopup();
@@ -105,20 +132,27 @@ export default class Annexations extends React.Component {
     }
   }
 
-  handleChange(event, map) {
+  handleHide() {
+    this.setState({ show: false });
+  }
+
+  handleChange(event, map, setYear) {
     const boundaryPane = map.createPane('boundary');
     const annexPane = map.createPane('annexation')
     boundaryPane.style.zIndex = 450;
     annexPane.style.zIndex = 475;
     const eventYear = parseInt(event.target.value);
     const newYear = (eventYear >= this.state.currentYear) ? eventYear : Math.max(...this.state.annexations.filter(l => l.year <= eventYear).map(l => parseInt(l.year)));
+    // setYear(newYear)
     this.setState(
       {
-        currentYear: event.target.value
+        currentYear: event.target.value,
+        mapObject: map
       }
     );
 
-    map.fitBounds(map.getBounds().extend(this.state.bounds, { animate: true }));
+    // map.fitBounds(map.getBounds().extend(this.state.bounds, { animate: false, paddingTopLeft: [0, '400px'] }));
+    map.fitBounds(this.state.bounds, { animate: true, padding: [-400, 0] });
 
     this.state.boundaries.forEach((layer, index) => {
       const layerInfo = {
@@ -130,30 +164,35 @@ export default class Annexations extends React.Component {
       const annexation = this.state.annexations[index];
 
       if (parseInt(layer.year) === newYear && !map.hasLayer(layer.layerObject)) {
-        this.props.updateLayerInfo(layerInfo);
         layer.layerObject.addTo(map);
         annexation.layerObject.addTo(map);
+        // map.flyToBounds(map.getBounds().extend(layer.layerObject.getBounds(), { animate: true }));
+
         if (this.state.currentBoundary) {
           this.state.currentBoundary.layerObject.removeFrom(map);
         }
+
         if (this.state.currentAnnexation) {
           this.state.currentAnnexation.layerObject.setStyle({fillOpacity: 0, color: 'transparent'})
         }
+
         annexation.layerObject.setStyle({fillOpacity: 0.7});
         this.setState(
           {
             currentBoundary: layer,
-            currentAnnexation: annexation
+            currentAnnexation: annexation,
+            currentDetails: layerInfo
           }
         );
       } else if (newYear <= this.state.minYear && this.state.currentBoundary) {
-        this.props.updateLayerInfo({ type: 'annex' });
+        // this.props.updateLayerInfo({ type: 'annex' });
         this.state.currentBoundary.layerObject.removeFrom(map);
         this.state.currentAnnexation.layerObject.removeFrom(map);
         this.setState(
           {
             currentBoundary: null,
-            currentAnnexation: null
+            currentAnnexation: null,
+            currentDetails: null
           }
         );
       }
@@ -180,16 +219,31 @@ export default class Annexations extends React.Component {
   render() {
     return (
       <MapContext.Consumer>
-          {({map}) => {
-            return  (
-              <Container>
-                <Label htmlFor="annexations-by-year">City Boundaries in <em>{this.state.currentYear}</em>
-                  <input id="annexations-by-year" className="form-control-range annexation-range-input" type="range" min={this.state.minYear} max={this.state.maxYear} onChange={(e) => this.handleChange(e, map)} />
-                </Label>
-              </Container>
-              )
-          }}
+        {({ map, setYear }) => {
+          return  (
+            <Container>
+              <Offcanvas show={this.state.show} backdrop={false} scroll={true} placement="end" onHide={this.handleHide} onShow={() => this.initialize(setYear)}>
+                <Offcanvas.Header closeButton><h5>Annexations</h5></Offcanvas.Header>
+                <Offcanvas.Body>
+                  <TimeSlider {...this.state} range={YEARS} update={(e) => this.handleChange(e, map)} current={this.state.currentYear} />
+                  <LayerDetails layer={this.state.currentDetails} />
+                  </Offcanvas.Body>
+              </Offcanvas>
+              {this.renderToggleButton()}
+            </Container>
+          )
+        }}
       </MapContext.Consumer>
     )
+  }
+
+  renderToggleButton() {
+    if (!this.state.show) {
+      return (
+        <Button className="end-0 position-absolute top-50 mx-3" onClick={() => this.setState({ show: true })}><FaCaretLeft /> Annexation Details</Button>
+      )
+    } else {
+      return(<></>)
+    }
   }
 }

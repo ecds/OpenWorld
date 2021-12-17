@@ -1,0 +1,66 @@
+// Bootstrap overrides
+$offcanvas-bg-color: rgba(255, 255, 255, 0.75);
+$primary: #dc3545;
+$navbar-dark-color: white;
+$navbar-dark-brand-color: white;
+$btn-link-color: $navbar-dark-color;
+$btn-link-hover-color: lightgray;
+// $offcanvas-horizontal-width: 33vw;
+
+@import "~bootstrap/scss/bootstrap";
+
+.offcanvas-header {
+  background-color: white;
+}
+
+.modal-body {
+  .navbar-nav {
+    flex-direction: row;
+
+    button {
+      padding: 0.5rem !important;
+    }
+  }
+}
+
+.modal-content {
+  .nav-item {
+    width: 20%;
+  }
+}
+
+body {
+  font-size: 18px !important;
+}
+
+.custom-icon {
+  width: 1em !important;
+  height: 1em !important;
+  background: transparent;
+  border: none;
+  margin: -14px 0 0 -10px !important;
+  font: 16px/1.5 "Helvetica Neue", Arial, Helvetica, sans-serif;
+}
+
+.offcanvas-body {
+  li {
+    &:hover {
+      cursor: pointer;
+      font-weight: bolder;
+    }
+  }
+}
+
+.owa-ecds-logo {
+  height: 2.75rem;
+}
+
+nav {
+  .btn-link {
+    text-decoration: none;
+
+    &:hover, &:focus {
+      text-decoration: underline;
+    }
+  }
+}
