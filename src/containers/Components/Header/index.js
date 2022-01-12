@@ -63,9 +63,9 @@ export default class Header extends React.Component {
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto gap-2">
             <NavDropdown title={ this.buildings() }>
-              <NavDropdown.Item as={ Link } to="/buildings/1878">
+              {/* <NavDropdown.Item as={ Link } to="/buildings/1878">
                 1878 Buildings Footprints
-              </NavDropdown.Item>
+              </NavDropdown.Item> */}
               <NavDropdown.Item as={ Link } to="/buildings/1928">
                 1928 Buildings Footprints
               </NavDropdown.Item>
