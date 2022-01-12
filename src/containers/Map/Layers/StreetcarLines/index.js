@@ -21,7 +21,8 @@ export default class StreetcarLines extends React.Component {
       dataLoaded: false,
       show: true,
       map: null,
-      year: parseInt(this.props.match.params.year)
+      year: parseInt(this.props.match.params.year),
+      setYear: null
     }
 
     this.handleHide = this.handleHide.bind(this);
@@ -68,6 +69,7 @@ export default class StreetcarLines extends React.Component {
     this.state.layers.forEach((layer, index) => {
       layer.layerObject.removeFrom(this.state.map);
     });
+    this.state.setYear(0);
   };
 
   handleHide() {
@@ -76,7 +78,7 @@ export default class StreetcarLines extends React.Component {
 
   async initialize(map, setYear) {
     setYear(this.state.year)
-    this.setState({ map });
+    this.setState({ map, setYear });
     this.state.layers.forEach(layer => layer.layerObject.addTo(map));
     map.fitBounds(this.state.bounds, { animate: true, padding: [-400, 0] });
   }

@@ -119,6 +119,11 @@ export const AnnexLayers = function() {
   return layers;
 }
 
+export const Intro = {
+  title: 'City Growth Through the Years',
+  body: 'Use the form field or slider above to select a year to see how Atlanta grew over time.'
+}
+
 export const AnnexDetails = {
   "1847": {
     year: 1847,

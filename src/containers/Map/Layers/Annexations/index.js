@@ -3,7 +3,7 @@ import MapContext from '../../MapContext';
 import L from 'leaflet';
 import { Button } from "react-bootstrap";
 import Form from 'react-bootstrap/Form'
-import { Boundaries, AnnexLayers, AnnexDetails, YEARS } from './data';
+import { Boundaries, AnnexLayers, AnnexDetails, YEARS, Intro } from './data';
 import { Container, Label } from '../../../Components/GenericLayer';
 import TimeSlider from '../../../Components/TimeSlider';
 import LayerDetails from '../../../Components/LayerDetails';
@@ -26,10 +26,11 @@ export default class Annexations extends React.Component {
       mapCenter: L.latLng(33.75499844096392, -84.38624382019044),
       bounds: new L.latLngBounds(),
       activeFeature: null,
-      currentDetails: null,
+      currentDetails: Intro,
       mapObject: null,
       show: true,
-      label: 'City Boundaries in'
+      label: 'City Boundaries in',
+      setYear: null
     }
 
     this.initialize = this.initialize.bind(this);
@@ -111,10 +112,12 @@ export default class Annexations extends React.Component {
       layer.layerObject.removeFrom(this.state.mapObject);
       this.state.annexations[index].layerObject.removeFrom(this.state.mapObject);
     });
+    this.state.setYear(0);
   };
 
   initialize(setYear) {
     setYear(this.state.minYear);
+    this.setState({ setYear });
   }
 
   activateFeature(event) {
@@ -220,18 +223,22 @@ export default class Annexations extends React.Component {
     return (
       <MapContext.Consumer>
         {({ map, setYear }) => {
-          return  (
-            <Container>
-              <Offcanvas show={this.state.show} backdrop={false} scroll={true} placement="end" onHide={this.handleHide} onShow={() => this.initialize(setYear)}>
-                <Offcanvas.Header closeButton><h5>Annexations</h5></Offcanvas.Header>
-                <Offcanvas.Body>
-                  <TimeSlider {...this.state} range={YEARS} update={(e) => this.handleChange(e, map)} current={this.state.currentYear} />
-                  <LayerDetails layer={this.state.currentDetails} />
-                  </Offcanvas.Body>
-              </Offcanvas>
-              {this.renderToggleButton()}
-            </Container>
-          )
+          if (map) {
+            return  (
+              <Container>
+                <Offcanvas show={this.state.show} backdrop={false} scroll={true} placement="end" onHide={this.handleHide} onShow={() => this.initialize(setYear)}>
+                  <Offcanvas.Header closeButton><h5>Annexations</h5></Offcanvas.Header>
+                  <Offcanvas.Body>
+                    <TimeSlider {...this.state} range={YEARS} update={(e) => this.handleChange(e, map)} current={this.state.currentYear} />
+                    <LayerDetails layer={this.state.currentDetails} />
+                    </Offcanvas.Body>
+                </Offcanvas>
+                {this.renderToggleButton()}
+              </Container>
+            )
+          } else {
+            return <></>
+          }
         }}
       </MapContext.Consumer>
     )

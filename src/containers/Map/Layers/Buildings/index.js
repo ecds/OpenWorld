@@ -7,7 +7,6 @@ import { updateInfo, fetchResources } from '../../../../redux/actions';
 import LayerDetails from '../../../Components/LayerDetails';
 import { MAP_OPTIONS } from '../../../../constants';
 import GenericLayer from '../../../Components/GenericLayer';
-import OmekaImages from '../../../Components/OmekaImages';
 import Offcanvas from 'react-bootstrap/Offcanvas'
 import { Col, Row, Button } from "react-bootstrap";
 import { Container, Label } from '../../../Components/GenericLayer';
@@ -30,7 +29,8 @@ export default class Buildings extends React.Component {
       show: true,
       year: parseInt(this.props.match.params.year),
       currentDetails: null,
-      markers: []
+      markers: [],
+      setYear: null
     }
 
     this.clearHighlight = this.clearHighlight.bind(this);
@@ -55,23 +55,28 @@ export default class Buildings extends React.Component {
         },
         this.setLayer
       );
+
+      if (this.state.setYear) {
+        this.state.setYear(this.props.match.params.year);
+      }
     }
   }
 
   componentWillUnmount() {
     this.state.layer.leafletObject.removeFrom(this.state.map);
     this.state.markers.forEach(marker => marker.removeFrom(this.state.map));
+    this.state.setYear(0);
   };
 
   setLayer() {
     this.setState({ dataLoading: true });
     const layer = layers[this.state.year];
-    // const url = `https://geoserver.ecds.emory.edu/gwc/service/tms/1.0.0/${layer.workspace}:${layer.layer}@EPSG:900913@pbf/{z}/{x}/{-y}.pbf`;
-    const url = 'https://api.mapbox.com/v4/jayvarner.d2xvvkl9/{z}/{x}/{y}.vector.pbf?access_token=pk.eyJ1IjoiamF5dmFybmVyIiwiYSI6ImVkYjliN2Y3ZDZlYzEyNzg5NDhiMGU4MWRiZTY3Mzk3In0.U4Sc4HVk2F4MkKyd7ybgXw'
+    const url = `https://geoserver.ecds.emory.edu/gwc/service/tms/1.0.0/${layer.workspace}:${layer.layer}@EPSG:900913@pbf/{z}/{x}/{-y}.pbf`;
+    // const url = 'https://api.mapbox.com/v4/jayvarner.d2xvvkl9/{z}/{x}/{y}.vector.pbf?access_token=pk.eyJ1IjoiamF5dmFybmVyIiwiYSI6ImVkYjliN2Y3ZDZlYzEyNzg5NDhiMGU4MWRiZTY3Mzk3In0.U4Sc4HVk2F4MkKyd7ybgXw'
     layer.leafletObject = new L.vectorGrid.protobuf(url, {
       rendererFactory: L.svg.tile,
       vectorTileLayerStyles: {
-        '3datl-7a737f': properties => {
+        buildings_1928: properties => {
           return this.style(properties);
         },
       },
@@ -79,9 +84,18 @@ export default class Buildings extends React.Component {
       maxZoom: MAP_OPTIONS.maxZoom,
       getFeatureId: (f) => {
         if (layer.details && Object.keys(layer.details).includes(f.properties.BLDG_ID)) {
-          const camera ='<span class="fs-3"><svg viewBox="0 0 512 512"><path d="M512 144v288c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V144c0-26.5 21.5-48 48-48h88l12.3-32.9c7-18.7 24.9-31.1 44.9-31.1h125.5c20 0 37.9 12.4 44.9 31.1L376 96h88c26.5 0 48 21.5 48 48zM376 288c0-66.2-53.8-120-120-120s-120 53.8-120 120 53.8 120 120 120 120-53.8 120-120zm-32 0c0 48.5-39.5 88-88 88s-88-39.5-88-88 39.5-88 88-88 88 39.5 88 88z"></path></svg></span>';
-          const icon = L.divIcon({html: camera});
-          this.state.markers.push(L.marker([f.properties.y_coord, f.properties.x_coord], { icon }).addTo(this.state.map));
+          // const camera ='<span class="fs-3"><svg viewBox="0 0 512 512"><path d="M512 144v288c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V144c0-26.5 21.5-48 48-48h88l12.3-32.9c7-18.7 24.9-31.1 44.9-31.1h125.5c20 0 37.9 12.4 44.9 31.1L376 96h88c26.5 0 48 21.5 48 48zM376 288c0-66.2-53.8-120-120-120s-120 53.8-120 120 53.8 120 120 120 120-53.8 120-120zm-32 0c0 48.5-39.5 88-88 88s-88-39.5-88-88 39.5-88 88-88 88 39.5 88 88z"></path></svg></span>';
+          // const icon = L.divIcon({html: camera});
+          const icon = L.divIcon({
+            html: `<div class="jesse-dot"><div class="dot" style="background-color: ${this.getColor(f.properties.use)}"></div><div class="pulsate-ring"  style="background-color: ${this.getColor(f.properties.use)}"></div></div>`
+          });
+          const marker = L.marker(layer.details[f.properties.BLDG_ID].latLng, { icon });
+          marker.addTo(this.state.map);
+          marker.on('click', (e) => {
+            e.layer = f;
+            this.handleClick(e);
+          });
+          this.state.markers.push(marker);
         }
         return f.properties.BLDG_ID;
       }
@@ -215,6 +229,8 @@ export default class Buildings extends React.Component {
     //   this.state.layer.resetFeatureStyle(this.state.selected);
     // });
 
+    this.setState({ currentDetails: null });
+
 
     this.clearHighlight();
     this.state.layer.leafletObject.resetFeatureStyle(this.state.selected);
@@ -251,7 +267,7 @@ export default class Buildings extends React.Component {
 
   initialize(map, setYear) {
     setYear(this.state.year);
-    this.setState({ map }, this.addLayer);
+    this.setState({ map, setYear }, this.addLayer);
   }
 
   addLayer() {
@@ -259,7 +275,6 @@ export default class Buildings extends React.Component {
       this.state.map.addLayer(this.state.layer.leafletObject);
       this.state.map.fitBounds(this.state.layer.bounds, { animate: true, padding: [-400, 0] });
       this.state.markers.forEach((marker) => {
-        console.log("🚀 ~ file: index.js ~ line 260 ~ Buildings ~ this.state.markers.forEach ~ marker", marker)
         marker.addTo(this.state.map)
       });
     }
@@ -321,7 +336,7 @@ export default class Buildings extends React.Component {
       )
     } else {
       return(
-        <article><p>Click a building<i class="fas fa-coffee"></i> to for details.</p></article>
+        <article><p>Click a building<i className="fas fa-coffee"></i> to for details.</p></article>
       )
     }
   }

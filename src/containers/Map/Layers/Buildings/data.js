@@ -11,7 +11,16 @@ export const layers = {
     bounds: [[33.7333353316, -84.4166017627], [33.7833813133, -84.3167420714]],
     details: {
       BD15099: {
-        omekaIdentifier: 109
+        omekaIdentifier: 109,
+        latLng: [33.756854, -84.388618]
+      },
+      BD15695: {
+        omekaIdentifier: 33,
+        latLng: [33.7594, -84.3859]
+      },
+      BD37940: {
+        omekaIdentifier: 38,
+        latLng: [33.74874142, -84.41570194]
       }
     }
   }
@@ -27,6 +36,23 @@ export async function fetchMetadata(identifier) {
     body: data.element_texts.find(el => el.element.name == 'Description').text,
     identifier
   }
+}
+
+export const COLORS = {
+  A: 'olive',
+  C: 'red',
+  F: 'orange',
+  FILM: 'pink',
+  I: 'purple',
+  MFG: 'purple',
+  M: 'brown',
+  O: 'black',
+  P: 'blue',
+  FD: 'blue',
+  R: 'green',
+  T: 'lightgray',
+  U: 'gray',
+  W: 'violet'
 }
 
 // export fetchMetadata;

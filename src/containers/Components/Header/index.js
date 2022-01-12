@@ -17,6 +17,7 @@ import { FaBuilding, FaVectorSquare, FaSubway } from 'react-icons/fa';
 import Credit from '../Credit';
 import { NavbarBrand } from 'react-bootstrap';
 import { Container } from 'react-bootstrap';
+import LayerControlName from '../LayerControlName';
 
 export default class Header extends React.Component {
   boundaries() {
@@ -73,15 +74,15 @@ export default class Header extends React.Component {
               <NavDropdown.Item as={ Link } to="/annexations">
                 Annexations
               </NavDropdown.Item>
-              <NavDropdown.Item as={ Link } to='/wards'>
+              {/* <NavDropdown.Item as={ Link } to='/wards'>
                 Wards
-              </NavDropdown.Item>
+              </NavDropdown.Item> */}
             </NavDropdown>
-            <NavDropdown title={ this.transportation() }>
+            {/* <NavDropdown title={ this.transportation() }>
               <NavDropdown.Item as={ Link } to="/streetcars/1924">
                 Streetcar Lines 1924
               </NavDropdown.Item>
-            </NavDropdown>
+            </NavDropdown> */}
           <Credit />
           <div>&nbsp;</div>
           </Nav>

@@ -1,16 +1,23 @@
 // Bootstrap overrides
-$offcanvas-bg-color: rgba(255, 255, 255, 0.75);
+$offcanvas-bg-color: rgba(255, 255, 255, 0.90);
 $primary: #dc3545;
 $navbar-dark-color: white;
 $navbar-dark-brand-color: white;
 $btn-link-color: $navbar-dark-color;
 $btn-link-hover-color: lightgray;
+$accordion-bg: none;
+$form-range-track-bg: #adb5bd;
 // $offcanvas-horizontal-width: 33vw;
+$dot-offset: 40px;
 
 @import "~bootstrap/scss/bootstrap";
 
 .offcanvas-header {
   background-color: white;
+}
+
+.offcanvas-backdrop {
+  display: none;
 }
 
 .modal-body {
@@ -63,4 +70,69 @@ nav {
       text-decoration: underline;
     }
   }
+}
+
+.jesse-dot {
+  display: block;
+  height: 3vx;
+  left: -$dot-offset;
+  position: absolute;
+  top: -$dot-offset;
+  width: 3vx;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  position: relative;
+  top: 30px;
+  left: 30px;
+  border: 1px solid #FFF;
+  border-radius: 50%;
+  // transition-property: height, width, top, left;
+  // transition-duration: 300ms;
+  // transition-timing-function: ease;
+  z-index: 1000;
+  background-color: deeppink;
+  opacity: .5;
+  animation: pulsate 3400ms ease-out infinite;
+}
+
+// .pulsate-ring {
+//   background-color: deeppink;
+//   pointer-events: none;
+//   width: 75px;
+//   height: 75px;
+//   position: absolute;
+//   top: -1px;
+//   left: -2px;
+//   // bottom: 244;
+//   display: block;
+//   // background: rgba(5, 124, 255, 0.6);
+//   border-radius: 50%;
+//   // opacity: 0;
+//   animation: pulsate 2400ms ease-out infinite;
+
+//   &.active-group {
+//     animation: solid-pulsate 2400ms ease-out infinite;
+//     opacity: 1;
+//   }
+// }
+
+@keyframes pulsate {
+  0% {
+    transform: scale(0.1);
+    opacity: 0;
+  }
+  50% {
+    opacity: .7;
+  }
+  100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+.base-layer-control {
+  max-height: calc(100vh - 250px);
 }

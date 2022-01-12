@@ -11,9 +11,9 @@ export const THEME = {
 
 /* map constants */
 export const MAP_OPTIONS = {
-    center:      [33.749038, -84.388466],
+    center:      [33.75432, -84.38979],
     minZoom:     11,
-    zoom:        16,
+    zoom:        13,
     maxZoom:     20,
     zoomControl: true,
     maxBounds:   [[33.53, -84.61], [34.03, -84.11]],
@@ -21,35 +21,65 @@ export const MAP_OPTIONS = {
 
 export const MAP_TILE_LAYERS = [
     {
-        url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Shaded_Relief/MapServer/tile/{z}/{y}/{x}',
-        year: 0
+        urls: [
+            'https://server.arcgisonline.com/ArcGIS/rest/services/World_Shaded_Relief/MapServer/tile/{z}/{y}/{x}',
+            'https://basemaps.cartocdn.com/light_only_labels/{z}/{x}/{y}{r}.png'
+        ],
+        year: 0,
+        opacity: 1,
+        title: 'Modern Topography'
     },
     {
-        url: 'https://geoserver.ecds.emory.edu/ATLMaps/gwc/service/wms?layers=ATLMaps:Atlanta1906&format=image/png&transparant=true',
-        type: 'WMS',
-        year: 1906
+        urls: [
+            'https://basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png'
+        ],
+        year: 2022,
+        opacity: 0,
+        title: 'Modern Street Map'
     },
     {
-        url: 'https://geoserver.ecds.emory.edu/ATLMaps/gwc/service/wms?layers=ATLMaps:sq4pd&format=image/png&transparant=true',
+        urls: [
+            'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+            'https://basemaps.cartocdn.com/light_only_labels/{z}/{x}/{y}{r}.png'
+        ],
+        year: 2022,
+        opacity: 0,
+        title: 'Modern Satellite Image'
+    },
+    ,
+    {
+        urls: ['https://geoserver.ecds.emory.edu/Atlanta1878/gwc/service/wms?layers=Atlanta1878:q516x4&format=image/png&transparant=true'],
         type: 'WMS',
-        year: 1911
+        year: 1840,
+        opacity: 0,
+        title: '1878 City Atlas'
+    },
+    {
+        urls: ['https://geoserver.ecds.emory.edu/ATLMaps/gwc/service/wms?layers=ATLMaps:Atlanta1906&format=image/png&transparant=true'],
+        type: 'WMS',
+        year: 1906,
+        opacity: 0,
+        title: '1906 City Map'
+    },
+    {
+        urls: ['https://geoserver.ecds.emory.edu/ATLMaps/gwc/service/wms?layers=ATLMaps:sq4pd&format=image/png&transparant=true'],
+        type: 'WMS',
+        year: 1911,
+        opacity: 0,
+        title: '1911 Street Map'
     },
     // 1000-SCALE
     {
-        url: 'https://s3.amazonaws.com/tilemaps/ATL28_1000tiles/{z}/{x}/{y}.png',
+        urls: [
+            'https://s3.amazonaws.com/tilemaps/ATL28_1000tiles/{z}/{x}/{y}.png',
+            'https://s3.amazonaws.com/tilemaps/ATL28_200tiles/{z}/{x}/{y}.png'
+        ],
         bounds: [[33.93379544, -84.21603335], [33.63298531, -84.51696580]],
         minZoom: 11,
         maxNativeZoom: 16,
-        year: 1928
-    },
-    // 200-SCALE
-    {
-        url: 'https://s3.amazonaws.com/tilemaps/ATL28_200tiles/{z}/{x}/{y}.png',
-        bounds: [[33.78337253, -84.31633406], [33.73327062, -84.41714544]],
-        minZoom: 11,
-        maxNativeZoom: 19, // MAX NATIVE ZOOM
-        type: null,
-        year: 1928
+        year: 1928,
+        opacity: 0,
+        title: '1928 City Atlas'
     }
 ];
 

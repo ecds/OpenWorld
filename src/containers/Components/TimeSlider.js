@@ -58,7 +58,7 @@ export default class TimeSlider extends React.Component {
                   }
                   <rect x="98%" y="5" width="1" height="10"></rect>
                 </svg>
-              <input style={{width: "100%"}} className="range" type="range" min={this.state.min} max={this.state.max} onChange={(event) => this.handleChange(event, setYear)} value={this.props.current} />
+              <input className="form-range" type="range" min={this.state.min} max={this.state.max} onChange={(event) => this.handleChange(event, setYear)} value={this.props.current} />
             </Col>
             </Row>
             </>

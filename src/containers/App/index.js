@@ -21,6 +21,8 @@ import Buildings from '../Map/Layers/Buildings';
 import LayerGroup from '../Components/LayerGroup';
 import StreetcarLines from '../Map/Layers/StreetcarLines';
 import WatermarkControl from '../Components/WatermarkControl';
+import RasterLayerGroup from '../Map/Layers/RasterLayerGroup';
+import { withRouter } from "react-router";
 
 const Map = lazy(() => import('../Map'));
 const Tabs = lazy(() => import('../Tabs'));

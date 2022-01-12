@@ -26,7 +26,8 @@ export default class Wards extends React.Component {
       show: true,
       years: [1854, 1871, 1874, 1883],
       map: null,
-      label: 'City wards in the year'
+      label: 'City wards in the year',
+      setYear: null
     }
 
     this.initialize = this.initialize.bind(this);
@@ -82,10 +83,12 @@ export default class Wards extends React.Component {
     this.state.wards.forEach((layer) => {
       layer.layerObject.removeFrom(this.state.map);
     });
+    this.state.setYear(0);
   };
 
   initialize(setYear) {
     setYear(this.state.minYear);
+    this.setState({ setYear });
   }
 
   activateFeature(event) {

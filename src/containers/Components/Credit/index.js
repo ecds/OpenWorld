@@ -56,13 +56,16 @@ class Credit extends React.Component {
   render() {
     return (
       <span>
-        <Button className="ps-0" variant="link" onClick={this.toggleModal}>
+        <Button className="ps-0 nav-link" size="lg" variant="link" onClick={this.toggleModal}>
           About
         </Button>
+        {/* <a className="nav-link" href="#" role="button" aria-expanded="false" aria-controls="about-modal" onClick={this.toggleModal}>About</a> */}
         <Modal
           size="lg"
           show={this.state.modalOpen}
           onHide={this.toggleModal}
+          backdrop={true}
+          id="about-modal"
         >
           <ModalHeader closeButton>
             <ModalTitle>About OpenWorld Atlanta</ModalTitle>
