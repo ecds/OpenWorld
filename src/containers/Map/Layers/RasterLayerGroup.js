@@ -36,13 +36,18 @@ export default class RasterLayerGroup extends React.Component {
   //   console.log('bye')
   // }
 
-  componentDidUpdate() {
+  componentDidUpdate(prevProps, prevState) {
     if (this.state.currentPath != document.location.pathname) {
       this.setState({ currentPath: document.location.pathname });
+    }
+
+    if (prevProps.year != this.props.year) {
+      this.updateOpacityYear();
     }
   }
 
   updateOpacitySlider(event) {
+    console.log("🚀 ~ file: RasterLayerGroup.js ~ line 46 ~ RasterLayerGroup ~ updateOpacitySlider ~ event", event, event.target.value)
     this.setState({
       opacity: event.target.value,
       calculatedOpacity: event.target.value * 100,
@@ -59,7 +64,7 @@ export default class RasterLayerGroup extends React.Component {
     }
 
     this.setState({
-      opacity: newNum * 0.01,
+      opacity: parseFloat(newNum * 0.01).toPrecision(2),
       calculatedOpacity: newNum,
       opacityManual: true
     });
@@ -69,28 +74,18 @@ export default class RasterLayerGroup extends React.Component {
     TODO: This is really complicated and messy and I really don't like it.
     We might be better off rewrite this stuff to function components and use hooks?
   */
-  updateOpacityYear(year, event) {
+  updateOpacityYear() {
     const routeChanged = this.state.currentPath != document.location.pathname;
 
-    if (year == this.props.layerGroup.year && this.state.opacity < 1) {
+    if (this.props.year >= this.props.layerGroup.year && this.state.opacity < 1) {
       this.setState({
         opacity: 1,
         calculatedOpacity: 100,
       });
-    } else if (year == this.props.layerGroup.year - 1 && this.state.opacity > 0) {
+    } else if (this.props.year <= this.props.layerGroup.year - 1 && this.state.opacity > 0) {
       this.setState({
         opacity: 0,
         calculatedOpacity: 0
-      });
-    } else if (routeChanged && this.props.layerGroup.year > year && this.state.opacity >= 0) {
-      this.setState({
-        opacity: 0,
-        calculatedOpacity: 0
-      });
-    } else if (routeChanged && this.props.layerGroup.year < year && this.state.opacity <= 1) {
-      this.setState({
-        opacity: 1,
-        calculatedOpacity: 100
       });
     }
   }
@@ -99,7 +94,7 @@ export default class RasterLayerGroup extends React.Component {
     return (
         <MapContext.Consumer>
             {({map, year}) => {
-              this.updateOpacityYear(year);
+              // this.updateOpacityYear(year);
               if (this.props.layerGroup) {
                 return (
                   <LayerGroup ref={this.layerGroupRef}>
@@ -126,10 +121,10 @@ export default class RasterLayerGroup extends React.Component {
                     </Row>
                     <Row>
                       <Col>
-                        <input type="range" className="form-range" value={this.state.opacity} min="0" max="1" step=".1" onChange={(e) => this.updateOpacitySlider(e)} ref={this.sliderRef} />
+                        <input type="range" className="form-range" value={this.state.opacity} min="0" max="1" step=".1" onChange={(e) => this.updateOpacitySlider(e)} ref={this.sliderRef} tabIndex="0" />
                       </Col>
                       <Col xs="auto">
-                        <input type="number" value={this.state.calculatedOpacity} min="0" max="100" step="5" onChange={(e) => this.updateOpacityNumber(e)} ref={this.numberRef} /> %
+                        <input type="number" value={this.state.calculatedOpacity} min="0" max="100" step="5" onChange={(e) => this.updateOpacityNumber(e)} ref={this.numberRef} tabIndex="0" /> %
                       </Col>
                     </Row>
                     <Row><Col><hr /></Col></Row>

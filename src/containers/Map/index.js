@@ -62,7 +62,7 @@ class Map extends React.Component {
                     {MAP_TILE_LAYERS.map((layer, key) => {
                       if (this.mapRef) {
                         return (
-                          <RasterLayerGroup layerGroup={layer} key={key} />
+                          <RasterLayerGroup {...this.props} layerGroup={layer} key={key} />
                           )
                       } else {
                         return <></>
