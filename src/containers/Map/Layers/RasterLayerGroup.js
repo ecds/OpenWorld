@@ -52,9 +52,15 @@ export default class RasterLayerGroup extends React.Component {
   }
 
   updateOpacityNumber(event) {
+    let newNum = event.target.value;
+
+    if (newNum > 100) {
+      newNum = 100;
+    }
+
     this.setState({
-      opacity: event.target.value * 0.01,
-      calculatedOpacity: event.target.value,
+      opacity: newNum * 0.01,
+      calculatedOpacity: newNum,
       opacityManual: true
     });
   }
