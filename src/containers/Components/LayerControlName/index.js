@@ -1,6 +1,4 @@
 import React from 'react';
-import { MAP_TILE_LAYERS } from '../../../constants';
-import Container from 'react-bootstrap/Container';
 
 export default class LayerControlName extends React.Component {
   render() {

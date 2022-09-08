@@ -1,12 +1,8 @@
 import React from 'react';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import Toast from 'react-bootstrap/Toast'
-import { Button } from 'bootstrap';
-import { ToastContainer } from 'react-bootstrap';
 import { TileLayer, WMSTileLayer, LayerGroup } from 'react-leaflet';
 import MapContext from '../../Map/MapContext';
-import { MAP_TILE_LAYERS } from '../../../constants';
 import { DomEvent } from 'leaflet';
 
 export default class RasterLayerGroup extends React.Component {
@@ -37,17 +33,16 @@ export default class RasterLayerGroup extends React.Component {
   // }
 
   componentDidUpdate(prevProps, prevState) {
-    if (this.state.currentPath != document.location.pathname) {
+    if (this.state.currentPath !== document.location.pathname) {
       this.setState({ currentPath: document.location.pathname });
     }
 
-    if (prevProps.year != this.props.year) {
+    if (prevProps.year !== this.props.year) {
       this.updateOpacityYear();
     }
   }
 
   updateOpacitySlider(event) {
-    console.log("🚀 ~ file: RasterLayerGroup.js ~ line 46 ~ RasterLayerGroup ~ updateOpacitySlider ~ event", event, event.target.value)
     this.setState({
       opacity: event.target.value,
       calculatedOpacity: event.target.value * 100,
@@ -75,8 +70,6 @@ export default class RasterLayerGroup extends React.Component {
     We might be better off rewrite this stuff to function components and use hooks?
   */
   updateOpacityYear() {
-    const routeChanged = this.state.currentPath != document.location.pathname;
-
     if (this.props.year >= this.props.layerGroup.year && this.state.opacity < 1) {
       this.setState({
         opacity: 1,
@@ -99,7 +92,7 @@ export default class RasterLayerGroup extends React.Component {
                 return (
                   <LayerGroup ref={this.layerGroupRef}>
                     {this.props.layerGroup.urls.map((url, index) => {
-                      if (this.props.layerGroup.type == 'WMS') {
+                      if (this.props.layerGroup.type === 'WMS') {
                         return (
                           <WMSTileLayer url={url} {...this.props.layerGroup} opacity={this.state.opacity} key={index} />
                         )

@@ -5,7 +5,7 @@ const initialState = {
     byIds: {}
 };
 
-export default function(state=initialState, action) {
+const layerSelector = function(state=initialState, action) {
     switch(action.type) {
         case ADD_LAYER: {
             const { id, content } = action.payload;
@@ -38,3 +38,5 @@ export default function(state=initialState, action) {
             return state;
     }
 }
+
+export default layerSelector;

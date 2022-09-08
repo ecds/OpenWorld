@@ -1,52 +1,51 @@
 import React, { useContext } from 'react';
-import Accordion from 'react-bootstrap/Accordion'
 import { AccordionContext, Button, Card, Col, Row } from "react-bootstrap";
 import { useAccordionButton } from 'react-bootstrap/AccordionButton';
 import Offcanvas from 'react-bootstrap/Offcanvas'
-import { FaCheckSquare, FaRegSquare, FaChevronDown, FaChevronUp } from 'react-icons/fa';
+import { FaCheckSquare, FaRegSquare } from 'react-icons/fa';
 import GenericLayer, { Container, Icon, Label, Description, Attribution } from "../GenericLayer";
 import Polygon from '../../Map/Layers/Polygon';
 import Railways from '../../Map/Layers/Railways';
 import LayerDetails from '../LayerDetails';
 import MapContext from '../../Map/MapContext';
 
-function ContextAwareToggle({ children, eventKey, callback }) {
-  const { activeEventKey } = useContext(AccordionContext);
+// function ContextAwareToggle({ children, eventKey, callback }) {
+//   const { activeEventKey } = useContext(AccordionContext);
 
-  const decoratedOnClick = useAccordionButton(
-    eventKey,
-    () => callback && callback(eventKey),
-  );
+//   const decoratedOnClick = useAccordionButton(
+//     eventKey,
+//     () => callback && callback(eventKey),
+//   );
 
-  const isCurrentEventKey = activeEventKey == eventKey;
+//   const isCurrentEventKey = activeEventKey === eventKey;
 
-  return (
-    <Container>
-    <Row className="no-gutters">
-      <Col>
-        <Button
-          variant="link"
-          size="sm"
-          onClick={decoratedOnClick}
-        >
-          {isCurrentEventKey ? <FaChevronUp /> : <FaChevronDown />}
-        </Button>
-      </Col>
-    </Row>
-    <Row className="no-gutters">
-      <Col>
-        <Button
-          variant="link"
-          size="sm"
-          onClick={decoratedOnClick}
-        >
-          {isCurrentEventKey ? "Collapse" : "Expand"}
-        </Button>
-      </Col>
-    </Row>
-  </Container>
-  );
-}
+//   return (
+//     <Container>
+//     <Row className="no-gutters">
+//       <Col>
+//         <Button
+//           variant="link"
+//           size="sm"
+//           onClick={decoratedOnClick}
+//         >
+//           {isCurrentEventKey ? <FaChevronUp /> : <FaChevronDown />}
+//         </Button>
+//       </Col>
+//     </Row>
+//     <Row className="no-gutters">
+//       <Col>
+//         <Button
+//           variant="link"
+//           size="sm"
+//           onClick={decoratedOnClick}
+//         >
+//           {isCurrentEventKey ? "Collapse" : "Expand"}
+//         </Button>
+//       </Col>
+//     </Row>
+//   </Container>
+//   );
+// }
 
 function CheckAll({ children, eventKey, active, id, callback }) {
   const { activeEventKey } = useContext(AccordionContext);

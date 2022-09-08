@@ -1,15 +1,11 @@
 import 'leaflet/dist/leaflet.css';
-import { Map as MapComponent, TileLayer, WMSTileLayer, LayersControl, LayerGroup } from 'react-leaflet';
+import { Map as MapComponent } from 'react-leaflet';
 import styled from 'styled-components';
 import React from 'react';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
 import Toast from 'react-bootstrap/Toast';
 import Accordion from 'react-bootstrap/Accordion';
 import MapContext from './MapContext';
 import { MAP_OPTIONS, MAP_TILE_LAYERS } from '../../constants';
-import { ThemeConsumer } from 'react-bootstrap/esm/ThemeProvider';
-import LayerControlName from '../Components/LayerControlName';
 import { ToastContainer } from 'react-bootstrap';
 import RasterLayerGroup from './Layers/RasterLayerGroup';
 import { DomEvent } from 'leaflet';
@@ -28,10 +24,6 @@ const StyledMap = styled(MapComponent)`
 class Map extends React.Component {
   mapRef = React.createRef(null);
   controlRef = React.createRef(null);
-
-  constructor(props) {
-    super(props);
-  }
 
   componentDidMount() {
     const map = this.mapRef.current.leafletElement;

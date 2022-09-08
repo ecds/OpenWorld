@@ -2,10 +2,7 @@ import React, { Suspense, lazy } from 'react';
 import {
   BrowserRouter as Router,
   Switch,
-  Route,
-  Link,
-  useParams,
-  useRouteMatch
+  Route
 } from "react-router-dom";
 import './App.scss';
 // import 'bootstrap/dist/css/bootstrap.min.css';
@@ -18,14 +15,9 @@ import Header from '../Components/Header';
 import Annexations from '../Map/Layers/Annexations';
 import Wards from '../Map/Layers/Wards';
 import Buildings from '../Map/Layers/Buildings';
-import LayerGroup from '../Components/LayerGroup';
 import StreetcarLines from '../Map/Layers/StreetcarLines';
-import WatermarkControl from '../Components/WatermarkControl';
-import RasterLayerGroup from '../Map/Layers/RasterLayerGroup';
-import { withRouter } from "react-router";
 
 const Map = lazy(() => import('../Map'));
-const Tabs = lazy(() => import('../Tabs'));
 
 const AppWrapper = styled.div`
 	display: inline;/*

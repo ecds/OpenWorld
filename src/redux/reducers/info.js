@@ -11,7 +11,7 @@ let initialState = {
     error: null,
 }
 
-export default function (state=initialState, action) {
+const infoSelector = function (state=initialState, action) {
     switch(action.type) {
         case UPDATE_INFO: {
             return {
@@ -45,3 +45,5 @@ export default function (state=initialState, action) {
             return state;
     }
 }
+
+export default infoSelector;

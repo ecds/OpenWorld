@@ -1,23 +1,11 @@
-import React, { Suspense, lazy } from 'react';
+import React from 'react';
 import Navbar from 'react-bootstrap/Navbar'
+import { Container } from 'react-bootstrap';
 import Nav from 'react-bootstrap/Nav'
 import NavDropdown from 'react-bootstrap/NavDropdown'
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link,
-  useParams,
-  useRouteMatch
-} from "react-router-dom";
-import StyledNavbar from '../StyledNavbar';
-import StyledBrand from '../StyledBrand';
-import StyledNavDropdown from '../StyledNavDropdown';
+import {  Link } from "react-router-dom";
 import { FaBuilding, FaVectorSquare, FaSubway } from 'react-icons/fa';
 import Credit from '../Credit';
-import { NavbarBrand } from 'react-bootstrap';
-import { Container } from 'react-bootstrap';
-import LayerControlName from '../LayerControlName';
 
 export default class Header extends React.Component {
   boundaries() {

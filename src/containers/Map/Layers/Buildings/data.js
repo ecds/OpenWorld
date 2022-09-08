@@ -6,7 +6,7 @@ export const layers = {
   },
 
   1928: {
-    layer: 'buildings_1928',
+    layer: 'OWAbuildings07SEP22',
     workspace: 'ATLMaps',
     bounds: [[33.7333353316, -84.4166017627], [33.7833813133, -84.3167420714]],
     details: {
@@ -32,8 +32,8 @@ export async function fetchMetadata(identifier) {
   const response = await fetch(url);
   const data = await response.json();
   return {
-    title: data.element_texts.find(el => el.element.name == 'Title').text,
-    body: data.element_texts.find(el => el.element.name == 'Description').text,
+    title: data.element_texts.find(el => el.element.name === 'Title').text,
+    body: data.element_texts.find(el => el.element.name === 'Description').text,
     identifier
   }
 }

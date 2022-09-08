@@ -2,11 +2,11 @@ import React from 'react';
 import MapContext from '../../MapContext';
 import L from 'leaflet';
 import { StreetcarLayers } from './data';
-import { Container, Label } from '../../../Components/GenericLayer';
+import { Container } from '../../../Components/GenericLayer';
 import LayerDetails from '../../../Components/LayerDetails';
 import Offcanvas from 'react-bootstrap/Offcanvas'
-import { FaCaretLeft, FaCaretSquareLeft } from 'react-icons/fa';
-import { Col, Row, Button } from "react-bootstrap";
+import { FaCaretLeft } from 'react-icons/fa';
+import { Button } from "react-bootstrap";
 import { highlightGeoJSON, dehighlightGeoJSON, selectGeoJSON } from '../../Utils/Selection';
 
 export default class StreetcarLines extends React.Component {
@@ -58,7 +58,7 @@ export default class StreetcarLines extends React.Component {
         this.setState(
           {
             layers: layers.sort((a,b) => parseInt(a.order) - parseInt(b.order)),
-            dataLoaded: layers.length == lines.length,
+            dataLoaded: layers.length === lines.length,
             bounds: this.state.bounds.extend(leafletLayer.getBounds())
           }
         );

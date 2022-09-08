@@ -6,8 +6,8 @@ export const THEME = {
     MAIN:   '#DB504B',
     SECOND: '#FFFFFF',
     THIRD:  '#E47975',
-    TEXT:   '#515151',
-}
+    TEXT:   '#515151'
+};
 
 /* map constants */
 export const MAP_OPTIONS = {
@@ -16,7 +16,7 @@ export const MAP_OPTIONS = {
     zoom:        13,
     maxZoom:     20,
     zoomControl: true,
-    maxBounds:   [[33.53, -84.61], [34.03, -84.11]],
+    maxBounds:   [[33.53, -84.61], [34.03, -84.11]]
 };
 
 export const MAP_TILE_LAYERS = [
@@ -46,7 +46,6 @@ export const MAP_TILE_LAYERS = [
         opacity: 0,
         title: 'Modern Satellite Image'
     },
-    ,
     {
         urls: ['https://geoserver.ecds.emory.edu/Atlanta1878/gwc/service/wms?layers=Atlanta1878:q516x4&format=image/png&transparant=true'],
         type: 'WMS',
@@ -106,7 +105,7 @@ export const OVERLAYS = [
             color: 'black',
             fill: false,
             opacity: 1,
-            weight: 3,
+            weight: 3
         }
     },
     {
@@ -167,12 +166,12 @@ export const TAGS = {
         y_coord: {
             tag: 'Latitude',
             falsyValue: '',
-            tooltip: '',
+            tooltip: ''
         },
         x_coord: {
             tag: 'Longitude',
             falsyValue: '',
-            tooltip: '',
+            tooltip: ''
         }
     }
 };
@@ -237,7 +236,7 @@ export const StreetcarLayers = function(year) {
                     color: colors[index],
                     weight: 4,
                     dashArray: '20 20',
-                    dashOffset: index % 2 == 0 ? '1' : '2'
+                    dashOffset: index % 2 === 0 ? '1' : '2'
                 }
             }
         );

@@ -2,13 +2,12 @@ import React from 'react';
 import MapContext from '../../MapContext';
 import L from 'leaflet';
 import { Button } from "react-bootstrap";
-import Form from 'react-bootstrap/Form'
 import { Boundaries, AnnexLayers, AnnexDetails, YEARS, Intro } from './data';
-import { Container, Label } from '../../../Components/GenericLayer';
+import { Container } from '../../../Components/GenericLayer';
 import TimeSlider from '../../../Components/TimeSlider';
 import LayerDetails from '../../../Components/LayerDetails';
 import Offcanvas from 'react-bootstrap/Offcanvas'
-import { FaCaretLeft, FaCaretSquareLeft } from 'react-icons/fa';
+import { FaCaretLeft } from 'react-icons/fa';
 
 export default class Annexations extends React.Component {
   constructor(props, state) {

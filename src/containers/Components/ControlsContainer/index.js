@@ -1,17 +1,11 @@
 import React from 'react';
-import Toast from 'react-bootstrap/Toast'
+import { Accordion } from 'react-bootstrap';
+import { FaCity, FaDrawPolygon, FaSubway } from 'react-icons/fa';
 import styled from 'styled-components';
 import LayerGroup from '../LayerGroup';
-import { OVERLAYS, StreetcarLayers } from '../../../constants';
-import Buildings from '../../Map/Layers/Buildings';
-import Roads from '../../Map/Layers/Roads';
-import MarkerCluster from '../../Map/Layers/MarkerCluster';
-import Polygon from '../../Map/Layers/Polygon';
-import Railways from '../../Map/Layers/Railways';
+import { StreetcarLayers } from '../../../constants';
 import Annexations from '../../Map/Layers/Annexations';
 import Wards from '../../Map/Layers/Wards';
-import { Accordion, Card } from 'react-bootstrap';
-import { FaCity, FaDrawPolygon, FaSubway } from 'react-icons/fa';
 
 const Wrapper = styled.div``;
 
@@ -28,7 +22,7 @@ export default class ControlsContainer extends React.Component {
 	}
 
 	updateLayerInfo(layer) {
-		const currentLayers = this.state.layers.filter(currentLayer => currentLayer.type != layer.type);
+		const currentLayers = this.state.layers.filter(currentLayer => currentLayer.type !== layer.type);
 		if (layer.title) {
 			currentLayers.push({ ...layer, show: true });
 		}

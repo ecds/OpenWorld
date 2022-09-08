@@ -2,18 +2,11 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './containers/App';
-import Annexations from './containers/Map/Layers/Annexations';
-import Buildings from './containers/Map/Layers/Buildings';
-import StreetcarLines from './containers/Map/Layers/StreetcarLines';
-import Wards from './containers/Map/Layers/Wards';
 
 import {
     BrowserRouter as Router,
     Switch,
-    Route,
-    Link,
-    useParams,
-    useRouteMatch
+    Route
   } from "react-router-dom";
 
 import { Provider } from 'react-redux';

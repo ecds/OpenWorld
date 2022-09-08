@@ -39,11 +39,11 @@ export default class OmekaImages extends React.Component {
           this.state.images.map((image, index) => {
             return (
               <>
-                <img role="button" src={image} key={index} className="img-fluid" onClick={() => this.handleShow()} />
+                <img role="button" src={image} key={index} className="img-fluid" alt="omeka item" onClick={() => this.handleShow()} />
                 <Modal size="lg" dialogClassName="image-" show={this.state.showModal} onHide={this.handleClose}>
                   <Modal.Header closeButton></Modal.Header>
                   <Modal.Body className="mx-auto">
-                    <img className="img-fluid" src={image} />
+                    <img className="img-fluid" src={image} alt="omeka item" />
                   </Modal.Body>
                 </Modal>
               </>
@@ -54,7 +54,7 @@ export default class OmekaImages extends React.Component {
       )
     } else {
         return(
-          <img scr='/placeholder.jpg' />
+          <img scr='/placeholder.jpg' alt="placeholder" />
         )
     }
   }

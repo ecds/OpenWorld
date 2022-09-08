@@ -51,7 +51,7 @@ export const StreetcarLayers = function(year) {
                     color: colors[index],
                     weight: 4,
                     dashArray: '20 20',
-                    dashOffset: index % 2 == 0 ? '1' : '2'
+                    dashOffset: index % 2 === 0 ? '1' : '2'
                 }
             }
         );

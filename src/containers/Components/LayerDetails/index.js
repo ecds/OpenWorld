@@ -1,5 +1,5 @@
 import React from 'react'
-import { Card } from 'react-bootstrap';
+// import { Card } from 'react-bootstrap';
 import OmekaImages from '../OmekaImages';
 
 export default class LayerDetails extends React.Component {
@@ -28,7 +28,7 @@ export default class LayerDetails extends React.Component {
   renderImage() {
     if (this.props.layer.image) {
       return(
-        <img src={this.props.layer.image} className="img-fluid" />
+        <img src={this.props.layer.image} className="img-fluid" alt={this.props.layer.title} />
       )
     } else if (this.props.layer.identifier) {
       return(<OmekaImages item={this.props.layer.identifier} />)

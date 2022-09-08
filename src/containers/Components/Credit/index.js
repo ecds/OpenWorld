@@ -1,8 +1,4 @@
 import React from 'react'
-import ReactDOM from "react-dom";
-
-import { THEME } from "../../../constants";
-import { Row, Col } from "react-bootstrap";
 import Modal from "react-bootstrap/Modal";
 import ModalBody from "react-bootstrap/ModalBody";
 import ModalHeader from "react-bootstrap/ModalHeader";
@@ -10,18 +6,16 @@ import ModalFooter from "react-bootstrap/ModalFooter";
 import ModalTitle from "react-bootstrap/ModalTitle";
 import Tabs from "react-bootstrap/Tabs";
 import Tab from "react-bootstrap/Tab";
-import Nav from 'react-bootstrap/Nav'
 import Button from "react-bootstrap/Button";
 import Form from 'react-bootstrap/Form'
 import cookies from "react-cookies";
-import StyledNavLink from '../StyledNavLink';
 
 class Credit extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       key: "info",
-      suppress: cookies.load('suppressIntro') == 'true',
+      suppress: cookies.load('suppressIntro') === 'true',
       modalOpen: false,
     };
 
@@ -353,7 +347,7 @@ class Credit extends React.Component {
               <p className="text-muted">
                 * By checking, you agree to accept a cookie for this setting.
                 <br />
-                You can review our <a href="https://digitalscholarship.emory.edu/about/privacy-policy.html" target="_blank">privacy policy</a> for more information.
+                You can review our <a href="https://digitalscholarship.emory.edu/about/privacy-policy.html" target="_blank" rel="noreferrer">privacy policy</a> for more information.
               </p>
             </div>
             Sponsored by{" "}

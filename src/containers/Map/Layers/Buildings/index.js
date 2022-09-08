@@ -2,18 +2,16 @@ import React from 'react';
 import MapContext from '../../MapContext';
 import L from 'leaflet';
 import {} from 'leaflet.vectorgrid';
-import store from '../../../../redux/store';
-import { updateInfo, fetchResources } from '../../../../redux/actions';
 import LayerDetails from '../../../Components/LayerDetails';
 import { MAP_OPTIONS } from '../../../../constants';
-import GenericLayer from '../../../Components/GenericLayer';
 import Offcanvas from 'react-bootstrap/Offcanvas'
-import { Col, Row, Button } from "react-bootstrap";
-import { Container, Label } from '../../../Components/GenericLayer';
-import { FaCaretLeft, FaCaretSquareLeft, FaCameraRetro } from 'react-icons/fa';
+import { Button } from "react-bootstrap";
+import { Container } from '../../../Components/GenericLayer';
+import { FaCaretLeft, FaCameraRetro } from 'react-icons/fa';
 import { layers, fetchMetadata } from './data';
 //const data = require('../../../data/buildings_1928.json');
 
+const USES = []
 export default class Buildings extends React.Component {
   constructor(props) {
     super(props);
@@ -47,7 +45,7 @@ export default class Buildings extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (this.props.match.params.year != prevProps.match.params.year) {
+    if (this.props.match.params.year !== prevProps.match.params.year) {
       this.state.layer.leafletObject.removeFrom(this.state.map);
       this.setState(
         {
@@ -76,7 +74,7 @@ export default class Buildings extends React.Component {
     layer.leafletObject = new L.vectorGrid.protobuf(url, {
       rendererFactory: L.svg.tile,
       vectorTileLayerStyles: {
-        buildings_1928: properties => {
+        OWAbuildings07SEP22: properties => {
           return this.style(properties);
         },
       },
@@ -189,12 +187,12 @@ export default class Buildings extends React.Component {
     this.clearHighlight();
 
     // This was just an idea to show building data on as a person moves there mouse around the map
-    const popup = L.popup()
-      .setContent(
-        `<p>${properties.BLDG_ID}</p>`
-      )
-      .setLatLng(e.latlng)
-      .openOn(this.state.map);
+    // const popup = L.popup()
+    //   .setContent(
+    //     `<p>${properties.BLDG_ID}</p>`
+    //   )
+    //   .setLatLng(e.latlng)
+    //   .openOn(this.state.map);
 
     if (properties.BLDG_ID !== this.state.selected)
       this.setState({ highlight: properties.BLDG_ID });
@@ -236,7 +234,7 @@ export default class Buildings extends React.Component {
     this.state.layer.leafletObject.resetFeatureStyle(this.state.selected);
 
     let image = '';
-    if (properties.name_28 == 'KIMBAL HOUSE') {
+    if (properties.name_28 === 'KIMBAL HOUSE') {
       image = 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/39/Kimball-house-1890.JPG/2560px-Kimball-house-1890.JPG'
     }
 

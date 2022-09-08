@@ -1,12 +1,10 @@
 import React from 'react';
 import MapContext from '../../MapContext';
-import { Col, Row, Button, ThemeProvider } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import L from 'leaflet';
-import { Container, Label } from '../../../Components/GenericLayer';
-import { Form } from 'react-bootstrap';
+import { Container } from '../../../Components/GenericLayer';
 import { Layers, Colors, Years, DETAILS } from './data';
 import TimeSlider from '../../../Components/TimeSlider';
-import LayerDetails from '../../../Components/LayerDetails';
 import Offcanvas from 'react-bootstrap/Offcanvas'
 
 export default class Wards extends React.Component {
