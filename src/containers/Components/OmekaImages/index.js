@@ -6,7 +6,7 @@ export default class OmekaImages extends React.Component {
     super(props);
 
     this.state = {
-      key: '9500a826d4d2090717218ef84a8ca6a816870cbb',
+      key: '23bd7efbce6d7e1ceeee3265cddf6060543f0459',
       images: null,
       showModal: false
     }
