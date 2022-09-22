@@ -28,7 +28,7 @@ export const layers = {
 
 export async function fetchMetadata(identifier) {
   const url = new URL(`https://dvl.ecdsdev.org/api/items/${identifier}`);
-  url.search = new URLSearchParams({ key: '9500a826d4d2090717218ef84a8ca6a816870cbb' });
+  url.search = new URLSearchParams({ key: '23bd7efbce6d7e1ceeee3265cddf6060543f0459' });
   const response = await fetch(url);
   const data = await response.json();
   return {

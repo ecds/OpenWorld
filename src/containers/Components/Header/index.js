@@ -10,7 +10,7 @@ import Credit from '../Credit';
 export default class Header extends React.Component {
   boundaries() {
     return(
-      <span>
+      <span className='fs-6'>
       <FaVectorSquare /> City Boundaries
       </span>
     )
@@ -18,7 +18,7 @@ export default class Header extends React.Component {
 
   transportation() {
     return(
-      <span>
+      <span className='fs-6'>
       <FaSubway /> Transportation
       </span>
     )
@@ -26,7 +26,7 @@ export default class Header extends React.Component {
 
   buildings() {
     return(
-      <span>
+      <span className='fs-6'>
       <FaBuilding /> Buildings
       </span>
     )
@@ -51,9 +51,9 @@ export default class Header extends React.Component {
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto gap-2">
             <NavDropdown title={ this.buildings() }>
-              {/* <NavDropdown.Item as={ Link } to="/buildings/1878">
+              <NavDropdown.Item as={ Link } to="/buildings/1878">
                 1878 Buildings Footprints
-              </NavDropdown.Item> */}
+              </NavDropdown.Item>
               <NavDropdown.Item as={ Link } to="/buildings/1928">
                 1928 Buildings Footprints
               </NavDropdown.Item>
@@ -62,15 +62,15 @@ export default class Header extends React.Component {
               <NavDropdown.Item as={ Link } to="/annexations">
                 Annexations
               </NavDropdown.Item>
-              {/* <NavDropdown.Item as={ Link } to='/wards'>
+              <NavDropdown.Item as={ Link } to='/wards'>
                 Wards
-              </NavDropdown.Item> */}
+              </NavDropdown.Item>
             </NavDropdown>
-            {/* <NavDropdown title={ this.transportation() }>
+            <NavDropdown title={ this.transportation() }>
               <NavDropdown.Item as={ Link } to="/streetcars/1924">
                 Streetcar Lines 1924
               </NavDropdown.Item>
-            </NavDropdown> */}
+            </NavDropdown>
           <Credit />
           <div>&nbsp;</div>
           </Nav>

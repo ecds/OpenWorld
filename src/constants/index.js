@@ -22,8 +22,7 @@ export const MAP_OPTIONS = {
 export const MAP_TILE_LAYERS = [
     {
         urls: [
-            'https://server.arcgisonline.com/ArcGIS/rest/services/World_Shaded_Relief/MapServer/tile/{z}/{y}/{x}',
-            'https://basemaps.cartocdn.com/light_only_labels/{z}/{x}/{y}{r}.png'
+            'https://api.mapbox.com/styles/v1/jayvarner/ck9n8d4rj02bh1iom9elzka33/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiamF5dmFybmVyIiwiYSI6ImVkYjliN2Y3ZDZlYzEyNzg5NDhiMGU4MWRiZTY3Mzk3In0.U4Sc4HVk2F4MkKyd7ybgXw'
         ],
         year: 0,
         opacity: 1,
