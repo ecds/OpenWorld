@@ -1,0 +1,9 @@
+.owa-about-modal {
+  button {
+    &.nav-link {
+      &.active {
+        color: white;
+      }
+    }
+  }
+}

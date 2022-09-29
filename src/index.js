@@ -1,35 +1,17 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import ReactDOM from 'react-dom/client';
 import './index.css';
-import App from './containers/App';
+import App from './App';
+import reportWebVitals from './reportWebVitals';
 
-import {
-    BrowserRouter as Router,
-    Switch,
-    Route
-  } from "react-router-dom";
-
-import { Provider } from 'react-redux';
-import store from './redux/store';
-
-import { ThemeProvider } from 'styled-components';
-import { THEME } from './constants';
-
-import * as serviceWorker from './serviceWorker';
-
-ReactDOM.render(
-    <Provider store={store}>
-        <ThemeProvider theme={THEME}>
-        <Router>
-							<Switch>
-                                <Route path="/" component={ App } />
-								{/* <Route path="/streetcars/:year" render={() => <LayerGroup {...StreetcarLayers(1924)} /> } /> */}
-							</Switch>
-						</Router>
-            {/* <App /> */}
-        </ThemeProvider>
-    </Provider>,
-    document.getElementById('root')
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
 );
 
-serviceWorker.unregister();
+// If you want to start measuring performance in your app, pass a function
+// to log results (for example: reportWebVitals(console.log))
+// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
+reportWebVitals();
