@@ -42,7 +42,7 @@ export default class Annexations extends React.Component {
   }
 
   async componentDidUpdate(previousProps, previousState) {
-    if (this.state.currentBoundary )this.props.leafletMap.fitBounds(this.state.currentBoundary.leafletLayer.getBounds());
+    // if (this.state.currentBoundary )this.props.leafletMap.fitBounds(this.state.currentBoundary.leafletLayer.getBounds());
 
     if (this.props.currentYear !== previousProps.currentYear || !this.state.currentBoundary) {
       const closestYear = Math.max(...YEARS.filter(n => {return n <= this.props.currentYear}));
@@ -51,9 +51,15 @@ export default class Annexations extends React.Component {
 
       const currentBoundary = this.state.boundaryLayers.find(layer => parseInt(layer.year) === parseInt(closestYear));
 
-      if (currentBoundary && this.state.currentBoundary && this.state.currentBoundary.leafletLayer !== currentBoundary.leafletLayer) {
+      if (
+           currentBoundary &&
+           this.state.currentBoundary &&
+           this.state.currentBoundary.leafletLayer !== currentBoundary.leafletLayer
+      ) {
         this.state.currentBoundary.leafletLayer.removeFrom(this.props.leafletMap);
-        this.state.currentAnnex.leafletLayer.removeFrom(this.props.leafletMap);
+        if (this.props.leafletMap.hasLayer(this.state.currentAnnex.leafletLayer)) {
+          this.state.currentAnnex.leafletLayer.removeFrom(this.props.leafletMap);
+        }
       }
 
       if ((currentAnnex && currentBoundary) &&
@@ -113,7 +119,9 @@ export default class Annexations extends React.Component {
   }
 
   setInitialBounds() {
-    this.props.leafletMap.fitBounds(this.state.boundaryLayers[0].leafletLayer.getBounds());
+    this.props.leafletMap.fitBounds(
+      this.state.boundaryLayers[this.state.boundaryLayers.length - 1].leafletLayer.getBounds()
+    );
   }
 
   render() {

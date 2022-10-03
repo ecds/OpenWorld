@@ -91,7 +91,7 @@ const leafletLayer = async (year, options, type) => {
 const onEachFeature = (feature, layer) => {
   layer.bindPopup(`<h3>${feature.properties.YEAR}</h3><p>${AnnexDetails[feature.properties.YEAR].areas}</p>`);
   layer.on('popupopen', () => layer.setStyle({ fillOpacity: 1, fillColor: '#0D47A1' }));
-  layer.on('popupclose', () => layer.setStyle({ fillOpacity: 0 }));
+  layer.on('popupclose', () => layer.setStyle({ fillOpacity: 0.7, fillColor: '#E65100'}));
 }
 
 export const Intro = {
