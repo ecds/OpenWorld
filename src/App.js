@@ -11,12 +11,14 @@ import {
 import TileLayers from './components/Layers/TileLayers/TileLayers';
 import AnnexationRoute from './routes/AnnexationRoute';
 import BuildingsRoute from './routes/BuildingsRoute';
+import StreetcarLinesRoute from './routes/StreetcarLinesRoute';
 
 function App() {
   const [leafletMap, setLeafletMap] = useState(null);
   const [year, setYear] = useState(1);
 
   useEffect(() => {
+    console.log('mount app')
     const mapOptions = {
       center:      [33.75432, -84.38979],
       minZoom:     11,
@@ -42,7 +44,14 @@ function App() {
 
       setLeafletMap(map);
       setTimeout(() => { map.invalidateSize() }, 100);
-    } catch {}
+    } catch {
+      /*
+        This is probably only an issue in development when the the component is mounted
+        and unmounted. I have tried destroying the map in the return function, but it
+        does not get recreated in time for all the layers. It doesn't really matter because
+        this will never be unmounted.
+      */
+    }
 
   }, [leafletMap]);
 
@@ -59,6 +68,10 @@ function App() {
         {
           path: 'annexations',
           element: <AnnexationRoute leafletMap={leafletMap} />
+        },
+        {
+          path: 'streetcars/:year',
+          element: <StreetcarLinesRoute leafletMap={leafletMap} />
         }
       ]
     }

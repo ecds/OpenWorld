@@ -23,6 +23,7 @@ export default class Annexations extends React.Component {
     this.endYear = Math.max(...YEARS) + 1;
 
     this.clearLayers = this.clearLayers.bind(this);
+    this.setInitialBounds = this.setInitialBounds.bind(this);
   }
 
   async componentDidMount() {
@@ -37,10 +38,12 @@ export default class Annexations extends React.Component {
       boundary.leafletLayer = await Promise.resolve(boundary.leafletLayer);
     }
 
-    this.setState({ annexLayers, boundaryLayers });
+    this.setState({ annexLayers, boundaryLayers }, this.setInitialBounds);
   }
 
   async componentDidUpdate(previousProps, previousState) {
+    if (this.state.currentBoundary )this.props.leafletMap.fitBounds(this.state.currentBoundary.leafletLayer.getBounds());
+
     if (this.props.currentYear !== previousProps.currentYear || !this.state.currentBoundary) {
       const closestYear = Math.max(...YEARS.filter(n => {return n <= this.props.currentYear}));
 
@@ -53,13 +56,12 @@ export default class Annexations extends React.Component {
         this.state.currentAnnex.leafletLayer.removeFrom(this.props.leafletMap);
       }
 
-      if (currentBoundary &&
+      if ((currentAnnex && currentBoundary) &&
           currentBoundary.leafletLayer &&
           currentBoundary !== this.state.currentBoundary
        ) {
         await currentBoundary.leafletLayer.addTo(this.props.leafletMap);
-        this.props.leafletMap.fitBounds(currentBoundary.leafletLayer.getBounds());
-        if (parseInt(this.currentYear) < this.endYear) currentAnnex.leafletLayer.addTo(this.props.leafletMap);
+        if (parseInt(this.props.currentYear) < this.endYear) currentAnnex.leafletLayer.addTo(this.props.leafletMap);
         this.setState(
           {
             currentBoundary,
@@ -101,12 +103,17 @@ export default class Annexations extends React.Component {
     const oldAnnexes = document.querySelector('.leaflet-part-pane g');
     if (oldBoundaries) oldBoundaries.innerHTML = '';
     if (oldAnnexes) oldAnnexes.innerHTML = '';
+    this.setState({ currentAnnex: null, currentBoundary: null });
     // for (const leftOver of document.querySelectorAll('.leaflet-part-pane g path')) { leftOver.style.fillOpacity = 0 }
   }
 
   clearLayers() {
     this.state.boundaryLayers.forEach(boundary => boundary.leafletLayer.removeFrom(this.props.leafletMap));
     this.state.annexLayers.forEach(annex => annex.leafletLayer.removeFrom(this.props.leafletMap));
+  }
+
+  setInitialBounds() {
+    this.props.leafletMap.fitBounds(this.state.boundaryLayers[0].leafletLayer.getBounds());
   }
 
   render() {

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useParams, useSearchParams } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBuilding, faDrawPolygon } from '@fortawesome/free-solid-svg-icons';
+import { faBuilding, faDrawPolygon, faTrain } from '@fortawesome/free-solid-svg-icons';
 import { Outlet } from 'react-router';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
@@ -20,6 +20,12 @@ const BuildingsNav = () => (
 const BoundaryNav = () => (
   <>
     <FontAwesomeIcon icon={faDrawPolygon} /> City Boundaries
+  </>
+)
+
+const TransportationNav = () => (
+  <>
+    <FontAwesomeIcon icon={faTrain} /> Transportation
   </>
 )
 
@@ -67,6 +73,11 @@ const MainNav = (props) => {
             <NavDropdown title={BoundaryNav()} id="boundary-dropdown">
               <LinkContainer to='/annexations'>
                 <NavDropdown.Item>Annexations</NavDropdown.Item>
+              </LinkContainer>
+            </NavDropdown>
+            <NavDropdown title={TransportationNav()} id="boundary-dropdown">
+              <LinkContainer to='/streetcars/1924'>
+                <NavDropdown.Item>Streetcars 1924</NavDropdown.Item>
               </LinkContainer>
             </NavDropdown>
             <About />

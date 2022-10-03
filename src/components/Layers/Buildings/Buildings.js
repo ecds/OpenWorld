@@ -25,13 +25,10 @@ export default class Buildings extends React.Component {
   }
 
   componentDidUpdate(previousProps, previousState) {
-    console.log("🚀 ~ file: Buildings.js ~ line 25 ~ Buildings ~ componentDidUpdate ~ previousProps.year !== this.props.year", this.state.layer.year === this.props.year)
     if (this.state.layer.year !== this.props.year) {
       if (this.state.layer) {
-        console.log(`remove ${this.state.layer.year}`)
         this.state.layer.leafletObject.removeFrom(this.props.leafletMap);
       }
-      console.log(`add ${this.props.year}`)
       this.setState({ layer: layers[this.props.year]} );
     }
 
@@ -44,7 +41,6 @@ export default class Buildings extends React.Component {
   }
 
   componentWillUnmount() {
-    console.log('unmount')
     if (this.state.layer) this.state.layer.leafletObject.removeFrom(this.props.leafletMap);
   }
 
