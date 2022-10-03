@@ -27,7 +27,7 @@ export default class StreetcarLines extends React.Component {
 
   async componentWillUnmount() {
     try {
-      await this.state.layers.map(layer => layer.leafletObject.removeFrom(this.props.leafletMap));
+      await this.state.layers.map(layer => this.props.leafletMap.removeLayer(layer.leafletObject));
     } catch {}
   }
 
