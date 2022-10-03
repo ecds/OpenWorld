@@ -82,6 +82,20 @@ const MainNav = (props) => {
             </NavDropdown>
             <About />
           </Nav>
+          <Nav>
+            <Nav.Link
+              href="https://ecds.emory.edu/"
+              title="Emory Center for Digital Scholarship"
+              className="me-5"
+            >
+              <img
+                src="/ecds.svg"
+                className="owa-ecds-logo"
+                style={{ transform: "scale(6)", width: "100%" }}
+                alt="Sponsored by Emory Center for Digital Scholarship a division of Emory University's Office of Information Technology."
+              />
+            </Nav.Link>
+          </Nav>
         </Navbar.Collapse>
       </Container>
     </Navbar>
