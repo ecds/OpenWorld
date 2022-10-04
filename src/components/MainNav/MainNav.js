@@ -74,6 +74,9 @@ const MainNav = (props) => {
               <LinkContainer to='/annexations'>
                 <NavDropdown.Item>Annexations</NavDropdown.Item>
               </LinkContainer>
+              <LinkContainer to='/wards'>
+                <NavDropdown.Item>Wards</NavDropdown.Item>
+              </LinkContainer>
             </NavDropdown>
             <NavDropdown title={TransportationNav()} id="boundary-dropdown">
               <LinkContainer to='/streetcars/1924'>

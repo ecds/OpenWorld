@@ -12,6 +12,7 @@ import TileLayers from './components/Layers/TileLayers/TileLayers';
 import AnnexationRoute from './routes/AnnexationRoute';
 import BuildingsRoute from './routes/BuildingsRoute';
 import StreetcarLinesRoute from './routes/StreetcarLinesRoute';
+import WardRoute from './routes/WardsRoute';
 
 function App() {
   const [leafletMap, setLeafletMap] = useState(null);
@@ -68,6 +69,10 @@ function App() {
         {
           path: 'annexations',
           element: <AnnexationRoute leafletMap={leafletMap} />
+        },
+        {
+          path: 'wards',
+          element: <WardRoute leafletMap={leafletMap} />
         },
         {
           path: 'streetcars/:year',
