@@ -2,7 +2,7 @@ import React from 'react';
 import L from 'leaflet';
 import { Button, Offcanvas } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCaretLeft } from '@fortawesome/free-solid-svg-icons';
+import { faCaretLeft, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import StreetcarLayers, { dehighlightGeoJSON, highlightGeoJSON } from './data.js';
 // import styles from './StreetcarLines.module.scss';
 
@@ -28,7 +28,12 @@ export default class StreetcarLines extends React.Component {
   async componentWillUnmount() {
     try {
       await this.state.layers.map(layer => this.props.leafletMap.removeLayer(layer.leafletObject));
-    } catch {}
+    } catch {
+      /*
+        In development, the components get unmounted and remounted.
+        https://reactjs.org/docs/strict-mode.html#detecting-unexpected-side-effects
+      */
+    }
   }
 
   addLayers() {
@@ -57,29 +62,39 @@ export default class StreetcarLines extends React.Component {
             <h5>StreetcarLines {this.props.year}</h5>
           </Offcanvas.Header>
           <Offcanvas.Body>
-            <ul className="list-unstyled">
-              {this.state.layers.map((layer, index) => {
-                return(
-                  <li
-                    key={index}
-                    tabIndex="0"
-                    className="fs-3"
-                    style={{color: layer.leafletObject.options.color, cursor: 'pointer'}}
-                    onMouseEnter={() => highlightGeoJSON(layer.leafletObject, layer.leafletObject.options.color)}
-                    onMouseLeave={() => dehighlightGeoJSON(layer.leafletObject, layer.leafletObject.options.color)}
-                    onFocus={() => highlightGeoJSON(layer.leafletObject, layer.leafletObject.options.color)}
-                    onBlur={() => dehighlightGeoJSON(layer.leafletObject, layer.leafletObject.options.color)}
-                  >
-                    {layer.label}
-                  </li>
-                )
-              })}
-            </ul>
+            {this.renderContent()}
           </Offcanvas.Body>
         </Offcanvas>
         {this.renderToggleButton()}
      </>
     )
+  }
+
+  renderContent() {
+    if (this.state.layers.length > 0) {
+      return (
+        <ul className="list-unstyled">
+          {this.state.layers.map((layer, index) => {
+            return(
+              <li
+                key={index}
+                tabIndex="0"
+                className="fs-3"
+                style={{color: layer.leafletObject.options.color, cursor: 'pointer'}}
+                onMouseEnter={() => highlightGeoJSON(layer.leafletObject, layer.leafletObject.options.color)}
+                onMouseLeave={() => dehighlightGeoJSON(layer.leafletObject, layer.leafletObject.options.color)}
+                onFocus={() => highlightGeoJSON(layer.leafletObject, layer.leafletObject.options.color)}
+                onBlur={() => dehighlightGeoJSON(layer.leafletObject, layer.leafletObject.options.color)}
+              >
+                {layer.label}
+              </li>
+            )
+          })}
+        </ul>
+      );
+    }
+
+    return <span><FontAwesomeIcon icon={faSpinner} spin /> Loading Routes</span>;
   }
 
   renderToggleButton() {
