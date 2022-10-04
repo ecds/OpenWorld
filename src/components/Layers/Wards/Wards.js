@@ -44,9 +44,7 @@ export default class Wards extends React.Component {
   setCurrentLayer() {
     if (!this.state.layers) return;
     const closestYear = Math.max(...YEARS.filter(n => {return n <= this.props.currentYear}));
-    if (this.state.currentLayer) console.log("🚀 ~ file: Wards.js ~ line 48 ~ Wards ~ setCurrentLayer ~ this.state.currentLayer.year === closestYear", this.state.currentLayer.year === closestYear, closestYear)
     if (this.state.currentLayer && this.state.currentLayer.year === closestYear) return;
-    console.log("🚀 ~ file: Wards.js ~ line 32 ~ Wards ~ componentDidUpdate ~ previousProps", this.props.currentYear)
     this.clearLayer();
     const currentLayer = this.state.layers.find(layer => layer.year === closestYear);
     if (currentLayer) this.setState({ currentLayer }, this.addLayer);
