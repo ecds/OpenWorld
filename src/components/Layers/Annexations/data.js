@@ -28,7 +28,9 @@ export const YEARS = [
   1945
 ]
 
-export const Boundaries = () => {
+export const Boundaries = async () => {
+  const layers = [];
+
   const options = {
     color: '#0D47A1',
     weight: 4,
@@ -38,23 +40,30 @@ export const Boundaries = () => {
     interactive: false
   };
 
-  return YEARS.map((year, index) => {
-      return (
-          {
-              desc: `Area annexed by the City of Atlanta in ${year}`,
-              year,
-              onMap: false,
-              leafletLayer: leafletLayer(year, options, 'whole'),
-              details: AnnexDetails[year.toString()].areas
-          }
-      );
-  });
+  for (const year of YEARS) {
+    const response = await fetch(`https://geoserver.ecds.emory.edu/AtlantaAnnexations/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=AtlantaAnnexations:Annex_${year}_whole&maxFeatures=500&outputFormat=application%2Fjson`);
+    const data = await response.json();
+
+    const boundary = {
+      desc: `Area annexed by the City of Atlanta in ${year}`,
+      year,
+      onMap: false,
+      leafletLayer: leafletLayer(data, options, year),
+      details: AnnexDetails[year.toString()].areas
+    };
+
+    layers.push(boundary);
+  }
+
+  return layers;
 }
 
-export const AnnexLayers = () => {
+export const AnnexLayers = async () => {
   // const layerTitles = ['Annex_1847_part', 'Annex_1854_part', 'Annex_1863_part', 'Annex_1866_part', 'Annex_1889_part', 'Annex_1894_part', 'Annex_1895_part', 'Annex_1904_part', 'Annex_1909_part', 'Annex_1910_part', 'Annex_1913_part', 'Annex_1914_part', 'Annex_1915_part', 'Annex_1916_part', 'Annex_1922_part', 'Annex_1923_part', 'Annex_1925_part', 'Annex_1926_part', 'Annex_1928_part', 'Annex_1930_part', 'Annex_1932_part', 'Annex_1934_part', 'Annex_1940_part', 'Annex_1943_part', 'Annex_1945_part']
   // const colors = chroma.scale(['#D32F2F','#D81B60', '#8E24AA', '#0288D1', '#00ACC1', '#3949AB', '#7CB342']).mode('lab').colors(layerTitles.length)
   // const colors = chroma.brewer.Paired.concat(chroma.brewer.Set3);
+
+  const layers = [];
 
   const options = {
     weight: 0,
@@ -62,28 +71,30 @@ export const AnnexLayers = () => {
     fillOpacity: 0.7
   };
 
-  return YEARS.map((year, index) => {
-      return(
-          {
-              desc: `Area annexed by the City of Atlanta in ${year}`,
-              year,
-              onMap: false,
-              leafletLayer: leafletLayer(year, options, 'part')
-          }
-      );
-  });
+  for (const year of YEARS) {
+    const response = await fetch(`https://geoserver.ecds.emory.edu/AtlantaAnnexations/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=AtlantaAnnexations:Annex_${year}_part&maxFeatures=500&outputFormat=application%2Fjson`);
+    const data = await response.json();
+
+    const annex = {
+      desc: `Area annexed by the City of Atlanta in ${year}`,
+      year,
+      onMap: false,
+      leafletLayer: leafletLayer(data, options, year)
+    };
+
+    layers.push(annex);
+  }
+
+  return layers;
 }
 
-const leafletLayer = async (year, options, type) => {
-  const response = await fetch(`https://geoserver.ecds.emory.edu/AtlantaAnnexations/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=AtlantaAnnexations:Annex_${year}_${type}&maxFeatures=500&outputFormat=application%2Fjson`);
-  const data = await response.json();
+const leafletLayer = (data, options, year) => {
   return new L.GeoJSON(
     data,
     {
       ...options,
       zIndex: 400 + (YEARS.length - YEARS.indexOf(year)),
-      onEachFeature,
-      pane: type
+      onEachFeature
     }
   );
 }

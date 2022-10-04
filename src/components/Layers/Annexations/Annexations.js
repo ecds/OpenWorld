@@ -27,16 +27,8 @@ export default class Annexations extends React.Component {
   }
 
   async componentDidMount() {
-    const annexLayers = AnnexLayers();
-    const boundaryLayers = Boundaries();
-
-    for (const annex of annexLayers) {
-      annex.leafletLayer = await Promise.resolve(annex.leafletLayer);
-    }
-
-    for (const boundary of boundaryLayers) {
-      boundary.leafletLayer = await Promise.resolve(boundary.leafletLayer);
-    }
+    const annexLayers = await AnnexLayers();
+    const boundaryLayers = await Boundaries();
 
     this.setState({ annexLayers, boundaryLayers }, this.setInitialBounds);
   }
@@ -57,7 +49,7 @@ export default class Annexations extends React.Component {
            this.state.currentBoundary.leafletLayer !== currentBoundary.leafletLayer
       ) {
         this.state.currentBoundary.leafletLayer.removeFrom(this.props.leafletMap);
-        if (this.props.leafletMap.hasLayer(this.state.currentAnnex.leafletLayer)) {
+        if (this.state.currentAnnex && this.props.leafletMap.hasLayer(this.state.currentAnnex.leafletLayer)) {
           this.state.currentAnnex.leafletLayer.removeFrom(this.props.leafletMap);
         }
       }
@@ -98,19 +90,15 @@ export default class Annexations extends React.Component {
   }
 
   async componentWillUnmount() {
-    /*
-      In development, the components get unmounted and remounted.
-      https://reactjs.org/docs/strict-mode.html#detecting-unexpected-side-effects
-      References to the Leaflet layers gets lost. This is sort of a a brute force
-      way to ensure the layers are cleared. This makes me sad 😢
-    */
-    this.clearLayers();
-    const oldBoundaries = document.querySelector('.leaflet-whole-pane g');
-    const oldAnnexes = document.querySelector('.leaflet-part-pane g');
-    if (oldBoundaries) oldBoundaries.innerHTML = '';
-    if (oldAnnexes) oldAnnexes.innerHTML = '';
-    this.setState({ currentAnnex: null, currentBoundary: null });
-    // for (const leftOver of document.querySelectorAll('.leaflet-part-pane g path')) { leftOver.style.fillOpacity = 0 }
+    try {
+      await this.state.annexLayers.map(layer => this.props.leafletMap.removeLayer(layer.leafletLayer));
+      await this.state.boundaryLayers.map(layer => this.props.leafletMap.removeLayer(layer.leafletLayer));
+    } catch {
+      /*
+        In development, the components get unmounted and remounted.
+        https://reactjs.org/docs/strict-mode.html#detecting-unexpected-side-effects
+      */
+    }
   }
 
   clearLayers() {
