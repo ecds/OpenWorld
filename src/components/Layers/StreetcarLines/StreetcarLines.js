@@ -14,8 +14,10 @@ export default class StreetcarLines extends React.Component {
     this.state = {
       layers: [],
       show: true,
-      layerGroup: new L.layerGroup()
+      added: false
     };
+
+    this.clearLayers = this.clearLayers.bind(this);
 
     this.bounds = null;
   }
@@ -25,18 +27,27 @@ export default class StreetcarLines extends React.Component {
     this.setState({ layers }, this.addLayers)
   }
 
-  async componentWillUnmount() {
-    try {
-      await this.state.layers.map(layer => this.props.leafletMap.removeLayer(layer.leafletObject));
-    } catch {
-      /*
-        In development, the components get unmounted and remounted.
-        https://reactjs.org/docs/strict-mode.html#detecting-unexpected-side-effects
-      */
+  componentDidUpdate(previousProps, previousState) {
+    if (previousState.layers !== this.state.layers) this.addLayers();
+  }
+
+  componentWillUnmount() {
+    this.clearLayers();
+  }
+
+  clearLayers() {
+    for (const layer of this.state.layers) {
+      layer.leafletObject.removeFrom(this.props.leafletMap)
     }
   }
 
   addLayers() {
+    try {
+      document.querySelector('.leaflet-overlay-pane g').innerHTML = '';
+    } catch {}
+
+    this.clearLayers();
+
     for (const [index, layer] of this.state.layers.entries()) {
       if (index === 0) {
         this.bounds = layer.leafletObject.getBounds();
@@ -50,8 +61,12 @@ export default class StreetcarLines extends React.Component {
         this.props.leafletMap.fitBounds(this.bounds);
       }
 
-      layer.leafletObject.addTo(this.props.leafletMap);
+      if (!this.props.leafletMap.hasLayer(layer.leafletObject)) {
+        layer.leafletObject.addTo(this.props.leafletMap);
+      }
     }
+
+    this.setState({ added: true });
   }
 
   render() {
