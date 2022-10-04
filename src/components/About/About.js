@@ -24,9 +24,11 @@ const About = () => {
 
   const setSuppressCookie = (event) => {
     if (suppress) {
-      cookies.remove('suppressIntro');
+      cookies.remove('suppressIntro', { path: '/' });
     } else {
-      cookies.save('suppressIntro', true);
+      const expires = new Date();
+      expires.setFullYear(2025);
+      cookies.save('suppressIntro', true, { path: '/', expires, maxAge: null });
     }
     setSuppress(!suppress);
   }
