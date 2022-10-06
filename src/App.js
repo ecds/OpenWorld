@@ -13,13 +13,14 @@ import AnnexationRoute from './routes/AnnexationRoute';
 import BuildingsRoute from './routes/BuildingsRoute';
 import StreetcarLinesRoute from './routes/StreetcarLinesRoute';
 import WardRoute from './routes/WardsRoute';
+import OpenTourRoute from './routes/OpenTourRoute';
+import StoryMapRoute from './routes/StoryMapRoute';
 
 function App() {
   const [leafletMap, setLeafletMap] = useState(null);
-  const [year, setYear] = useState(1);
+  const [year, setYear] = useState(null);
 
   useEffect(() => {
-    console.log('mount app')
     const mapOptions = {
       center:      [33.75432, -84.38979],
       minZoom:     11,
@@ -77,6 +78,14 @@ function App() {
         {
           path: 'streetcars/:year',
           element: <StreetcarLinesRoute leafletMap={leafletMap} />
+        },
+        {
+          path: 'features/:tour',
+          element: <OpenTourRoute leafletMap={leafletMap} setYear={setYear} />
+        },
+        {
+          path: 'stories/:story',
+          element: <StoryMapRoute />
         }
       ]
     }
