@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCircleInfo } from '@fortawesome/free-solid-svg-icons';
 import './About.scss';
 import Modal from "react-bootstrap/Modal";
 import ModalBody from "react-bootstrap/ModalBody";
@@ -36,7 +38,7 @@ const About = () => {
   return (
     <>
       <Button className="ps-0 nav-link fs-6" size="lg" variant="link" onClick={() => { setOpen(true)}}>
-        About
+        <FontAwesomeIcon icon={faCircleInfo} /> About
       </Button>
       <Modal
         size="lg"
