@@ -54,6 +54,17 @@ export const tileLayers = [
     title: '1928 City Atlas'
   },
   {
+    urls: ['https://geoserver.ecds.emory.edu/ATLMaps/gwc/service/wms?layers=ATLMaps:2s1fntzj&format=image/png&transparant=true'],
+    leafletLayers: [
+      L.tileLayer.wms('https://geoserver.ecds.emory.edu/ATLMaps/gwc/service/wms?layers=ATLMaps:2s1fntzj&format=image/png&transparant=true', {
+        opacity: 0
+      })
+    ],
+    type: 'WMS',
+    year: 1934,
+    title: '1934 Street Map'
+  },
+  {
     urls: [
         'https://basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png'
     ],

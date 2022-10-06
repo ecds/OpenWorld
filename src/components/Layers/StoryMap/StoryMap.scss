@@ -1,0 +1,12 @@
+.owa-story-map-modal {
+  // min-height: 90vh;
+  width: 90%;
+  max-width: none!important;
+
+  // The 90vh in calculation is arbitrary.
+  // The - 96px is margin-top + margin-bottom + navbar-height or 28+28+40=96
+  iframe {
+    height: calc(90vh - 96px);
+    width: 100%;
+  }
+}

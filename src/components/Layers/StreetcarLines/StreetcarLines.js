@@ -1,5 +1,4 @@
 import React from 'react';
-import L from 'leaflet';
 import { Button, Offcanvas } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCaretLeft, faSpinner } from '@fortawesome/free-solid-svg-icons';
