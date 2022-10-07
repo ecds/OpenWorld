@@ -1,9 +1,10 @@
 import React from 'react';
 import { Button, Offcanvas } from 'react-bootstrap';
+import CloseButton from 'react-bootstrap/CloseButton';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCaretLeft, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import StreetcarLayers, { dehighlightGeoJSON, highlightGeoJSON } from './data.js';
-// import styles from './StreetcarLines.module.scss';
+import './StreetcarLines.scss';
 
 export default class StreetcarLines extends React.Component {
 
@@ -71,9 +72,10 @@ export default class StreetcarLines extends React.Component {
   render() {
     return (
       <>
-        <Offcanvas show={this.state.show} placement="end" scroll={true} backdrop={false}>
-          <Offcanvas.Header closeButton onHide={() => this.setState({ show: false })}>
+        <Offcanvas className="text-bg-dark" show={this.state.show} placement="end" scroll={true} backdrop={false}>
+          <Offcanvas.Header onHide={() => this.setState({ show: false })}>
             <h5>StreetcarLines {this.props.year}</h5>
+            <CloseButton variant="white" onClick={() => this.setState({ show: false })}/>
           </Offcanvas.Header>
           <Offcanvas.Body>
             {this.renderContent()}
@@ -93,7 +95,7 @@ export default class StreetcarLines extends React.Component {
               <li
                 key={index}
                 tabIndex="0"
-                className="fs-3"
+                className="fs-5"
                 style={{color: layer.leafletObject.options.color, cursor: 'pointer'}}
                 onMouseEnter={() => highlightGeoJSON(layer.leafletObject, layer.leafletObject.options.color)}
                 onMouseLeave={() => dehighlightGeoJSON(layer.leafletObject, layer.leafletObject.options.color)}
