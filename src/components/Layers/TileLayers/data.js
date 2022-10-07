@@ -54,9 +54,9 @@ export const tileLayers = [
     title: '1928 City Atlas'
   },
   {
-    urls: ['https://geoserver.ecds.emory.edu/ATLMaps/gwc/service/wms?layers=ATLMaps:2s1fntzj&format=image/png&transparant=true'],
+    urls: ['https://geoserver.ecds.emory.edu/ATLMaps/gwc/service/wms?layers=ATLMaps:2s3w9vfd&format=image/png&transparant=true'],
     leafletLayers: [
-      L.tileLayer.wms('https://geoserver.ecds.emory.edu/ATLMaps/gwc/service/wms?layers=ATLMaps:2s1fntzj&format=image/png&transparant=true', {
+      L.tileLayer.wms('https://geoserver.ecds.emory.edu/ATLMaps/gwc/service/wms?layers=ATLMaps:2s3w9vfd&format=image/png&transparant=true', {
         opacity: 0
       })
     ],
