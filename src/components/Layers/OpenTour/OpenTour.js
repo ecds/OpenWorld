@@ -21,11 +21,14 @@ export default class OpenTour extends React.Component {
 
     this.addLayer = this.addLayer.bind(this);
     this.clearLayer = this.clearLayer.bind(this);
+    this.handleHide = this.handleHide.bind(this);
   }
 
   async componentDidMount() {
     const { leafletLayer, tourDetails } = await Tour(this.props.tour);
-    leafletLayer.on('click', (event) => this.handleClick(event.layer));
+    leafletLayer.on('click', (event) => this.handleClick(event));
+    leafletLayer.on('popupopen', (event) => this.handleClick(event));
+    leafletLayer.on('popupclose', (event) => this.handleClick(event));
     this.props.setYear(tourDetails.year);
     this.setState({ leafletLayer, tourDetails }, this.addLayer);
   }
@@ -54,22 +57,57 @@ export default class OpenTour extends React.Component {
     }
   }
 
-  handleClick(layer) {
-    if (this.state.activeMarker) this.state.activeMarker.setIcon(markerIcon(this.state.layerDetails.position));
-    layer.setIcon(activeMarkerIcon(layer.feature.properties.position));
+  handleClick(event) {
+    if (this.state.activeMarker) this.resetMarker();
+
+    const { type, layer } = event;
+
+    if (type === 'popupclose' && layer === this.state.activeMarker) {
+      this.setState(
+        {
+          layerDetails: null,
+          activeMarker: null
+        }
+      )
+    } else {
+      layer.setIcon(activeMarkerIcon(layer.feature.properties));
+      this.setState(
+        {
+          layerDetails: layer.feature.properties,
+          activeMarker: layer,
+          show: true
+        }
+      );
+    }
+  }
+
+  handleEnterKey(event) {
+    console.log("🚀 ~ file: OpenTour.js ~ line 75 ~ OpenTour ~ handleEnterKey ~ event.type === 'popupclose' && event.layer === this.state.activeLayer", event.type === 'popupclose', event.layer.feature.properties.title, this.state.activeMarker.feature.properties.title)
+    if (event.type === 'popupclose' && event.layer === this.state.activeMarker) {
+      //
+    }
+  }
+
+  handleHide() {
+    if (this.state.activeMarker) this.resetMarker();
     this.setState(
       {
-        layerDetails: layer.feature.properties,
-        activeMarker: layer
+        show: false,
+        layerDetails: null,
+        activeMarker: null
       }
-    );
+    )
+  }
+
+  resetMarker() {
+    this.state.activeMarker.setIcon(markerIcon(this.state.layerDetails));
   }
 
   render() {
     return (
       <>
         <Offcanvas show={this.state.show} placement="end" scroll={true} backdrop={false}>
-          <Offcanvas.Header closeButton onHide={() => this.setState({ show: false })}>
+          <Offcanvas.Header closeButton onHide={this.handleHide}>
             <h5>{this.state.tourDetails.title}</h5>
           </Offcanvas.Header>
           <Offcanvas.Body>
@@ -85,21 +123,8 @@ export default class OpenTour extends React.Component {
     if (this.state.layerDetails) {
       return (
         <article>
-          <Carousel interval={500000}>
-            {this.state.layerDetails.images.map(
-              (image, index) => {
-                return (
-                  <Carousel.Item key={index}>
-                    <Image source={image.full} caption={image.caption} />
-                    <Carousel.Caption>
-                      <p>{image.caption}</p>
-                    </Carousel.Caption>
-                  </Carousel.Item>
-                )
-              }
-            )}
-          </Carousel>
-          <h5 className="mt-5">{this.state.layerDetails.title}</h5>
+          {this.renderImages()}
+          <h5 className="mt-5">{this.state.layerDetails.position}: {this.state.layerDetails.title}</h5>
           <section dangerouslySetInnerHTML={{__html: this.state.layerDetails.description}}></section>
 
         </article>
@@ -115,6 +140,29 @@ export default class OpenTour extends React.Component {
     return <span><FontAwesomeIcon icon={faSpinner} spin /> Loading Tour</span>;
   }
 
+  renderImages() {
+    if (this.state.layerDetails.images.length > 0) {
+      return (
+        <Carousel interval={500000}>
+          {this.state.layerDetails.images.map(
+            (image, index) => {
+              return (
+                <Carousel.Item key={index}>
+                  <Image source={image.full} caption={image.caption} />
+                  <Carousel.Caption>
+                    <p>{image.caption}</p>
+                  </Carousel.Caption>
+                </Carousel.Item>
+              )
+            }
+          )}
+        </Carousel>
+      );
+    }
+
+    return <hr />
+  }
+
   renderToggleButton() {
     if (!this.state.show) {
       return (
@@ -122,7 +170,7 @@ export default class OpenTour extends React.Component {
           className="end-0 position-absolute top-50 mx-3 owa-detail-toggle"
           onClick={() => this.setState({ show: true })}
         >
-          <FontAwesomeIcon icon={faCaretLeft} /> Streetcar Line Details
+          <FontAwesomeIcon icon={faCaretLeft} /> Tour Details
         </Button>
       )
     }

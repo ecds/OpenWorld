@@ -1,24 +1,34 @@
 import L from 'leaflet';
 import { faLocationPin } from '@fortawesome/free-solid-svg-icons';
 
-export const markerIcon = (num) => {
+export const markerIcon = (props) => {
   return L.divIcon(
     {
-      html: `<span class="fs-3"><svg viewBox="0 0 512 512"><path d="${faLocationPin.icon[4]}"></path><span class="fa-stack-1x text-center mt-2 me-2 owa-marker-number fs-6">${num}</span></span>`,
+      html: iconHTML(props, 6),
       iconSize: 40,
       className: 'owa-location-marker'
     }
   );
 }
 
-export const activeMarkerIcon = (num) => {
+export const activeMarkerIcon = (props) => {
   return L.divIcon(
     {
-      html: `<span class="fs-3"><svg viewBox="0 0 512 512"><path d="${faLocationPin.icon[4]}"></path><span class="fa-stack-1x text-center mt-2 me-3 owa-marker-number fs-5">${num}</span></span>`,
+      html: iconHTML(props, 5),
       iconSize: 60,
       className: 'owa-location-marker'
     }
   );
+}
+
+const iconHTML = (props, size) => {
+  return `<span class="fs-3">
+            <svg viewBox="0 0 512 512" role="image">
+              <path d="${faLocationPin.icon[4]}"></path>
+              <title>${props.title}</title>
+              <span class="fa-stack-1x text-center mt-2 me-2 owa-marker-number fs-${size}">${props.position}</span>
+            </svg>
+          </span>`
 }
 
 
@@ -43,10 +53,26 @@ export const Tour = async (tourSlug) => {
                         data,
                         {
                           pointToLayer: (feature, latlng) => {
-                            return L.marker(latlng, { icon: markerIcon(feature.properties.position) });
-                          }
+                            const marker = L.marker(
+                              latlng, {
+                                icon: markerIcon(feature.properties),
+                                autoPanOnFocus: false
+                              }
+                            );
+                            return marker;
+                          },
+                          onEachFeature
                         }
                       ),
     tourDetails: tour
   }
+}
+
+const onEachFeature = (feature, layer) => {
+  // This is sort of a hack to make sure the markers accessible via the keyboard.
+  // Focus/blur events and not supported, this is added so we can respond to
+  // popupopen/close events.
+  layer.bindPopup(
+    feature.properties.title, {  className: 'd-none' }
+  );
 }
