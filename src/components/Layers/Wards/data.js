@@ -50,6 +50,7 @@ export const addLabels = (map, leafletLayer) => {
   for (const layer of leafletLayer.getLayers()) {
     const icon = L.divIcon({html: `<h1>${layer.feature.properties.Ward}</h2>`});
     const label = L.marker(layer.getCenter(), { icon });
+    label.bindPopup(`<h3>Ward ${layer.feature.properties.Ward}</h3>`);
     label.addTo(map);
     labels.push(label);
   }
