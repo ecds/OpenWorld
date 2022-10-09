@@ -20,7 +20,6 @@ export default class Buildings extends React.Component {
   }
 
   componentDidMount() {
-    console.log('mount')
     this.setState({ layer: layers[this.props.year] });
   }
 
@@ -45,17 +44,18 @@ export default class Buildings extends React.Component {
   }
 
   handleClick(event) {
+    console.log("🚀 ~ file: Buildings.js ~ line 49 ~ Buildings ~ handleClick ~ event", event)
     if (this.state.currentBuilding) {
       this.state.layer.leafletObject.resetFeatureStyle(this.state.currentBuilding);
     }
     const properties = event.layer.properties;
     this.setState(
       {
-        layerDetails: properties.BLDG_ID,
-        currentBuilding: properties.BLDG_ID
+        layerDetails: properties.Identifier,
+        currentBuilding: properties.Identifier
       }
     );
-    this.state.layer.leafletObject.setFeatureStyle(properties.BLDG_ID, strongStyle(properties));
+    this.state.layer.leafletObject.setFeatureStyle(properties.Identifier, strongStyle(properties));
   }
 
 
