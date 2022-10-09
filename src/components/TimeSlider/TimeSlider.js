@@ -1,7 +1,6 @@
 import React from 'react';
 // import { useSearchParams } from "react-router-dom";
 import { Col, Row } from "react-bootstrap";
-import styles from './TimeSlider.module.scss';
 
 const TimeSlider = (props) => {
   const min = Math.min(...props.years) - 1;
@@ -21,7 +20,7 @@ const TimeSlider = (props) => {
   // }, [searchParams]);
 
   return (
-    <div className={styles.TimeSlider}>
+    <div className='p-3'>
       <Row>
         <Col md="auto">
           <label>{props.label}</label>
@@ -42,9 +41,9 @@ const TimeSlider = (props) => {
         <Col className="text-end">{max}</Col>
       </Row>
       <Row>
-        <Col className="mb-3">
+        <Col className="ps-4 pe-4">
           <svg role="presentation" height="20px" width="100%" xmlns="http://www.w3.org/2000/svg">
-            <rect x="1%" y="5" width="1" height="10"></rect>
+            {/* <rect x="1%" y="5" width="1" height="10"></rect> */}
             {
               props.years.map((step, index) => {
                 return (
@@ -52,8 +51,12 @@ const TimeSlider = (props) => {
                 )
               })
             }
-            <rect x="98%" y="5" width="1" height="10"></rect>
+            {/* <rect x="98%" y="5" width="1" height="10"></rect> */}
           </svg>
+        </Col>
+      </Row>
+      <Row>
+        <Col>
           <input
             className="form-range"
             type="range"
@@ -63,7 +66,7 @@ const TimeSlider = (props) => {
             onChange={(event) => handleChange(event)}
             value={parseInt(props.currentYear)}
           />
-      </Col>
+        </Col>
       </Row>
     </div>
   );
