@@ -70,10 +70,14 @@ export default class Wards extends React.Component {
     return(
       <>
         <Offcanvas show={this.state.show} placement="end" scroll={true} backdrop={false}>
-          <Offcanvas.Header closeButton onHide={() => this.setState({ show: false })}><h5>Wards</h5></Offcanvas.Header>
-          <Offcanvas.Body>
+          <Offcanvas.Header closeButton onHide={() => this.setState({ show: false })}>
+            <h5>Wards</h5>
+          </Offcanvas.Header>
           <TimeSlider years={YEARS} currentYear={this.props.currentYear} setYear={this.props.updateYear} label="City Wards in" />
-            {this.renderContent()}
+          <Offcanvas.Body>
+            <article>
+              {this.renderContent()}
+            </article>
           </Offcanvas.Body>
         </Offcanvas>
         {this.renderToggleButton()}
@@ -84,7 +88,7 @@ export default class Wards extends React.Component {
   renderContent() {
     if (this.state.currentLayer && this.state.currentLayer.details) {
       return (
-        <article>
+        <>
           <h5>{this.state.currentLayer.details.title}</h5>
           <p className="lead">{this.state.currentLayer.details.intro}</p>
           <dl className="row">
@@ -97,17 +101,17 @@ export default class Wards extends React.Component {
               )
             })}
           </dl>
-        </article>
+        </>
       )
     }
 
     return (
-      <article>
+      <>
         <h5>Atlanta’s Wards</h5>
         <p>From its incorporation in 1847, the municipal boundaries of Atlanta, Georgia, United States, were extended repeatedly from a small area around its railroad station to today's city covering 131.7 square miles (341 km2).</p>
         <p>Prior to 1954, Atlanta was divided into political divisions called wards. The number of wards were increased as the city grew.</p>
         <p>Use the form field or slider above to select a year to see how Atlanta's Wards changed over time.</p>
-      </article>
+      </>
     );
   }
 
