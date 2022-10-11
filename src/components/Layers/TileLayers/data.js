@@ -10,7 +10,29 @@ export const tileLayers = [
     ],
     type: 'WMS',
     year: 1840,
-    title: '1878 City Atlas'
+    title: '1848 City Atlas'
+  },
+  {
+    urls: ['https://geoserver.ecds.emory.edu/ATLMaps/gwc/service/wms?layers=ATLMaps:2rwkdcdv&format=image/png&transparant=true'],
+    leafletLayers: [
+      L.tileLayer.wms('https://geoserver.ecds.emory.edu/ATLMaps/gwc/service/wms?layers=ATLMaps:2rwkdcdv&format=image/png&transparant=true', {
+        opacity: 0
+      })
+    ],
+    type: 'WMS',
+    year: 1870,
+    title: '1870 City Map'
+  },
+  {
+    urls: ['https://geoserver.ecds.emory.edu/ATLMaps/gwc/service/wms?layers=ATLMaps:2s4d022m&format=image/png&transparant=true'],
+    leafletLayers: [
+      L.tileLayer.wms('https://geoserver.ecds.emory.edu/ATLMaps/gwc/service/wms?layers=ATLMaps:2s4d022m&format=image/png&transparant=true', {
+        opacity: 0
+      })
+    ],
+    type: 'WMS',
+    year: 1895,
+    title: '1895 City Map'
   },
   {
     urls: ['https://geoserver.ecds.emory.edu/ATLMaps/gwc/service/wms?layers=ATLMaps:Atlanta1906&format=image/png&transparant=true'],
