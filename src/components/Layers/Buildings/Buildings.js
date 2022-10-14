@@ -43,18 +43,61 @@ export default class Buildings extends React.Component {
     if (this.state.layer) this.state.layer.leafletObject.removeFrom(this.props.leafletMap);
   }
 
+  async omekaRead(bldgID) {
+    let data;
+    const response = await fetch('https://dvl.ecdsdev.org/api/items?collection=16&key=23bd7efbce6d7e1ceeee3265cddf6060543f0459&per_page=1000')
+    .then(res => res.json()).then(d => {
+      data = d;
+    });
+    const reasonableJSON = data.map((building) => {
+      return {
+        title: building.element_texts.find(el => el.element.id === 50).text,
+        bldgID: building.element_texts.find(el => el.element.id === 43).text
+      }
+    });
+    let building_details = {};
+    for(const building of reasonableJSON) {
+      if (building.bldgID === bldgID) {
+        building_details = {
+          title: building.title,
+          bldgID: building.bldgID
+        };
+        break;
+      }
+    }
+    return building_details;
+  }
+
   handleClick(event) {
     console.log("🚀 ~ file: Buildings.js ~ line 49 ~ Buildings ~ handleClick ~ event", event)
     if (this.state.currentBuilding) {
       this.state.layer.leafletObject.resetFeatureStyle(this.state.currentBuilding);
     }
     const properties = event.layer.properties;
-    this.setState(
-      {
-        layerDetails: properties.Identifier,
-        currentBuilding: properties.Identifier
+    const data = this.omekaRead(properties.Identifier)
+      .then((value) => {return value;});
+    const setDetails = async() => {
+      const a = await data;
+      console.log(a);
+      let details = a;
+      if (Object.keys(details).length === 0) {
+        this.setState(
+          {
+            layerDetails: properties.Identifier,
+            currentBuilding: properties.Identifier
+          }
+        );
       }
-    );
+      else {
+        this.setState(
+          {
+            layerDetails: details.title,
+            currentBuilding: details.bldgID
+          }
+        )
+      }
+    }
+    setDetails();
     this.state.layer.leafletObject.setFeatureStyle(properties.Identifier, strongStyle(properties));
   }
 
