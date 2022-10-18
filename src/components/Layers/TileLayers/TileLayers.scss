@@ -1,3 +1,13 @@
 .base-layer-control {
   max-height: calc(100vh - 250px);
 }
+
+.accordion {
+  button {
+    &.collapsed {
+      &:focus {
+        background: rgb(187 65 77 / 46%);
+      }
+    }
+  }
+}

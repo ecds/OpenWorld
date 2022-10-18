@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSun as fasSun } from '@fortawesome/free-solid-svg-icons';
+import { faSun as farSun } from '@fortawesome/free-regular-svg-icons';
 import { Col, Row } from 'react-bootstrap';
-// import styles from './OpacityControl.module.scss';
 
 const OpacityControl = (props) => {
   const [opacity, setOpacity] = useState(0);
@@ -20,12 +22,22 @@ const OpacityControl = (props) => {
   }, [props]);
 
   const updateOpacity = ((event) => {
-    let newOpacity = event.target.value;
-    if (event.target.type === 'number') {
-      newOpacity = newOpacity * 0.01;
-    }
+    const newOpacity  = event.target.type === 'number' ? event.target.value * 0.01 : parseFloat(event.target.value);
+    updateLeafletOpacity(newOpacity);
+  });
+
+  const toggleOpacity = ((event) => {
+    const allowedKeyEvents = ['Enter', 'Space'];
+
+    if (event && !allowedKeyEvents.includes(event.code)) return;
+
+    const newOpacity = opacity === 1 ? 0 : 1;
+    updateLeafletOpacity(newOpacity);
+  });
+
+  const updateLeafletOpacity = ((newOpacity) => {
+    setOpacity(newOpacity);
     for (const leafletLayer of props.layer.leafletLayers) {
-      setOpacity(newOpacity);
       leafletLayer.setOpacity(newOpacity);
     }
   });
@@ -33,31 +45,42 @@ const OpacityControl = (props) => {
   return (
     <>
       <Row>
-        <Col>
-          Opacity
+        <Col sm={1}>
+          <span role="button" tabIndex="0" onClick={() => toggleOpacity()} onKeyDown={(event) => toggleOpacity(event)}>
+            <FontAwesomeIcon
+              aria-label={`Toggle opacity for base layer ${props.layer.title}`}
+              icon={opacity === 0 ? farSun : fasSun}
+              style={{ opacity: opacity === 0 ? 1 : opacity + .2 }}
+            />
+          </span>
+          {/* <FontAwesomeIcon icon={["fas", "coffee"]} /> */}
         </Col>
-      </Row>
-      <Row>
-        <Col>
+        <Col sm={7}>
           <input
             type="range"
             className="form-range"
             min="0"
             max="1"
-            step=".1"
+            step=".05"
+            aria-label={`Set opacity for base layer ${props.layer.title}`}
             value={opacity}
             onChange={(event) => updateOpacity(event)}
           />
         </Col>
-        <Col xs="auto">
-          <input
-            type="number"
-            min="0"
-            max="100"
-            step="5"
-            value={opacity / 0.01}
-            onChange={(event) => updateOpacity(event)}
-          />
+        <Col sm={4}>
+          <div className="input-group input-group-sm">
+            <input
+              type="number"
+              className="form-control form-control-sm pe-0"
+              min="0"
+              max="100"
+              step="5"
+              aria-label={`Set opacity for base layer ${props.layer.title}`}
+              value={opacity / 0.01}
+              onChange={(event) => updateOpacity(event)}
+            />
+            <span className="input-group-text">%</span>
+          </div>
         </Col>
       </Row>
     </>
