@@ -11,7 +11,6 @@ import { LinkContainer } from 'react-router-bootstrap'
 import About from '../About/About';
 import { tours } from '../Layers/OpenTour/data';
 import styles from './MainNav.module.scss';
-import StoryMap from '../Layers/StoryMap/StoryMap';
 
 const BuildingsNav = () => (
   <>
@@ -33,7 +32,7 @@ const TransportationNav = () => (
 
 const FeaturesNav = () => (
   <>
-    <FontAwesomeIcon icon={faStar} /> Features
+    <FontAwesomeIcon icon={faStar} /> Spotlights
   </>
 )
 
@@ -71,9 +70,9 @@ const MainNav = (props) => {
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
             <NavDropdown title={BuildingsNav()}>
-              <LinkContainer to="/buildings/1878">
+              {/* <LinkContainer to="/buildings/1878">
                 <NavDropdown.Item>1878</NavDropdown.Item>
-              </LinkContainer>
+              </LinkContainer> */}
               <LinkContainer to="/buildings/1928">
                 <NavDropdown.Item>1928</NavDropdown.Item>
               </LinkContainer>
@@ -94,7 +93,7 @@ const MainNav = (props) => {
             <NavDropdown title={FeaturesNav()}>
               {tours.map((tour, index) => {
                 return (
-                  <LinkContainer key={index} to={`/features/${tour.slug}`}>
+                  <LinkContainer key={index} to={`/tours/${tour.slug}`}>
                     <NavDropdown.Item>{tour.title}</NavDropdown.Item>
                   </LinkContainer>
                 );
@@ -106,20 +105,6 @@ const MainNav = (props) => {
               </NavDropdown.Item>
             </NavDropdown>
             <About />
-          </Nav>
-          <Nav>
-            <Nav.Link
-              href="https://ecds.emory.edu/"
-              title="Emory Center for Digital Scholarship"
-              className="me-5"
-            >
-              <img
-                src="/ecds.svg"
-                className="owa-ecds-logo"
-                style={{ transform: "scale(6)", width: "100%" }}
-                alt="Sponsored by Emory Center for Digital Scholarship a division of Emory University's Office of Information Technology."
-              />
-            </Nav.Link>
           </Nav>
         </Navbar.Collapse>
       </Container>

@@ -1,21 +1,20 @@
 import React from 'react';
+import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
 const Sponsors = () => {
   return (
-    <>
+    <Container fluid="sm">
       <Row>
-        <Col md="4">
+        <Col sm={4}>
           <img
+            className="img-fluid"
             src="/LOGO_emory.png"
             alt="Emory Logo"
-            style={{
-              width: "100%",
-            }}
           ></img>
         </Col>
-        <Col md="c8">
+        <Col sm={8}>
           <div>
             <a
               href="https://ecds.emory.edu/"
@@ -45,16 +44,14 @@ const Sponsors = () => {
         </Col>
       </Row>
       <Row>
-        <Col md="4">
+        <Col sm={4}>
           <img
+            className="img-fluid"
             src="/LOGO_Kazringa.png"
             alt="Kaziranga Logo"
-            style={{
-              width: "100%",
-            }}
           ></img>
         </Col>
-        <Col md="8">
+        <Col sm={8}>
           <div>
             <a
               href="https://kazirangauniversity.in/"
@@ -68,16 +65,14 @@ const Sponsors = () => {
         </Col>
       </Row>
       <Row>
-        <Col md="4">
+        <Col sm={4}>
           <img
+            className="img-fluid"
             src="/LOGO_UNIFESP.png"
             alt="UNIFESP Logo"
-            style={{
-              width: "100%",
-            }}
           ></img>
         </Col>
-        <Col md="8">
+        <Col sm={8}>
           <div>
             <a
               href="https://www.unifesp.br/"
@@ -93,16 +88,14 @@ const Sponsors = () => {
         </Col>
       </Row>
       <Row>
-        <Col md="4">
+        <Col sm={4}>
           <img
+            className="img-fluid"
             src="/LOGO_Yonsei.jpg"
-            style={{
-              width: "100%",
-            }}
             alt="Yonsei Logo"
           ></img>
         </Col>
-        <Col md="8">
+        <Col sm={8}>
           <div>
             <a
               href="https://www.yonsei.ac.kr/"
@@ -116,7 +109,7 @@ const Sponsors = () => {
           <p>Forthcoming.</p>
         </Col>
       </Row>
-    </>
+    </Container>
   );
 }
 
