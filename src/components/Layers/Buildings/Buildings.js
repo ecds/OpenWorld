@@ -1,7 +1,5 @@
 import React from "react";
 import { Button, Offcanvas, Carousel } from 'react-bootstrap';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
 import { layers, strongStyle, omekaMetadata, omekaHighlight } from './data.js';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCaretLeft } from '@fortawesome/free-solid-svg-icons';
@@ -30,7 +28,6 @@ export default class Buildings extends React.Component {
     this.setState({ layer: layers[this.props.year] });
     this.omekaMetadata = await omekaMetadata();
     const omekaMarkers = await omekaHighlight(this.omekaMetadata.filter(b => { return b.longitude && b.latitude }));
-    console.log("🚀 ~ file: Buildings.js ~ line 31 ~ Buildings ~ componentDidMount ~ omekaMarkers", omekaMarkers)
     this.setState(
       { omekaMarkers },
       this.addOmekaMarkers
