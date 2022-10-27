@@ -1,5 +1,6 @@
 // import chroma from 'chroma-js';
 import L from 'leaflet';
+import chroma from 'chroma-js';
 
 const StreetcarLines = {
   1924: [
@@ -111,7 +112,7 @@ const StreetcarLines = {
     {
       number: 22,
       name: 'English Ave-Soldiers\' Home',
-      color: '#38a800'
+      color: '#00a884'
     },
     {
       number: 23,
@@ -141,6 +142,7 @@ export const StreetcarLayers = async (year) => {
         data,
         {
           color: line.color,
+          fillColor: chroma.contrast(line.color, 'white') > 4.5 ? 'white': 'black',
           weight: 4,
           dashArray: '20 20',
           dashOffset: index % 2 === 0 ? '1' : '2',
@@ -157,18 +159,23 @@ export const StreetcarLayers = async (year) => {
 }
 
 const onEachFeature = (feature, layer) => {
-  layer.bindPopup(`<span style="color: ${layer.options.color};">${layer.options.label}</span>`, { className: 'owa-streetcar-popup fs-5' })
+  layer.bindPopup(
+    `<span style="color: ${layer.options.color}; backgroundColor: ${layer.options.fillColor};">${layer.options.label}</span>`,
+    {
+      className: layer.options.fillColor === 'black' ? 'owa-streetcar-popup-dark' : ''
+    }
+  );
+
   layer.on({
     'mouseover': function (event) {
         highlightGeoJSON(event.target);
-        // layer.getPopup().setLatLng(e.latlng).open;
         layer.openPopup(event.latlng);
         layer.bringToFront();
     },
     'mouseout': function () {
         dehighlightGeoJSON(layer);
         layer.closePopup();
-        // layer.bringToBack();
+        layer.bringToBack();
     }
   });
 }

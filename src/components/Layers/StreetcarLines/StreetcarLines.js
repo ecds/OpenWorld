@@ -1,4 +1,4 @@
-import React from 'react';
+import Layer, { determineSize } from '../Layer.js';
 import { Button, Offcanvas } from 'react-bootstrap';
 import CloseButton from 'react-bootstrap/CloseButton';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -6,7 +6,7 @@ import { faCaretLeft, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import StreetcarLayers, { dehighlightGeoJSON, highlightGeoJSON } from './data.js';
 import './StreetcarLines.scss';
 
-export default class StreetcarLines extends React.Component {
+export default class StreetcarLines extends Layer {
 
   constructor(props) {
     super(props);
@@ -14,7 +14,8 @@ export default class StreetcarLines extends React.Component {
     this.state = {
       layers: [],
       show: true,
-      added: false
+      added: false,
+      contentPlacement: 'end'
     };
 
     this.clearLayers = this.clearLayers.bind(this);
@@ -23,8 +24,9 @@ export default class StreetcarLines extends React.Component {
   }
 
   async componentDidMount() {
+    window.addEventListener('resize', this.handleResize);
     const layers = await StreetcarLayers(this.props.year);
-    this.setState({ layers }, this.addLayers)
+    this.setState({ layers, contentPlacement: determineSize() }, this.addLayers)
   }
 
   componentDidUpdate(previousProps, previousState) {
@@ -72,10 +74,10 @@ export default class StreetcarLines extends React.Component {
   render() {
     return (
       <>
-        <Offcanvas className="text-bg-dark" show={this.state.show} placement="end" scroll={true} backdrop={false}>
+        <Offcanvas show={this.state.show} placement={this.state.contentPlacement} scroll={true} backdrop={false}>
           <Offcanvas.Header onHide={() => this.setState({ show: false })}>
             <h5>StreetcarLines {this.props.year}</h5>
-            <CloseButton variant="white" onClick={() => this.setState({ show: false })}/>
+            <CloseButton onClick={() => this.setState({ show: false })}/>
           </Offcanvas.Header>
           <Offcanvas.Body>
             {this.renderContent()}
@@ -95,8 +97,8 @@ export default class StreetcarLines extends React.Component {
               <li
                 key={index}
                 tabIndex="0"
-                className="fs-5"
-                style={{color: layer.leafletObject.options.color, cursor: 'pointer'}}
+                className="fs-5 my-2 p-2 fw-semibold"
+                style={{backgroundColor: layer.leafletObject.options.color, cursor: 'pointer', color: layer.leafletObject.options.fillColor}}
                 onMouseEnter={() => highlightGeoJSON(layer.leafletObject, layer.leafletObject.options.color)}
                 onMouseLeave={() => dehighlightGeoJSON(layer.leafletObject, layer.leafletObject.options.color)}
                 onFocus={() => highlightGeoJSON(layer.leafletObject, layer.leafletObject.options.color)}

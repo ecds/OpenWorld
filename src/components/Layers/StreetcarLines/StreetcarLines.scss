@@ -1,8 +1,13 @@
-.owa-streetcar-popup {
+.owa-streetcar-popup-dark {
   // background-color: #212529;
 
   .leaflet-popup-content-wrapper,
   .leaflet-popup-tip {
     background-color: #212529;
   }
+}
+
+.leaflet-popup-content-wrapper {
+  font-size: 1.25rem;
+  font-weight: 600;
 }
