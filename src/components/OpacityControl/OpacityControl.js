@@ -3,23 +3,33 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSun as fasSun } from '@fortawesome/free-solid-svg-icons';
 import { faSun as farSun } from '@fortawesome/free-regular-svg-icons';
 import { Col, Row } from 'react-bootstrap';
+import { YEARS } from '../Layers/TileLayers/data';
 
 const OpacityControl = (props) => {
   const [opacity, setOpacity] = useState(0);
 
   useEffect(() => {
     if (props.layer.leafletLayers) {
+      // for (const leafletLayer of props.layer.leafletLayers) {
+      //   if (parseInt(props.layer.year) > parseInt(props.year)) {
+      //     leafletLayer.setOpacity(0);
+      //     setOpacity(0);
+      //   } else {
+      //     leafletLayer.setOpacity(1);
+      //     setOpacity(1);
+      //   }
+      // }
       for (const leafletLayer of props.layer.leafletLayers) {
-        if (parseInt(props.layer.year) > parseInt(props.year)) {
-          leafletLayer.setOpacity(0);
-          setOpacity(0);
-        } else {
+        if (Math.max(...YEARS.filter(year => year <= props.year)) === props.layer.year) {
           leafletLayer.setOpacity(1);
           setOpacity(1);
+        } else {
+          leafletLayer.setOpacity(0);
+          setOpacity(0);
         }
       }
     }
-  }, [props]);
+  }, [props.year, props.layer]);
 
   const updateOpacity = ((event) => {
     const newOpacity  = event.target.type === 'number' ? event.target.value * 0.01 : parseFloat(event.target.value);
@@ -31,7 +41,7 @@ const OpacityControl = (props) => {
 
     if (event && !allowedKeyEvents.includes(event.code)) return;
 
-    const newOpacity = opacity === 1 ? 0 : 1;
+    const newOpacity = opacity > 0 ? 0 : 1;
     updateLeafletOpacity(newOpacity);
   });
 
@@ -45,7 +55,7 @@ const OpacityControl = (props) => {
   return (
     <>
       <Row>
-        <Col sm={1}>
+        <Col className="fs-6 mt-1" sm={1}>
           <span role="button" tabIndex="0" onClick={() => toggleOpacity()} onKeyDown={(event) => toggleOpacity(event)}>
             <FontAwesomeIcon
               aria-label={`Toggle opacity for base layer ${props.layer.title}`}
@@ -55,7 +65,7 @@ const OpacityControl = (props) => {
           </span>
           {/* <FontAwesomeIcon icon={["fas", "coffee"]} /> */}
         </Col>
-        <Col sm={7}>
+        <Col className="mt-1" sm={7}>
           <input
             type="range"
             className="form-range"
