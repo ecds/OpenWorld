@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleInfo } from '@fortawesome/free-solid-svg-icons';
-import './About.scss';
 import Modal from "react-bootstrap/Modal";
 import ModalBody from "react-bootstrap/ModalBody";
 import ModalHeader from "react-bootstrap/ModalHeader";
@@ -13,9 +12,10 @@ import Button from "react-bootstrap/Button";
 import Form from 'react-bootstrap/Form'
 import cookies from "react-cookies";
 import Intro from './Intro';
-import History from './Histroy';
+import History from './History';
 import Sponsors from './Sponsors';
 import Members from './Members';
+import './About.scss';
 
 const About = () => {
   const [key, setKey] = useState('info');
@@ -51,7 +51,7 @@ const About = () => {
         backdrop={true}
         id="about-modal"
         scrollable={true}
-        className="owa-about-modal"
+        dialogClassName="owa-about-modal"
       >
         <ModalHeader closeButton>
           <ModalTitle>About OpenWorld Atlanta</ModalTitle>
