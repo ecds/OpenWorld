@@ -13,14 +13,25 @@ export default class Buildings extends React.Component {
       show: true,
       layerDetails: null,
       currentBuilding: null,
-      layer: null
+      layer: null,
+      allBuildings: null
     }
 
     // this.state.layer = layers[this.props.year];
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     this.setState({ layer: layers[this.props.year] });
+    const response = await fetch('https://dvl.ecdsdev.org/api/items?collection=16&key=23bd7efbce6d7e1ceeee3265cddf6060543f0459&per_page=1000')
+    const data = await response.json();
+    const reasonableJSON = data.map((building) => {
+      return {
+        title: building.element_texts.find(el => el.element.id === 50).text,
+        bldgID: building.element_texts.find(el => el.element.id === 43).text
+      }
+    });
+    this.setState({allBuildings: reasonableJSON});
+    console.log(this.state.allBuildings);
   }
 
   componentDidUpdate(previousProps, previousState) {
@@ -43,21 +54,16 @@ export default class Buildings extends React.Component {
     if (this.state.layer) this.state.layer.leafletObject.removeFrom(this.props.leafletMap);
   }
 
-  async omekaRead(bldgID) {
-    let data;
-    const response = await fetch('https://dvl.ecdsdev.org/api/items?collection=16&key=23bd7efbce6d7e1ceeee3265cddf6060543f0459&per_page=1000')
-    .then(res => res.json()).then(d => {
-      data = d;
-    });
-    const reasonableJSON = data.map((building) => {
-      return {
-        title: building.element_texts.find(el => el.element.id === 50).text,
-        bldgID: building.element_texts.find(el => el.element.id === 43).text
-      }
-    });
+  handleClick(event) {
+    console.log("🚀 ~ file: Buildings.js ~ line 49 ~ Buildings ~ handleClick ~ event", event)
+    if (this.state.currentBuilding) {
+      this.state.layer.leafletObject.resetFeatureStyle(this.state.currentBuilding);
+    }
+    const properties = event.layer.properties;
+    const reasonableJSON = this.state.allBuildings;
     let building_details = {};
     for(const building of reasonableJSON) {
-      if (building.bldgID === bldgID) {
+      if (building.bldgID === properties.Identifier) {
         building_details = {
           title: building.title,
           bldgID: building.bldgID
@@ -65,39 +71,22 @@ export default class Buildings extends React.Component {
         break;
       }
     }
-    return building_details;
-  }
-
-  handleClick(event) {
-    console.log("🚀 ~ file: Buildings.js ~ line 49 ~ Buildings ~ handleClick ~ event", event)
-    if (this.state.currentBuilding) {
-      this.state.layer.leafletObject.resetFeatureStyle(this.state.currentBuilding);
+    if (Object.keys(building_details).length === 0) {
+      this.setState(
+        {
+          layerDetails: properties.Identifier,
+          currentBuilding: properties.Identifier
+        }
+      );
     }
-    const properties = event.layer.properties;
-    const data = this.omekaRead(properties.Identifier)
-      .then((value) => {return value;});
-    const setDetails = async() => {
-      const a = await data;
-      console.log(a);
-      let details = a;
-      if (Object.keys(details).length === 0) {
-        this.setState(
-          {
-            layerDetails: properties.Identifier,
-            currentBuilding: properties.Identifier
-          }
-        );
-      }
-      else {
-        this.setState(
-          {
-            layerDetails: details.title,
-            currentBuilding: details.bldgID
-          }
-        )
-      }
+    else {
+      this.setState(
+        {
+          layerDetails: building_details.title,
+          currentBuilding: building_details.bldgID
+        }
+      )
     }
-    setDetails();
     this.state.layer.leafletObject.setFeatureStyle(properties.Identifier, strongStyle(properties));
   }
 
