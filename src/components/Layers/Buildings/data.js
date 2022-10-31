@@ -1,6 +1,9 @@
 import L from 'leaflet';
 import {} from '../../../../node_modules/@ecds/leaflet.vectorgrid/dist/Leaflet.VectorGrid'
 
+const omekaURL = 'https://dvl.ecdsdev.org/api';
+const omekaKey = '23bd7efbce6d7e1ceeee3265cddf6060543f0459';
+
 export const layers = {
   // 1878: {
   //   year: '1878',
@@ -107,7 +110,7 @@ const getColor = (use) => {
   }
 }
 
-export const buildingStyles = (building) => {
+const buildingStyles = (building) => {
   return {
     fillOpacity: 0.4,
     opacity: 0,
@@ -127,37 +130,34 @@ export const strongStyle = (building) => {
   }
 }
 
-export const omekaMetadata = async () => {
-  const response = await fetch('https://dvl.ecdsdev.org/api/items?collection=16&key=23bd7efbce6d7e1ceeee3265cddf6060543f0459&per_page=1000');
-  const data = await response.json();
-  const reasonableJSON = await data.map(async (building) => {
-    const fileResponse = await fetch(`${building.files.url}&key=23bd7efbce6d7e1ceeee3265cddf6060543f0459`);
-    const fileData = await fileResponse.json();
-    const latLng = { longitude: null, latitude: null };
-    if (building.extended_resources.geolocations) {
-      const locationResponse = await fetch(`${building.extended_resources.geolocations.url}?key=23bd7efbce6d7e1ceeee3265cddf6060543f0459`);
-      const locationData = await locationResponse.json();
-      latLng.longitude = locationData.longitude;
-      latLng.latitude = locationData.latitude;
-    }
-    const images = fileData.map((image) => {
-      return{
-        thumb: image.file_urls.thumbnail,
-        full: image.file_urls.original,
-        caption: image.original_filename
-      }
-     });
+// export const omekaMetadata = async () => {
+//   const response = await fetch(`${omekaURL}/items?collection=16&key=${omekaKey}&per_page=1000`);
+//   const data = await response.json();
+//   const reasonableJSON = await data.map(async (building) => {
+//     return{
+//       omekaID: building.id,
+//       fileCount: building.files.count,
+//       title: building.element_texts.find(el => el.element.id === 50).text,
+//       bldgID: building.element_texts.find(el => el.element.id === 43).text,
+//       address: building.element_texts.find(el => el.element.id === 53).text,
+//       location: building.element_texts.find(el => el.element.id === 4).text.split(', ').map(c => {return parseFloat(c)}),
+//       landUse: building.element_texts.find(el => el.element.id === 49).text[0],
+//       images: []
+//     }
+//   });
 
+//   const buildingMetadata = await Promise.all(reasonableJSON);
+//   return buildingMetadata;
+// }
+
+export const omekaImages = async (omekaId) => {
+  const fileResponse = await fetch(`${omekaURL}/files?item=${omekaId}&key=${omekaKey}`);
+  const fileData = await fileResponse.json();
+  return fileData.map((image) => {
     return{
-      title: building.element_texts.find(el => el.element.id === 50).text,
-      bldgID: building.element_texts.find(el => el.element.id === 43).text,
-      address: building.element_texts.find(el => el.element.id === 53).text,
-      landUse: building.element_texts.find(el => el.element.id === 49).text[0],
-      ...latLng,
-      images
+      thumb: image.file_urls.thumbnail,
+      full: image.file_urls.original,
+      caption: image.original_filename
     }
-  });
-
-  const buildingMetadata = await Promise.all(reasonableJSON);
-  return buildingMetadata;
+   });
 }

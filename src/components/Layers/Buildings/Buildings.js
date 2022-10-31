@@ -1,11 +1,11 @@
 import React from "react";
 import { Button, Offcanvas, Carousel } from 'react-bootstrap';
-import { layers, strongStyle, omekaMetadata, omekaHighlight } from './data.js';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCaretLeft } from '@fortawesome/free-solid-svg-icons';
+import { layers, strongStyle, omekaImages } from './data.js';
+import Legend from "./Legend.js";
 import Image from '../../Image/Image.js';
 import './Buildings.scss';
-import Legend from "./Legend.js";
 
 export default class Buildings extends React.Component {
   constructor(props) {
@@ -31,12 +31,17 @@ export default class Buildings extends React.Component {
     const data = await response.json();
     const reasonableJSON = data.map((building) => {
       return {
+        omekaID: building.id,
+        fileCount: building.files.count,
         title: building.element_texts.find(el => el.element.id === 50).text,
-        bldgID: building.element_texts.find(el => el.element.id === 43).text
+        bldgID: building.element_texts.find(el => el.element.id === 43).text,
+        address: building.element_texts.find(el => el.element.id === 53).text,
+        location: building.element_texts.find(el => el.element.id === 4).text.split(', ').map(c => {return parseFloat(c)}),
+        landUse: building.element_texts.find(el => el.element.id === 49).text[0],
+        images: []
       }
     });
     this.setState({allBuildings: reasonableJSON});
-    console.log(this.state.allBuildings);
   }
 
   componentDidUpdate(previousProps, previousState) {
@@ -62,43 +67,42 @@ export default class Buildings extends React.Component {
   componentWillUnmount() {
     if (this.state.layer) {
       this.state.layer.leafletObject.removeFrom(this.props.leafletMap);
-      this.state.omekaMarkers.removeFrom(this.props.leafletMap);
+      // this.state.omekaMarkers.removeFrom(this.props.leafletMap);
     }
   }
 
-  handleClick(event) {
+  async handleClick(event) {
     if (this.state.currentBuilding) {
       this.state.layer.leafletObject.resetFeatureStyle(this.state.currentBuilding);
     }
 
     const properties = event.layer.properties;
-    const reasonableJSON = this.state.allBuildings;
-    let building_details = {};
-    for(const building of reasonableJSON) {
-      if (building.bldgID === properties.Identifier) {
-        building_details = {
-          title: building.title,
-          bldgID: building.bldgID
-        };
-        break;
+
+    this.setState({ currentBuilding: properties.Identifier });
+
+    const omekaBuilding = this.state.allBuildings.find(building => building.bldgID === properties.Identifier);
+
+    if (omekaBuilding) {
+      if (omekaBuilding.fileCount > 0 && omekaBuilding.images.length === 0) {
+        omekaBuilding.images = await omekaImages(omekaBuilding.omekaID);
       }
-    }
-    if (Object.keys(building_details).length === 0) {
       this.setState(
         {
-          layerDetails: properties.Identifier,
-          currentBuilding: properties.Identifier
+          layerDetails: omekaBuilding
         }
       );
-    }
-    else {
+    } else {
       this.setState(
         {
-          layerDetails: building_details.title,
-          currentBuilding: building_details.bldgID
+          layerDetails: {
+            title: properties.Title,
+            address: properties.Address,
+            images: []
+          }
         }
       )
     }
+
     this.state.layer.leafletObject.setFeatureStyle(properties.Identifier, strongStyle(properties));
   }
 
@@ -145,9 +149,6 @@ export default class Buildings extends React.Component {
               return (
                 <Carousel.Item key={index}>
                   <Image source={image.full} caption={image.caption} />
-                  {/* <Carousel.Caption>
-                    <p>{image.caption}</p>
-                  </Carousel.Caption> */}
                 </Carousel.Item>
               )
             }
