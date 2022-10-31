@@ -27,12 +27,20 @@ const satelliteDescription = () => {
   );
 }
 
+const defaultLayerOptions = {
+  format: 'image/png',
+  transparent: true,
+  updateInterval: 1,
+  opacity: 0,
+  maxZoom: 20
+}
+
 export const tileLayers = [
   {
     urls: ['https://geoserver.ecds.emory.edu/Atlanta1878/gwc/service/wms?layers=Atlanta1878:q516x4&format=image/png&transparant=true'],
     leafletLayers: [
       L.tileLayer.wms('https://geoserver.ecds.emory.edu/Atlanta1878/gwc/service/wms?layers=Atlanta1878:q516x4&format=image/png&transparant=true', {
-        opacity: 0,
+        ...defaultLayerOptions,
         maxZoom: 20
       })
     ],
@@ -52,7 +60,7 @@ export const tileLayers = [
     urls: ['https://geoserver.ecds.emory.edu/ATLMaps/gwc/service/wms?layers=ATLMaps:2rwkdcdv&format=image/png&transparant=true'],
     leafletLayers: [
       L.tileLayer.wms('https://geoserver.ecds.emory.edu/ATLMaps/gwc/service/wms?layers=ATLMaps:2rwkdcdv&format=image/png&transparant=true', {
-        opacity: 0,
+        ...defaultLayerOptions,
         maxZoom: 20
       })
     ],
@@ -68,8 +76,7 @@ export const tileLayers = [
     urls: ['https://geoserver.ecds.emory.edu/ATLMaps/gwc/service/wms?layers=ATLMaps:2s4d022m&format=image/png&transparant=true'],
     leafletLayers: [
       L.tileLayer.wms('https://geoserver.ecds.emory.edu/ATLMaps/gwc/service/wms?layers=ATLMaps:2s4d022m&format=image/png&transparant=true', {
-        opacity: 0,
-        maxZoom: 20
+        ...defaultLayerOptions
       })
     ],
     type: 'WMS',
@@ -80,7 +87,7 @@ export const tileLayers = [
     urls: ['https://geoserver.ecds.emory.edu/ATLMaps/gwc/service/wms?layers=ATLMaps:2s6zg3zx&format=image/png&transparant=true'],
     leafletLayers: [
       L.tileLayer.wms('https://geoserver.ecds.emory.edu/ATLMaps/gwc/service/wms?layers=ATLMaps:2s6zg3zx&format=image/png&transparant=true', {
-        opacity: 0
+        ...defaultLayerOptions
       })
     ],
     type: 'WMS',
@@ -91,8 +98,7 @@ export const tileLayers = [
     urls: ['https://geoserver.ecds.emory.edu/ATLMaps/gwc/service/wms?layers=ATLMaps:sq4pd&format=image/png&transparant=true'],
     leafletLayers: [
       L.tileLayer.wms('https://geoserver.ecds.emory.edu/ATLMaps/gwc/service/wms?layers=ATLMaps:sq4pd&format=image/png&transparant=true', {
-        opacity: 0,
-        maxZoom: 20
+        ...defaultLayerOptions
       })
     ],
     type: 'WMS',
@@ -107,15 +113,11 @@ export const tileLayers = [
     ],
     leafletLayers: [
       // L.tileLayer.wms('https://s3.amazonaws.com/tilemaps/ATL28_1000tiles/{z}/{x}/{y}.png', {
-      //   opacity: 0
+      //   ...defaultLayerOptions
       // }),
       L.tileLayer.wms('https://geoserver.ecds.emory.edu/ATLMaps/gwc/service/wms', {
         layers: 'ATLMaps:ATL28',
-        format: 'image/png',
-        transparent: true,
-        updateInterval: 1,
-        opacity: 0,
-        maxZoom: 20
+        ...defaultLayerOptions
       })
     ],
     bounds: [[33.93379544, -84.21603335], [33.63298531, -84.51696580]],
@@ -127,7 +129,7 @@ export const tileLayers = [
       L.tileLayer.wms('https://geoserver.ecds.emory.edu/ATLMaps/gwc/service/wms?layers=ATLMaps:2s3w9vfd', {
         format: 'image/png',
         transparent: true,
-        opacity: 0,
+        ...defaultLayerOptions,
         maxZoom: 20
       })
     ],
@@ -141,7 +143,7 @@ export const tileLayers = [
     ],
     leafletLayers: [
       L.tileLayer.wms('https://basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
-        opacity: 0
+        ...defaultLayerOptions
       })
     ],
     year: 2022,
@@ -155,10 +157,10 @@ export const tileLayers = [
     ],
     leafletLayers: [
       L.tileLayer.wms('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-        opacity: 0
+        ...defaultLayerOptions
       }),
       L.tileLayer.wms('https://basemaps.cartocdn.com/light_only_labels/{z}/{x}/{y}{r}.png', {
-        opacity: 0
+        ...defaultLayerOptions
       })
     ],
     year: 2022,
