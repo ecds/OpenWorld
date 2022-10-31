@@ -16,6 +16,7 @@ export default class Buildings extends React.Component {
       layerDetails: null,
       currentBuilding: null,
       layer: null,
+      allBuildings: null,
       omekaMarkers: null
     }
 
@@ -26,16 +27,16 @@ export default class Buildings extends React.Component {
 
   async componentDidMount() {
     this.setState({ layer: layers[this.props.year] });
-    this.omekaMetadata = await omekaMetadata();
-    const omekaMarkers = await omekaHighlight(this.omekaMetadata.filter(b => { return b.longitude && b.latitude }));
-    this.setState(
-      { omekaMarkers },
-      this.addOmekaMarkers
-    )
-  }
-
-  addOmekaMarkers() {
-    this.state.omekaMarkers.addTo(this.props.leafletMap);
+    const response = await fetch('https://dvl.ecdsdev.org/api/items?collection=16&key=23bd7efbce6d7e1ceeee3265cddf6060543f0459&per_page=1000')
+    const data = await response.json();
+    const reasonableJSON = data.map((building) => {
+      return {
+        title: building.element_texts.find(el => el.element.id === 50).text,
+        bldgID: building.element_texts.find(el => el.element.id === 43).text
+      }
+    });
+    this.setState({allBuildings: reasonableJSON});
+    console.log(this.state.allBuildings);
   }
 
   componentDidUpdate(previousProps, previousState) {
@@ -71,30 +72,33 @@ export default class Buildings extends React.Component {
     }
 
     const properties = event.layer.properties;
-    this.setState(
-      {
-        currentBuilding: properties.Identifier
+    const reasonableJSON = this.state.allBuildings;
+    let building_details = {};
+    for(const building of reasonableJSON) {
+      if (building.bldgID === properties.Identifier) {
+        building_details = {
+          title: building.title,
+          bldgID: building.bldgID
+        };
+        break;
       }
-    );
-
-    if (this.omekaMetadata.map(b => b.bldgID).includes(event.layer.properties.Identifier)) {
+    }
+    if (Object.keys(building_details).length === 0) {
       this.setState(
         {
-          layerDetails: this.omekaMetadata.find(building => building.bldgID === event.layer.properties.Identifier)
+          layerDetails: properties.Identifier,
+          currentBuilding: properties.Identifier
         }
       );
-    } else {
+    }
+    else {
       this.setState(
         {
-          layerDetails: {
-            title: properties.Title,
-            address: properties.Address,
-            images: []
-          }
+          layerDetails: building_details.title,
+          currentBuilding: building_details.bldgID
         }
       )
     }
-
     this.state.layer.leafletObject.setFeatureStyle(properties.Identifier, strongStyle(properties));
   }
 
