@@ -46,7 +46,8 @@ export const Tour = async (tourSlug) => {
   const tour = tours.find(tour => tour.slug === tourSlug)
   const response = await fetch(tour.url);
   const data = await response.json();
-  tour.intro = data.meta.intro;
+  tour.intro = data.meta;
+  tour.title = data.meta.title;
 
   return {
     leafletLayer: new L.GeoJSON(

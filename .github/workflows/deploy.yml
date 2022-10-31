@@ -1,0 +1,30 @@
+name: Deploy
+
+on:
+  push:
+    branches:
+      - rewrite
+
+jobs:
+  build-and-deploy:
+
+    runs-on: ubuntu-latest
+
+    env:
+      SSH_KEY: ${{secrets.SSH_KEY}}
+      REMOTE_HOST: ${{secrets.REMOTE_HOST}}
+      REMOTE_USER: ${{secrets.REMOTE_USER}}
+
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Use Node.js 18
+      uses: actions/setup-node@v3
+      with:
+        node-version: 16
+    - run: npm install
+    - run: npm run build
+    - run: mkdir ~/.ssh
+    - run: 'echo "$SSH_KEY" >> ~/.ssh/id_rsa'
+    - run: chmod 400 ~/.ssh/id_rsa
+    - run: 'rsync -aze "ssh -o StrictHostKeyChecking=no" build/* $REMOTE_USER@$REMOTE_HOST:~/$REMOTE_HOST/build/'

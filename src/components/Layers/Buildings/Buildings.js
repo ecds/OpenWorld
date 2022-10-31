@@ -1,9 +1,11 @@
 import React from "react";
-import { Button, Offcanvas } from 'react-bootstrap';
-import { layers, strongStyle } from './data.js';
+import { Button, Offcanvas, Carousel } from 'react-bootstrap';
+import { layers, strongStyle, omekaMetadata, omekaHighlight } from './data.js';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCaretLeft } from '@fortawesome/free-solid-svg-icons';
+import Image from '../../Image/Image.js';
 import './Buildings.scss';
+import Legend from "./Legend.js";
 
 export default class Buildings extends React.Component {
   constructor(props) {
@@ -14,10 +16,13 @@ export default class Buildings extends React.Component {
       layerDetails: null,
       currentBuilding: null,
       layer: null,
-      allBuildings: null
+      allBuildings: null,
+      omekaMarkers: null
     }
 
-    // this.state.layer = layers[this.props.year];
+    this.omekaMetadata = null;
+
+    this.toggleButtonRef = React.createRef();
   }
 
   async componentDidMount() {
@@ -48,17 +53,24 @@ export default class Buildings extends React.Component {
       layers[this.props.year].leafletObject.bringToFront();
       this.props.leafletMap.fitBounds(layers[this.props.year].bounds);
     }
+
+    if (previousState.show && !this.state.show) {
+      this.toggleButtonRef.current.focus();
+    }
   }
 
   componentWillUnmount() {
-    if (this.state.layer) this.state.layer.leafletObject.removeFrom(this.props.leafletMap);
+    if (this.state.layer) {
+      this.state.layer.leafletObject.removeFrom(this.props.leafletMap);
+      this.state.omekaMarkers.removeFrom(this.props.leafletMap);
+    }
   }
 
   handleClick(event) {
-    console.log("🚀 ~ file: Buildings.js ~ line 49 ~ Buildings ~ handleClick ~ event", event)
     if (this.state.currentBuilding) {
       this.state.layer.leafletObject.resetFeatureStyle(this.state.currentBuilding);
     }
+
     const properties = event.layer.properties;
     const reasonableJSON = this.state.allBuildings;
     let building_details = {};
@@ -94,18 +106,59 @@ export default class Buildings extends React.Component {
   render() {
     return (
       <>
+      {this.renderToggleButton()}
       <Offcanvas show={this.state.show} placement="end" scroll={true} backdrop={false}>
         <Offcanvas.Header closeButton onHide={() => {this.setState({ show: false })}}>
           <h5>Buildings {this.props.year}</h5>
         </Offcanvas.Header>
         <Offcanvas.Body>
-          {this.state.layerDetails}
+          <Legend />
+          {this.renderDetails()}
         </Offcanvas.Body>
       </Offcanvas>
-      {this.renderToggleButton()}
       </>
     )
   }
+
+  renderDetails() {
+    if (this.state.layerDetails) {
+      return (
+        <article className="my-3">
+          {this.renderImages()}
+          <h5>{this.state.layerDetails.title}</h5>
+          <p>{this.state.layerDetails.address}</p>
+        </article>
+      );
+    } else {
+      return (
+        <article className="my-3">Click a building footprint to learn more.</article>
+      )
+    }
+  }
+
+  renderImages() {
+    if (this.state.layerDetails.images.length > 0) {
+      return (
+        <Carousel className="my-3" interval={500000}>
+          {this.state.layerDetails.images.map(
+            (image, index) => {
+              return (
+                <Carousel.Item key={index}>
+                  <Image source={image.full} caption={image.caption} />
+                  {/* <Carousel.Caption>
+                    <p>{image.caption}</p>
+                  </Carousel.Caption> */}
+                </Carousel.Item>
+              )
+            }
+          )}
+        </Carousel>
+      );
+    }
+
+    return <hr />
+  }
+
 
   renderToggleButton() {
     if (!this.state.show) {
@@ -113,6 +166,8 @@ export default class Buildings extends React.Component {
         <Button
           className="end-0 position-absolute top-50 mx-3 owa-detail-toggle"
           onClick={() => this.setState({ show: true })}
+          tabIndex="0"
+          ref={this.toggleButtonRef}
         >
           <FontAwesomeIcon icon={faCaretLeft} /> Building Details
         </Button>

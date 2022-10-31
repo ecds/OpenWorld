@@ -27,15 +27,15 @@ function App() {
       zoom:        13,
       maxZoom:     20,
       zoomControl: true,
-      maxBounds:   [[33.53, -84.61], [34.03, -84.11]]
+      maxBounds:   [[33.53, -84.61], [34.03, -84.11]],
+      attributionControl: false
     };
 
     try {
       const map = L.map('map', mapOptions);
 
-      L.tileLayer('https://api.mapbox.com/styles/v1/jayvarner/ck9n8d4rj02bh1iom9elzka33/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiamF5dmFybmVyIiwiYSI6ImVkYjliN2Y3ZDZlYzEyNzg5NDhiMGU4MWRiZTY3Mzk3In0.U4Sc4HVk2F4MkKyd7ybgXw', {
-        maxZoom: 19,
-        attribution: '© OpenStreetMap'
+      L.tileLayer('https://api.mapbox.com/styles/v1/jayvarner/ck9n8d4rj02bh1iom9elzka33/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiamF5dmFybmVyIiwiYSI6ImVkYjliN2Y3ZDZlYzEyNzg5NDhiMGU4MWRiZTY3Mzk3In0.U4Sc4HVk2F4MkKyd7ybgXw&fresh=true', {
+        maxZoom: 19
       }).addTo(map);
 
       const boundaryPane = map.createPane('whole');
@@ -80,7 +80,7 @@ function App() {
           element: <StreetcarLinesRoute leafletMap={leafletMap} />
         },
         {
-          path: 'features/:tour',
+          path: 'tours/:tour',
           element: <OpenTourRoute leafletMap={leafletMap} setYear={setYear} />
         },
         {
