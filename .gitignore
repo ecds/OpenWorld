@@ -26,3 +26,5 @@ yarn-error.log*
 notes.txt
 katherine.txt
 public/resources/layers/*
+
+*.bk
