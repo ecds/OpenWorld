@@ -23,8 +23,8 @@ function App() {
   useEffect(() => {
     const mapOptions = {
       center:      [33.75432, -84.38979],
-      minZoom:     11,
-      zoom:        13,
+      minZoom:     13,
+      zoom:        15,
       maxZoom:     20,
       zoomControl: true,
       maxBounds:   [[33.53, -84.61], [34.03, -84.11]],
