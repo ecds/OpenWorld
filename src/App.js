@@ -15,6 +15,7 @@ import StreetcarLinesRoute from './routes/StreetcarLinesRoute';
 import WardRoute from './routes/WardsRoute';
 import OpenTourRoute from './routes/OpenTourRoute';
 import StoryMapRoute from './routes/StoryMapRoute';
+import LatLngContext from './components/LatLngContext';
 
 function App() {
   const [leafletMap, setLeafletMap] = useState(null);
@@ -34,6 +35,15 @@ function App() {
     try {
       const map = L.map('map', mapOptions);
 
+      const contextPopup = L.popup();
+
+      const showContext = (event) => {
+        contextPopup
+            .setLatLng(event.latlng)
+            .setContent(LatLngContext(event.latlng, contextPopup))
+            .openOn(map);
+      }
+
       L.tileLayer('https://api.mapbox.com/styles/v1/jayvarner/ck9n8d4rj02bh1iom9elzka33/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiamF5dmFybmVyIiwiYSI6ImVkYjliN2Y3ZDZlYzEyNzg5NDhiMGU4MWRiZTY3Mzk3In0.U4Sc4HVk2F4MkKyd7ybgXw&fresh=true', {
         maxZoom: 19
       }).addTo(map);
@@ -43,6 +53,8 @@ function App() {
 
       const annexPane = map.createPane('part');
       annexPane.style.zIndex = 400;
+
+      map.on('contextmenu', showContext);
 
       setLeafletMap(map);
       setTimeout(() => { map.invalidateSize() }, 100);
