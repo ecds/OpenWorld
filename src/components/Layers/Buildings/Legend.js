@@ -1,10 +1,8 @@
 import React from 'react';
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
+import { Accordion, ListGroup} from 'react-bootstrap';
 import chroma from 'chroma-js';
 
-const Legend = () => {
+const Legend = (props) => {
   const uses = [
     {
       label: 'Residential',
@@ -49,16 +47,23 @@ const Legend = () => {
   }
 
   return (
-    <Container>
-      {uses.map((use, index) => {
-        return (
-          <Row key={index} className="my-1 fs-5">
-            <Col style={colorStyle(use.color)}>{use.label}</Col>
-            {/* <Col></Col> */}
-          </Row>
-        )
-      })}
-    </Container>
+    <Accordion defaultActiveKey={props.open}>
+      {console.log("🚀 ~ file: Legend.js ~ line 51 ~ Legend ~ Accordion", Accordion, this)}
+      <Accordion.Item eventKey={1}>
+        <Accordion.Header>Building Color Key</Accordion.Header>
+        <Accordion.Body>
+          <ListGroup className="sticky-bottom">
+            {uses.map((use, index) => {
+              return (
+                <ListGroup.Item key={index} style={colorStyle(use.color)}>
+                  {use.label}
+                </ListGroup.Item>
+              );
+            })}
+          </ListGroup>
+        </Accordion.Body>
+      </Accordion.Item>
+    </Accordion>
   )
 }
 

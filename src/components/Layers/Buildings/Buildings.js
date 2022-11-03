@@ -1,11 +1,12 @@
 import React from "react";
-import { Button, Offcanvas, Carousel } from 'react-bootstrap';
+import { Button, Offcanvas, Carousel, Row, Col, Container } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCaretLeft } from '@fortawesome/free-solid-svg-icons';
 import { layers, strongStyle, omekaImages } from './data.js';
 import Legend from "./Legend.js";
 import Image from '../../Image/Image.js';
 import './Buildings.scss';
+import { camelToTitle } from "../../../utils/stringHelpers.js";
 
 export default class Buildings extends React.Component {
   constructor(props) {
@@ -17,7 +18,8 @@ export default class Buildings extends React.Component {
       currentBuilding: null,
       layer: null,
       allBuildings: null,
-      omekaMarkers: null
+      omekaMarkers: null,
+      showLegend: 1
     }
 
     this.omekaMetadata = null;
@@ -33,11 +35,22 @@ export default class Buildings extends React.Component {
       return {
         omekaID: building.id,
         fileCount: building.files.count,
-        title: building.element_texts.find(el => el.element.id === 50).text,
         bldgID: building.element_texts.find(el => el.element.id === 43).text,
-        address: building.element_texts.find(el => el.element.id === 53).text,
-        location: building.element_texts.find(el => el.element.id === 4).text.split(', ').map(c => {return parseFloat(c)}),
+        metadata: {
+          title: building.element_texts.find(el => el.element.id === 50)?.text,
+          address: building.element_texts.find(el => el.element.id === 53)?.text,
+          subject: building.element_texts.find(el => el.element.id === 49)?.text,
+          description: building.element_texts.find(el => el.element.id === 41)?.text,
+          dateBuilt: building.element_texts.find(el => el.element.id === 69)?.text,
+          architect: building.element_texts.find(el => el.element.id === 76)?.text,
+          buildingType: building.element_texts.find(el => el.element.id === 55)?.text,
+          occupantEntities: building.element_texts.find(el => el.element.id === 72)?.text,
+          occupantResidents: building.element_texts.find(el => el.element.id === 58)?.text,
+          race: building.element_texts.find(el => el.element.id === 59)?.text,
+          removed: building.element_texts.find(el => el.element.id === 63)?.text
+        },
         landUse: building.element_texts.find(el => el.element.id === 49).text[0],
+        location: building.element_texts.find(el => el.element.id === 4).text.split(', ').map(c => {return parseFloat(c)}),
         images: []
       }
     });
@@ -56,7 +69,7 @@ export default class Buildings extends React.Component {
       layers[this.props.year].leafletObject.addTo(this.props.leafletMap);
       layers[this.props.year].leafletObject.on('click', (event) => this.handleClick(event));
       layers[this.props.year].leafletObject.bringToFront();
-      this.props.leafletMap.fitBounds(layers[this.props.year].bounds);
+      // this.props.leafletMap.fitBounds(layers[this.props.year].bounds);
     }
 
     if (previousState.show && !this.state.show) {
@@ -78,7 +91,7 @@ export default class Buildings extends React.Component {
 
     const properties = event.layer.properties;
 
-    this.setState({ currentBuilding: properties.Identifier });
+    this.setState({ currentBuilding: properties.Identifier, showLegend: 0 });
 
     const omekaBuilding = this.state.allBuildings.find(building => building.bldgID === properties.Identifier);
 
@@ -88,17 +101,18 @@ export default class Buildings extends React.Component {
       }
       this.setState(
         {
-          layerDetails: omekaBuilding
+          layerDetails: omekaBuilding,
+          show: true
         }
       );
     } else {
       this.setState(
         {
           layerDetails: {
-            title: properties.Title,
-            address: properties.Address,
+            metadata: properties,
             images: []
-          }
+          },
+          show: true
         }
       )
     }
@@ -116,8 +130,10 @@ export default class Buildings extends React.Component {
           <h5>Buildings {this.props.year}</h5>
         </Offcanvas.Header>
         <Offcanvas.Body>
-          <Legend />
-          {this.renderDetails()}
+          <Legend open={this.state.showLegend} />
+          <article className="my-3">
+            {this.renderDetails()}
+          </article>
         </Offcanvas.Body>
       </Offcanvas>
       </>
@@ -127,15 +143,28 @@ export default class Buildings extends React.Component {
   renderDetails() {
     if (this.state.layerDetails) {
       return (
-        <article className="my-3">
+        <>
           {this.renderImages()}
           <h5>{this.state.layerDetails.title}</h5>
-          <p>{this.state.layerDetails.address}</p>
-        </article>
+          <Container>
+            {Object.keys(this.state.layerDetails.metadata).map((key, index) => {
+              if (this.state.layerDetails.metadata[key]) {
+                return (
+                  <Row as="dl" key={index}>
+                    <Col sm={3} as="dt">{camelToTitle(key)}</Col>
+                    <Col as="dd">{this.state.layerDetails.metadata[key]}</Col>
+                  </Row>
+                );
+              } else {
+                return (<span key={index}></span>);
+              }
+            })}
+          </Container>
+        </>
       );
     } else {
       return (
-        <article className="my-3">Click a building footprint to learn more.</article>
+        <p>Click a building footprint to learn more.</p>
       )
     }
   }
