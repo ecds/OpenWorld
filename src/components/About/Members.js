@@ -33,12 +33,80 @@ const Members = () => {
       <Row className="owa-sponsorship-row">
         <Col md="12">
           <div>
-            <div>Chris Wyllie</div>
+            <a
+              href="https://ecds.emory.edu/about/staff/bransford-steve.html"
+              alt="Steve Bransford"
+              className="owa-about-link"
+            >
+              Steve Bransford
+            </a>
           </div>
           <p>
-            Chris was a computer science student at Emory University.
-            He developed the initial version of the site using React,
-            Leaflet, and Bootstrap.
+          Steve consults with faculty about how to incorporate video into teaching and research.
+          He also develops video content for ECDS projects, typically for projects where video
+          is embedded within web-based research and on occasion for stand-alone short films.
+          </p>
+        </Col>
+      </Row>
+
+      <Row className="owa-sponsorship-row">
+        <Col md="12">
+          <div>
+            <a
+              href="https://ecds.emory.edu/about/staff/burr-ian.html"
+              alt="Ian Burr"
+              className="owa-about-link"
+            >
+              Ian Burr
+            </a>
+          </div>
+          <p>
+            Ian works in the digital visualization lab on projects that push the boundaries
+            of traditional humanities work with a strong visual or experiential focus. Many
+            of his projects involve 3D modeling historic sites for the purposes of pedagogy,
+            research, and cultural posterity.
+          </p>
+        </Col>
+      </Row>
+
+      <Row className="owa-sponsorship-row">
+        <Col md="12">
+          <div>
+            <a
+              href="https://ecds.emory.edu/about/staff/cors-alexander.html"
+              alt="Alexander Cors"
+              className="owa-about-link"
+            >
+              Alexander Cors
+            </a>
+          </div>
+          <p>
+            A historian by training, Alexander leads the Historical Research Team. He develops
+            research guidelines for graduate and undergraduate students on the project, collects
+            materials in archives around Atlanta, and wrote the Cabbagetown ArcGIS Storymap example.
+            Alex works with faculty and students on projects relating to mapping, digital publishing,
+            project management, and community-engaged research.
+          </p>
+        </Col>
+      </Row>
+
+      <Row className="owa-sponsorship-row">
+        <Col md="12">
+          <div>
+            <a
+              href="https://ecds.emory.edu/about/staff/li-yang.html"
+              alt="Yang Li"
+              className="owa-about-link"
+            >
+              Yang Li
+            </a>
+          </div>
+          <p>
+            Yang is a Senior Software Engineer at the Emory Center for
+            Digital Scholarship and an Information Designer at the Fox
+            Center for Humanistic Inquiries. He has been the UI/UX
+            designer for this project since 2019 and completed visual
+            design for the current site.
           </p>
         </Col>
       </Row>
@@ -73,27 +141,6 @@ const Members = () => {
         <Col md="12">
           <div>
             <a
-              href="https://ecds.emory.edu/about/staff/li-yang.html"
-              alt="Yang Li"
-              className="owa-about-link"
-            >
-              Yang Li
-            </a>
-          </div>
-          <p>
-            Yang is a Senior Software Engineer at the Emory Center for
-            Digital Scholarship and an Information Designer at the Fox
-            Center for Humanistic Inquiries. He has been the UI/UX
-            designer for this project since 2019 and completed visual
-            design for the current site.
-          </p>
-        </Col>
-      </Row>
-
-      <Row className="owa-sponsorship-row">
-        <Col md="12">
-          <div>
-            <a
               href="https://ecds.emory.edu/about/staff/varner-jay.html"
               alt="Jay Varner"
               className="owa-about-link"
@@ -112,6 +159,115 @@ const Members = () => {
           </p>
         </Col>
       </Row>
+
+      <hr />
+
+      <h3>Students</h3>
+
+        <Row className="owa-sponsorship-row">
+          <Col md="12">
+            <strong>Madison Beasley</strong>
+              <p>
+              Madison is a graduate student in the Division of Physical Therapy. She worked on Data entry and editing.
+            </p>
+          </Col>
+        </Row>
+
+        <Row className="owa-sponsorship-row">
+          <Col md="12">
+          <strong>Elijah Chou</strong>
+            <p>
+              Elijah works with Jay Varner on bringing data from Omeka onto the OpenWorld Atlanta website.
+            </p>
+          </Col>
+        </Row>
+
+        <Row className="owa-sponsorship-row">
+          <Col md="12">
+            <strong>Sara Kaplan</strong>
+              <p>
+                Sara is a PhD student in the Business School. She worked on Data entry and editing.
+              </p>
+          </Col>
+        </Row>
+
+        <Row className="owa-sponsorship-row">
+          <Col md="12">
+            <strong>Joe Larios</strong>
+              <p>
+                Joe is a PhD student in Comparative Literature. He worked on the OpenTour “Run of “Imitation of Life” in Atlanta movie theaters” instance.
+              </p>
+          </Col>
+        </Row>
+
+      <Row className="owa-sponsorship-row">
+          <Col md="12">
+            <strong>Audrey Lin</strong>
+              <p>
+                Audrey is a PhD student in Art History. She worked on Data entry and editing.
+              </p>
+          </Col>
+          </Row>
+
+      <Row className="owa-sponsorship-row">
+        <Col md="12">
+          <strong>Jessica Locklear</strong>
+            <p>
+              Jessica is a PhD student in History. She worked on Data entry and editing.
+            </p>
+        </Col>
+      </Row>
+
+      <Row className="owa-sponsorship-row">
+        <Col md="12">
+          <strong>Kaelyn McAdams</strong>
+            <p>
+              Kaelyn is a PhD student in History. She worked on collecting historical photographs, editing metadata, and building an image database.
+            </p>
+        </Col>
+      </Row>
+
+      <Row className="owa-sponsorship-row">
+        <Col md="12">
+          <strong>Alicia Rodriguez</strong>
+            <p>
+              Alicia (“Lily”) is a PhD student in the French & Italian Department. She developed workflow procedures to collect and standardize historical information about a collection of 500 key buildings across Atlanta. She also trained graduate and undergraduate students on the project.
+            </p>
+        </Col>
+      </Row>
+
+      <Row className="owa-sponsorship-row">
+        <Col md="12">
+          <strong>Surbhi Shirvastava</strong>
+            <p>
+              Surbhi is a PhD student in Sociology. She works on data management for ECDS projects.  As a member of the Historical Research Team she helped develop research and data entry guidelines for the Omeka platform.
+            </p>
+        </Col>
+      </Row>
+
+      <Row className="owa-sponsorship-row">
+        <Col md="12">
+          <strong>Josh Winston</strong>
+            <p>
+
+            Joe is a PhD student in English. He worked on the OpenTour “Run of “Imitation of Life” in Atlanta movie theaters” instance.
+            </p>
+        </Col>
+      </Row>
+
+
+
+
+<Row className="owa-sponsorship-row">
+  <Col md="12">
+    <strong>Chris Wyllie</strong>
+      <p>
+
+      Chris was a computer science student at Emory University. He developed the initial version of the site using React, Leaflet, and Bootstrap.
+      </p>
+  </Col>
+</Row>
+
     </>
   );
 }
