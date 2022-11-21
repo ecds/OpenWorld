@@ -168,7 +168,8 @@ const Team = () => {
           <Col md="12">
             <strong>Madison Beasley</strong>
               <p>
-              Madison is a graduate student in the Division of Physical Therapy. She worked on Data entry and editing.
+              Madison is a graduate student in the Division of Physical Therapy. She worked
+              on Data entry and editing.
             </p>
           </Col>
         </Row>
@@ -195,7 +196,8 @@ const Team = () => {
           <Col md="12">
             <strong>Joe Larios</strong>
               <p>
-                Joe is a PhD student in Comparative Literature. He worked on the OpenTour “Run of “Imitation of Life” in Atlanta movie theaters” instance.
+                Joe is a PhD student in Comparative Literature. He worked on the OpenTour
+                “Run of <cite>Imitation of Life</cite> in Atlanta movie theaters” instance.
               </p>
           </Col>
         </Row>
@@ -256,7 +258,7 @@ const Team = () => {
           <strong>Josh Winston</strong>
             <p>
               Joe is a PhD student in English. He worked on the OpenTour “Run of
-              <title>Imitation of Life</title> in Atlanta movie theaters” instance.
+              <cite>Imitation of Life</cite> in Atlanta movie theaters” instance.
             </p>
         </Col>
       </Row>
