@@ -12,7 +12,7 @@ import Button from "react-bootstrap/Button";
 import Form from 'react-bootstrap/Form'
 import cookies from "react-cookies";
 import Intro from './Intro';
-import History from './History';
+// import History from './History';
 import Partners from './Partners';
 import Members from './Members';
 import './About.scss';

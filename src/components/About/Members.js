@@ -222,7 +222,8 @@ const Members = () => {
         <Col md="12">
           <strong>Kaelyn McAdams</strong>
             <p>
-              Kaelyn is a PhD student in History. She worked on collecting historical photographs, editing metadata, and building an image database.
+              Kaelyn is a PhD student in History. She worked on collecting historical
+              photographs, editing metadata, and building an image database.
             </p>
         </Col>
       </Row>
@@ -231,7 +232,10 @@ const Members = () => {
         <Col md="12">
           <strong>Alicia Rodriguez</strong>
             <p>
-              Alicia (“Lily”) is a PhD student in the French & Italian Department. She developed workflow procedures to collect and standardize historical information about a collection of 500 key buildings across Atlanta. She also trained graduate and undergraduate students on the project.
+              Alicia (“Lily”) is a PhD student in the French & Italian Department.
+              She developed workflow procedures to collect and standardize historical
+              information about a collection of 500 key buildings across Atlanta. She
+              also trained graduate and undergraduate students on the project.
             </p>
         </Col>
       </Row>
@@ -240,7 +244,9 @@ const Members = () => {
         <Col md="12">
           <strong>Surbhi Shirvastava</strong>
             <p>
-              Surbhi is a PhD student in Sociology. She works on data management for ECDS projects.  As a member of the Historical Research Team she helped develop research and data entry guidelines for the Omeka platform.
+              Surbhi is a PhD student in Sociology. She works on data management for
+              ECDS projects.  As a member of the Historical Research Team she helped
+              develop research and data entry guidelines for the Omeka platform.
             </p>
         </Col>
       </Row>
@@ -249,8 +255,8 @@ const Members = () => {
         <Col md="12">
           <strong>Josh Winston</strong>
             <p>
-
-            Joe is a PhD student in English. He worked on the OpenTour “Run of “Imitation of Life” in Atlanta movie theaters” instance.
+              Joe is a PhD student in English. He worked on the OpenTour “Run of
+              <title>Imitation of Life</title> in Atlanta movie theaters” instance.
             </p>
         </Col>
       </Row>
