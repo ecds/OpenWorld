@@ -4,7 +4,7 @@ import Container from 'react-bootstrap/Container';
 const Intro = () => {
   return (
     <Container>
-      <p>
+      <p className='lead'>
         OpenWorld Atlanta seeks to provide public access to historical information through engaging 3D
         and dynamic interfaces to the wealth of data extracted by the Emory Center for Digital
         Scholarship (ECDS) from historic maps, city directories, and archival collections from 1920s
