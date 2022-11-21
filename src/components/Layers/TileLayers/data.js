@@ -67,9 +67,10 @@ export const tileLayers = [
     type: 'WMS',
     year: 1870,
     title: '1870 City Map',
-    description: 'Hanleiter\'s Directory Map of Atlanta, 1870.',
+    description: 'The Hanlieter\'s Directory Map was published as part of the 1870 Atlanta City Directory. William R. Hanleiter of 1 South Broad Street was the publisher and the directory sold for two dollars. The document was a full alphabetical record of names of persons, firms, companies, orders, and associations in Atlanta and the West End.',
     researchLinks: [
-      'https://dlg.usg.edu/record/gsu_afpl_26?canvas=0&x=1948&y=2577&w=5795'
+      'https://dlg.usg.edu/record/gsu_afpl_26?canvas=0&x=1948&y=2577&w=5795',
+      'https://archive.org/details/emory1870/page/n1/mode/2up'
     ]
   },
   {
@@ -81,7 +82,8 @@ export const tileLayers = [
     ],
     type: 'WMS',
     year: 1895,
-    title: '1895 City Map'
+    title: '1895 City Map',
+    description: 'This 1895 map was published as part of George Franklin Cram\'s Standard American Railway System Atlas.'
   },
   {
     urls: ['https://geoserver.ecds.emory.edu/ATLMaps/gwc/service/wms?layers=ATLMaps:2s6zg3zx&format=image/png&transparant=true'],
@@ -92,7 +94,8 @@ export const tileLayers = [
     ],
     type: 'WMS',
     year: 1906,
-    title: '1906 City Map'
+    title: '1906 City Map',
+    description: 'This 1906 map was produced by civil engineer, O. F. Kauffman. Later, the company became know as O. F. Kauffman and Brother which in 1929 became I. U. Kauffman and Sons. Ira Ulysses Kauffman worked as the Georgia Division Chief Engineer of Georgia, United States Coast and Geodetic Survey. Kauffman’s projects inculded Druid Hills, Ansley Park, and Avondale Estates. He also provided surveying and mapping for both Camp Gordon and Fort Benning army posts.'
   },
   {
     urls: ['https://geoserver.ecds.emory.edu/ATLMaps/gwc/service/wms?layers=ATLMaps:sq4pd&format=image/png&transparant=true'],
@@ -103,7 +106,8 @@ export const tileLayers = [
     ],
     type: 'WMS',
     year: 1911,
-    title: '1911 Street Map'
+    title: '1911 Street Map',
+    description: 'Peter Fenelon Collier founded the P. F. Collier and Son Publishing Company in 1888. P. F. Collier died in 1909 and his son, Robert Joseph Collier, took over the company. This 1911 map was published in Gazetteer of Cities and Towns of the World.'
   },
   {
     year: 1928,
@@ -135,7 +139,8 @@ export const tileLayers = [
     ],
     type: 'WMS',
     year: 1934,
-    title: '1934 Street Map'
+    title: '1934 Street Map',
+    description: 'This 1934 map was produced by civil engineer, Ira Ulysses Kauffman. He worked as the Georgia Division Chief Engineer of Georgia, United States Coast and Geodetic Survey. Kauffman’s projects inculded Druid Hills, Ansley Park, and Avondale Estates. He also provided surveying and mapping for both Camp Gordon and Fort Benning army posts.'
   },
   {
     urls: [
