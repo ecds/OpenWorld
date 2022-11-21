@@ -13,7 +13,7 @@ const Members = () => {
               alt="Arya Basu, PhD"
               className="owa-about-link"
             >
-              Arya Basu, PhD
+              Arya Basu
             </a>
           </div>
           <p>

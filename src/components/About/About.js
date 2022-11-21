@@ -13,7 +13,7 @@ import Form from 'react-bootstrap/Form'
 import cookies from "react-cookies";
 import Intro from './Intro';
 import History from './History';
-import Sponsors from './Sponsors';
+import Partners from './Partners';
 import Members from './Members';
 import './About.scss';
 
@@ -68,11 +68,11 @@ const About = () => {
             <Tab eventKey="info" title="OpenWorld Atlanta">
               <Intro />
             </Tab>
-            <Tab eventKey="ush" title="Urban Spatial History">
+            {/* <Tab eventKey="ush" title="Urban Spatial History">
               <History />
-            </Tab>
-            <Tab eventKey="sponsors" title="Project Sponsors">
-              <Sponsors />
+            </Tab> */}
+            <Tab eventKey="partners" title="Partners">
+              <Partners />
             </Tab>
             <Tab eventKey="members" title="Members">
               <Members />
