@@ -2,7 +2,7 @@ import React from 'react';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
-const Members = () => {
+const Team = () => {
   return (
     <>
       <Row className="owa-sponsorship-row">
@@ -278,4 +278,4 @@ const Members = () => {
   );
 }
 
-export default Members;
+export default Team;

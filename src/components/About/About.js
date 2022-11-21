@@ -14,7 +14,7 @@ import cookies from "react-cookies";
 import Intro from './Intro';
 // import History from './History';
 import Partners from './Partners';
-import Members from './Members';
+import Team from './Team';
 import './About.scss';
 
 const About = () => {
@@ -74,8 +74,8 @@ const About = () => {
             <Tab eventKey="partners" title="Partners">
               <Partners />
             </Tab>
-            <Tab eventKey="members" title="Members">
-              <Members />
+            <Tab eventKey="members" title="Team">
+              <Team />
             </Tab>
           </Tabs>
         </ModalBody>
