@@ -1,8 +1,8 @@
 import React from "react";
-import { Button, Offcanvas, Carousel, Row, Col, Container } from 'react-bootstrap';
+import { Button, Offcanvas, Carousel, Row, Col } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCaretLeft } from '@fortawesome/free-solid-svg-icons';
-import { layers, strongStyle, omekaImages } from './data.js';
+import { layers, strongStyle, omekaImages, shapeFileMetadata, omekaMetadata } from './data.js';
 import Legend from "./Legend.js";
 import Image from '../../Image/Image.js';
 import './Buildings.scss';
@@ -29,32 +29,33 @@ export default class Buildings extends React.Component {
 
   async componentDidMount() {
     this.setState({ layer: layers[this.props.year] });
-    const response = await fetch('https://dvl.ecdsdev.org/api/items?collection=16&key=23bd7efbce6d7e1ceeee3265cddf6060543f0459&per_page=1000')
-    const data = await response.json();
-    const reasonableJSON = data.map((building) => {
-      return {
-        omekaID: building.id,
-        fileCount: building.files.count,
-        bldgID: building.element_texts.find(el => el.element.id === 43).text,
-        metadata: {
-          title: building.element_texts.find(el => el.element.id === 50)?.text,
-          address: building.element_texts.find(el => el.element.id === 53)?.text,
-          subject: building.element_texts.find(el => el.element.id === 49)?.text,
-          description: building.element_texts.find(el => el.element.id === 41)?.text,
-          dateBuilt: building.element_texts.find(el => el.element.id === 69)?.text,
-          architect: building.element_texts.find(el => el.element.id === 76)?.text,
-          buildingType: building.element_texts.find(el => el.element.id === 55)?.text,
-          occupantEntities: building.element_texts.find(el => el.element.id === 72)?.text,
-          occupantResidents: building.element_texts.find(el => el.element.id === 58)?.text,
-          race: building.element_texts.find(el => el.element.id === 59)?.text,
-          removed: building.element_texts.find(el => el.element.id === 63)?.text
-        },
-        landUse: building.element_texts.find(el => el.element.id === 49).text[0],
-        location: building.element_texts.find(el => el.element.id === 4).text.split(', ').map(c => {return parseFloat(c)}),
-        images: []
-      }
-    });
-    this.setState({allBuildings: reasonableJSON});
+    // const response = await fetch('https://dvl.ecdsdev.org/api/items?collection=16&key=23bd7efbce6d7e1ceeee3265cddf6060543f0459&per_page=1000')
+    // const data = await response.json();
+    // const reasonableJSON = data.map((building) => {
+    //   return {
+    //     omekaID: building.id,
+    //     fileCount: building.files.count,
+    //     bldgID: building.element_texts.find(el => el.element.id === 43).text,
+    //     title: building.element_texts.find(el => el.element.id === 50)?.text,
+    //     address: building.element_texts.find(el => el.element.id === 53)?.text,
+    //     description: building.element_texts.find(el => el.element.id === 41)?.text,
+    //     metadata: {
+    //       use: building.element_texts.find(el => el.element.id === 49)?.text,
+    //       date: building.element_texts.find(el => el.element.id === 69)?.text,
+    //       architect: building.element_texts.find(el => el.element.id === 76)?.text,
+    //       type: building.element_texts.find(el => el.element.id === 55)?.text,
+    //       businesses: building.element_texts.find(el => el.element.id === 72)?.text,
+    //       residents: building.element_texts.find(el => el.element.id === 58)?.text,
+    //       race: building.element_texts.find(el => el.element.id === 59)?.text,
+    //       removed: building.element_texts.find(el => el.element.id === 63)?.text
+    //     },
+    //     landUse: building.element_texts.find(el => el.element.id === 49).text[0],
+    //     location: building.element_texts.find(el => el.element.id === 4).text.split(', ').map(c => {return parseFloat(c)}),
+    //     images: []
+    //   }
+    // });
+    const omekaBuildingMetadata = await omekaMetadata()
+    this.setState({allBuildings: omekaBuildingMetadata});
   }
 
   componentDidUpdate(previousProps, previousState) {
@@ -108,10 +109,7 @@ export default class Buildings extends React.Component {
     } else {
       this.setState(
         {
-          layerDetails: {
-            metadata: properties,
-            images: []
-          },
+          layerDetails: shapeFileMetadata(properties),
           show: true
         }
       )
@@ -146,20 +144,22 @@ export default class Buildings extends React.Component {
         <>
           {this.renderImages()}
           <h5>{this.state.layerDetails.title}</h5>
-          <Container>
+          <p className="lead">{this.state.layerDetails.address}</p>
+          <p>{this.state.layerDetails.description}</p>
+          {/* <Container> */}
             {Object.keys(this.state.layerDetails.metadata).map((key, index) => {
               if (this.state.layerDetails.metadata[key]) {
                 return (
                   <Row as="dl" key={index}>
-                    <Col sm={3} as="dt">{camelToTitle(key)}</Col>
-                    <Col as="dd">{this.state.layerDetails.metadata[key]}</Col>
+                    <Col className="text-truncate" sm={12} as="dt">{camelToTitle(key)}</Col>
+                    <Col as="dd" sm={12}>{this.state.layerDetails.metadata[key]}</Col>
                   </Row>
                 );
               } else {
                 return (<span key={index}></span>);
               }
             })}
-          </Container>
+          {/* </Container> */}
         </>
       );
     } else {
