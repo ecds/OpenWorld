@@ -60,14 +60,51 @@ export const layers = {
           },
         },
         interactive: true,
-        // filter: (building) => {
-        //   if (building.use == 'N') { return true }
-        // },
+        filter: (building) => {
+          if (building.Land_Use === 'P') { return true }
+        },
         getFeatureId: (feature) => {
           return feature.properties.Identifier;
         }
       }
     )
+  }
+}
+
+export const addLayer = (year, filter) => {
+  console.log("🚀 ~ file: data.js ~ line 75 ~ addLayer ~ year, filter", year, filter)
+  switch(year) {
+    case '1928':
+      return {
+        layer: 'OWAbuildings07OCT22',
+        year: '1928',
+        workspace: 'ATLMaps',
+        bounds: [[33.7333353316, -84.4166017627], [33.7833813133, -84.3167420714]],
+        leafletObject: new L.vectorGrid.protobuf(
+          'https://geoserver.ecds.emory.edu/gwc/service/tms/1.0.0/ATLMaps:OWAbuildings07OCT22@EPSG:900913@pbf/{z}/{x}/{-y}.pbf',
+          {
+            rendererFactory: L.svg.tile,
+            vectorTileLayerStyles: {
+              OWAbuildings07OCT22: properties => {
+                return buildingStyles(properties);
+              },
+            },
+            interactive: true,
+            filter: (building) => {
+              if (filter) {
+                if (building.Land_Use === filter) { return true }
+              } else {
+                return true;
+              }
+            },
+            getFeatureId: (feature) => {
+              return feature.properties.Identifier;
+            }
+          }
+        )
+      };
+    default:
+      return null;
   }
 }
 
@@ -119,13 +156,13 @@ const getColor = (use) => {
     case 'P':
       return '#2E6DFF';
     case 'R':
-      return '#FFFFB3';
+      return '#FFFF00';
     case 'TU':
       return '#FFCCFF';
     case 'TR':
-      return '#FFEB8A';
+      return '#FF6F00';
     case 'W':
-      return '#AAAAAA';
+      return '#5D4037';
     default:
       return '#EBEBEB';
   }
@@ -163,7 +200,7 @@ export const omekaMetadata = async () => {
       address: building.element_texts.find(el => el.element.id === 53)?.text,
       description: building.element_texts.find(el => el.element.id === 41)?.text,
       metadata: {
-        use: building.element_texts.find(el => el.element.id === 49)?.text,
+        landUse: building.element_texts.find(el => el.element.id === 49)?.text,
         date: building.element_texts.find(el => el.element.id === 69)?.text,
         architect: building.element_texts.find(el => el.element.id === 76)?.text,
         type: building.element_texts.find(el => el.element.id === 55)?.text,
@@ -179,7 +216,6 @@ export const omekaMetadata = async () => {
   });
 
   const buildingMetadata = await Promise.all(reasonableJSON);
-  console.log("🚀 ~ file: data.js ~ line 185 ~ omekaMetadata ~ buildingMetadata", buildingMetadata)
   return buildingMetadata;
 }
 
@@ -204,7 +240,7 @@ export const shapeFileMetadata = (building) => {
     address: building.Address,
     description: building.Description,
     metadata: {
-      use: uses(building.Land_Use),
+      landUse: uses(building.Land_Use),
       date: building.Date_BD,
       type: building.Bldg_Type,
       businesses: building.Occupants_,

@@ -2,7 +2,7 @@ import React from "react";
 import { Button, Offcanvas, Carousel, Row, Col } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCaretLeft } from '@fortawesome/free-solid-svg-icons';
-import { layers, strongStyle, omekaImages, shapeFileMetadata, omekaMetadata } from './data.js';
+import { layers, strongStyle, omekaImages, shapeFileMetadata, omekaMetadata, addLayer } from './data.js';
 import Legend from "./Legend.js";
 import Image from '../../Image/Image.js';
 import './Buildings.scss';
@@ -19,58 +19,35 @@ export default class Buildings extends React.Component {
       layer: null,
       allBuildings: null,
       omekaMarkers: null,
-      showLegend: 1
+      showLegend: 1,
+      currentFilter: null
     }
 
     this.omekaMetadata = null;
 
     this.toggleButtonRef = React.createRef();
+
+    this.filter = this.filter.bind(this);
+    this.poopLayer = this.poopLayer.bind(this);
   }
 
   async componentDidMount() {
-    this.setState({ layer: layers[this.props.year] });
-    // const response = await fetch('https://dvl.ecdsdev.org/api/items?collection=16&key=23bd7efbce6d7e1ceeee3265cddf6060543f0459&per_page=1000')
-    // const data = await response.json();
-    // const reasonableJSON = data.map((building) => {
-    //   return {
-    //     omekaID: building.id,
-    //     fileCount: building.files.count,
-    //     bldgID: building.element_texts.find(el => el.element.id === 43).text,
-    //     title: building.element_texts.find(el => el.element.id === 50)?.text,
-    //     address: building.element_texts.find(el => el.element.id === 53)?.text,
-    //     description: building.element_texts.find(el => el.element.id === 41)?.text,
-    //     metadata: {
-    //       use: building.element_texts.find(el => el.element.id === 49)?.text,
-    //       date: building.element_texts.find(el => el.element.id === 69)?.text,
-    //       architect: building.element_texts.find(el => el.element.id === 76)?.text,
-    //       type: building.element_texts.find(el => el.element.id === 55)?.text,
-    //       businesses: building.element_texts.find(el => el.element.id === 72)?.text,
-    //       residents: building.element_texts.find(el => el.element.id === 58)?.text,
-    //       race: building.element_texts.find(el => el.element.id === 59)?.text,
-    //       removed: building.element_texts.find(el => el.element.id === 63)?.text
-    //     },
-    //     landUse: building.element_texts.find(el => el.element.id === 49).text[0],
-    //     location: building.element_texts.find(el => el.element.id === 4).text.split(', ').map(c => {return parseFloat(c)}),
-    //     images: []
-    //   }
-    // });
-    const omekaBuildingMetadata = await omekaMetadata()
+    // this.setState({ layer: layers[this.props.year] });
+    const omekaBuildingMetadata = await omekaMetadata();
     this.setState({allBuildings: omekaBuildingMetadata});
+    this.props.leafletMap.setZoom(15);
   }
 
   componentDidUpdate(previousProps, previousState) {
-    if (this.state.layer.year !== this.props.year) {
+    if (this.state.layer?.year !== this.props.year) {
       if (this.state.layer) {
         this.state.layer.leafletObject.removeFrom(this.props.leafletMap);
       }
       this.setState({ layer: layers[this.props.year]} );
     }
 
-    if (this.props.leafletMap && !this.props.leafletMap.hasLayer(this.state.layer.leafletObject)) {
-      layers[this.props.year].leafletObject.addTo(this.props.leafletMap);
-      layers[this.props.year].leafletObject.on('click', (event) => this.handleClick(event));
-      layers[this.props.year].leafletObject.bringToFront();
-      // this.props.leafletMap.fitBounds(layers[this.props.year].bounds);
+    if (this.props.leafletMap && this.state.layer && !this.props.leafletMap.hasLayer(this.state.layer.leafletObject) ) {
+      this.poopLayer();
     }
 
     if (previousState.show && !this.state.show) {
@@ -83,6 +60,15 @@ export default class Buildings extends React.Component {
       this.state.layer.leafletObject.removeFrom(this.props.leafletMap);
       // this.state.omekaMarkers.removeFrom(this.props.leafletMap);
     }
+  }
+
+  poopLayer(filter) {
+    console.log("🚀 ~ file: Buildings.js ~ line 64 ~ Buildings ~ poopLayer ~ this.props.year, filter", this.props.year, filter)
+    const layer = addLayer(this.props.year, filter);
+      layer.leafletObject.addTo(this.props.leafletMap);
+      layer.leafletObject.on('click', (event) => this.handleClick(event));
+      layer.leafletObject.bringToFront();
+      this.setState({ layer });
   }
 
   async handleClick(event) {
@@ -118,6 +104,11 @@ export default class Buildings extends React.Component {
     this.state.layer.leafletObject.setFeatureStyle(properties.Identifier, strongStyle(properties));
   }
 
+  filter(use) {
+    this.state.layer.leafletObject.removeFrom(this.props.leafletMap);
+    this.setState({ currentFilter: use});
+    this.poopLayer(use);
+  }
 
   render() {
     return (
@@ -128,7 +119,7 @@ export default class Buildings extends React.Component {
           <h5>Buildings {this.props.year}</h5>
         </Offcanvas.Header>
         <Offcanvas.Body>
-          <Legend open={this.state.showLegend} />
+          <Legend open={this.state.showLegend} filter={this.filter} currentFilter={this.state.currentFilter} />
           <article className="my-3">
             {this.renderDetails()}
           </article>
