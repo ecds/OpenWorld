@@ -11,6 +11,7 @@ import { LinkContainer } from 'react-router-bootstrap'
 import About from '../About/About';
 import { tours } from '../Layers/OpenTour/data';
 import styles from './MainNav.module.scss';
+import Tutorials from '../Tutorials/Tutorials';
 
 const BuildingsNav = () => (
   <>
@@ -105,6 +106,7 @@ const MainNav = (props) => {
               </NavDropdown.Item>
             </NavDropdown>
             <About />
+            <Tutorials />
           </Nav>
         </Navbar.Collapse>
       </Container>

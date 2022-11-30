@@ -1,0 +1,12 @@
+.owa-tutorial-modal {
+  width: 98vw;
+  max-width: none!important;
+
+  .carousel-indicators {
+    display: none;
+  }
+
+  img {
+    min-height: 80vh;
+  }
+}
