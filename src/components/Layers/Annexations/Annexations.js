@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCaretLeft } from '@fortawesome/free-solid-svg-icons';
 import { AnnexLayers, Boundaries, YEARS } from './data';
 import TimeSlider from '../../TimeSlider/TimeSlider';
+import './Annexations.scss'
 
 export default class Annexations extends React.Component {
   constructor(props) {
@@ -34,7 +35,7 @@ export default class Annexations extends React.Component {
   }
 
   async componentDidUpdate(previousProps, previousState) {
-    // if (this.state.currentBoundary )this.props.leafletMap.fitBounds(this.state.currentBoundary.leafletLayer.getBounds());
+    // if (this.state.currentBoundary )this.props.leafletMap.flyToBounds(this.state.currentBoundary.leafletLayer.getBounds());
 
     if (this.props.currentYear !== previousProps.currentYear || !this.state.currentBoundary) {
       const closestYear = Math.max(...YEARS.filter(n => {return n <= this.props.currentYear}));
@@ -107,9 +108,12 @@ export default class Annexations extends React.Component {
   }
 
   setInitialBounds() {
-    this.props.leafletMap.fitBounds(
-      this.state.boundaryLayers[this.state.boundaryLayers.length - 1].leafletLayer.getBounds()
-    );
+    const bounds = [
+      [33.7014249,  -84.45223761],
+      [33.80680958, -84.28960225]
+    ];
+
+    this.props.leafletMap.flyToBounds(bounds);
   }
 
   render() {

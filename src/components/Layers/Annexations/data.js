@@ -35,9 +35,8 @@ export const Boundaries = async () => {
     color: '#0D47A1',
     weight: 4,
     fillColor: '#0D47A1',
-    fillOpacity: 0,
-    opacity: 1,
-    interactive: false
+    interactive: false,
+    fillOpacity: 0
   };
 
   for (const year of YEARS) {

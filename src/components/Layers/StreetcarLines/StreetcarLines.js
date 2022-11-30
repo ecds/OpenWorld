@@ -60,7 +60,7 @@ export default class StreetcarLines extends Layer {
       }
 
       if (index === this.state.layers.length - 1) {
-        this.props.leafletMap.fitBounds(this.bounds);
+        this.props.leafletMap.flyToBounds(this.bounds);
       }
 
       if (!this.props.leafletMap.hasLayer(layer.leafletObject)) {

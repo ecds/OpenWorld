@@ -52,7 +52,7 @@ export default class Wards extends React.Component {
 
   addLayer() {
     this.state.currentLayer.leafletLayer.addTo(this.props.leafletMap);
-    this.props.leafletMap.fitBounds(this.state.currentLayer.leafletLayer.getBounds());
+    this.props.leafletMap.flyToBounds(this.state.currentLayer.leafletLayer.getBounds());
     const labels = addLabels(this.props.leafletMap, this.state.currentLayer.leafletLayer);
     this.setState( { labels })
   }
