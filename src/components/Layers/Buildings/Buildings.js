@@ -32,7 +32,6 @@ export default class Buildings extends React.Component {
   }
 
   async componentDidMount() {
-    this.props.leafletMap.flyToBounds(layers[this.props.year].bounds).panTo([33.75432, -84.38979]).setZoom(15, { animate: true });
 
     // this.setState({ layer: layers[this.props.year] });
     const omekaBuildingMetadata = await omekaMetadata();
@@ -40,6 +39,10 @@ export default class Buildings extends React.Component {
   }
 
   componentDidUpdate(previousProps, previousState) {
+    if (!previousProps.leafletMap && this.props.leafletMap) {
+      this.props.leafletMap.flyToBounds(layers[this.props.year].bounds).panTo([33.75432, -84.38979]).setZoom(15, { animate: true });
+    }
+    // this.props.leafletMap.flyToBounds(layers[this.props.year].bounds).panTo([33.75432, -84.38979]).setZoom(15, { animate: true });
     if (this.state.layer?.year !== this.props.year) {
       if (this.state.layer) {
         this.state.layer.leafletObject.removeFrom(this.props.leafletMap);
@@ -64,7 +67,6 @@ export default class Buildings extends React.Component {
   }
 
   poopLayer(filter) {
-    console.log("🚀 ~ file: Buildings.js ~ line 64 ~ Buildings ~ poopLayer ~ this.props.year, filter", this.props.year, filter)
     const layer = addLayer(this.props.year, filter);
     layer.leafletObject.addTo(this.props.leafletMap);
     layer.leafletObject.on('click', (event) => this.handleClick(event));
