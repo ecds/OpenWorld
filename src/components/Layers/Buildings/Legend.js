@@ -1,5 +1,5 @@
-import React from 'react';
-import { Accordion, ButtonGroup, Button} from 'react-bootstrap';
+import React, { useEffect, useState } from 'react';
+import { Accordion, ButtonGroup, Button } from 'react-bootstrap';
 import chroma from 'chroma-js';
 
 const Legend = (props) => {
@@ -65,25 +65,23 @@ const Legend = (props) => {
   }
 
   const filterByUse = ((use) => {
-    console.log("🚀 ~ file: Legend.js ~ line 60 ~ filterByUse ~ use", use)
     props.filter(use);
   });
 
+  const [show, setShow] = useState(props.open);
+
+  useEffect(() => {
+    setShow(props.open)
+  }, [props])
+
   return (
-    <Accordion defaultActiveKey={props.open}>
-      {/* {console.log("🚀 ~ file: Legend.js ~ line 51 ~ Legend ~ Accordion", Accordion, this)} */}
+    <Accordion
+      activeKey={show}
+      onSelect={(eventKey) => { setShow(eventKey)}}
+    >
       <Accordion.Item eventKey={1}>
         <Accordion.Header>Building Color Key</Accordion.Header>
         <Accordion.Body>
-          {/* <ListGroup className="sticky-bottom">
-            {uses.map((use, index) => {
-              return (
-                <ListGroup.Item key={index} style={colorStyle(use.color)}>
-                  {use.label}
-                </ListGroup.Item>
-              );
-            })}
-          </ListGroup> */}
           <ButtonGroup vertical className="d-grid col-12" style={{justifyContent: "unset"}}>
             {uses.map((use, index) => {
               if (props.currentFilter === use.code) {
