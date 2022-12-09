@@ -1,5 +1,5 @@
 import L from 'leaflet';
-import {} from '../../../../node_modules/@ecds/leaflet.vectorgrid/dist/Leaflet.VectorGrid'
+import {} from '@ecds/leaflet.vectorgrid/dist/Leaflet.VectorGrid'
 
 const omekaURL = 'https://dvl.ecdsdev.org/api';
 const omekaKey = '23bd7efbce6d7e1ceeee3265cddf6060543f0459';
@@ -72,7 +72,6 @@ export const layers = {
 }
 
 export const addLayer = (year, filter) => {
-  console.log("🚀 ~ file: data.js ~ line 75 ~ addLayer ~ year, filter", year, filter)
   switch(year) {
     case '1928':
       return {
@@ -99,7 +98,9 @@ export const addLayer = (year, filter) => {
             },
             getFeatureId: (feature) => {
               return feature.properties.Identifier;
-            }
+            },
+            onAdd: () => { console.log('adding')},
+            onRemove: () => { console.log('Removeing')}
           }
         )
       };
@@ -200,7 +201,7 @@ export const omekaMetadata = async () => {
       address: building.element_texts.find(el => el.element.id === 53)?.text,
       description: building.element_texts.find(el => el.element.id === 41)?.text,
       metadata: {
-        landUse: building.element_texts.find(el => el.element.id === 49)?.text,
+        landUse: uses(building.element_texts.find(el => el.element.id === 49)?.text),
         date: building.element_texts.find(el => el.element.id === 69)?.text,
         architect: building.element_texts.find(el => el.element.id === 76)?.text,
         type: building.element_texts.find(el => el.element.id === 55)?.text,
@@ -249,6 +250,7 @@ export const shapeFileMetadata = (building) => {
       removed: building.Bldg_Remov
     },
     landUse: uses(building.Land_Use),
+    Land_Use: building.Land_Use,
     location: [building.X_Coord, building.Y_Coord],
     images: []
   }

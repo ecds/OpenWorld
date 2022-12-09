@@ -3,24 +3,15 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSun as fasSun } from '@fortawesome/free-solid-svg-icons';
 import { faSun as farSun } from '@fortawesome/free-regular-svg-icons';
 import { Col, Row } from 'react-bootstrap';
-import { YEARS } from '../Layers/TileLayers/data';
+import { YEARS } from '../../data/TileLayers';
 
-const OpacityControl = (props) => {
+const OpacityControl = ({ layer, year }) => {
   const [opacity, setOpacity] = useState(0);
 
   useEffect(() => {
-    if (props.layer.leafletLayers) {
-      // for (const leafletLayer of props.layer.leafletLayers) {
-      //   if (parseInt(props.layer.year) > parseInt(props.year)) {
-      //     leafletLayer.setOpacity(0);
-      //     setOpacity(0);
-      //   } else {
-      //     leafletLayer.setOpacity(1);
-      //     setOpacity(1);
-      //   }
-      // }
-      for (const leafletLayer of props.layer.leafletLayers) {
-        if (Math.max(...YEARS.filter(year => year <= props.year)) === props.layer.year) {
+    if (layer.leafletLayers) {
+      for (const leafletLayer of layer.leafletLayers) {
+        if (Math.max(...YEARS.filter(y => y <= year)) === layer.year) {
           leafletLayer.setOpacity(1);
           setOpacity(1);
         } else {
@@ -29,7 +20,7 @@ const OpacityControl = (props) => {
         }
       }
     }
-  }, [props.year, props.layer]);
+  }, [year, layer]);
 
   const updateOpacity = ((event) => {
     const newOpacity  = event.target.type === 'number' ? event.target.value * 0.01 : parseFloat(event.target.value);
@@ -47,7 +38,7 @@ const OpacityControl = (props) => {
 
   const updateLeafletOpacity = ((newOpacity) => {
     setOpacity(newOpacity);
-    for (const leafletLayer of props.layer.leafletLayers) {
+    for (const leafletLayer of layer.leafletLayers) {
       leafletLayer.setOpacity(newOpacity);
     }
   });
@@ -56,9 +47,8 @@ const OpacityControl = (props) => {
     <>
       <Row>
         <Col className="fs-6 mt-1" sm={1}>
-          <span role="button" tabIndex="0" onClick={() => toggleOpacity()} onKeyDown={(event) => toggleOpacity(event)}>
+          <span role="button" tabIndex={0} onClick={() => toggleOpacity()} onKeyDown={(event) => toggleOpacity(event)} aria-label={`Toggle opacity for tile layer ${layer.title}`}>
             <FontAwesomeIcon
-              aria-label={`Toggle opacity for base layer ${props.layer.title}`}
               icon={opacity === 0 ? farSun : fasSun}
               style={{ opacity: opacity === 0 ? 1 : opacity + .2 }}
             />
@@ -72,7 +62,7 @@ const OpacityControl = (props) => {
             min="0"
             max="1"
             step=".05"
-            aria-label={`Set opacity for base layer ${props.layer.title}`}
+            aria-label={`Set opacity for base layer ${layer.title}`}
             value={opacity}
             onChange={(event) => updateOpacity(event)}
           />
@@ -85,7 +75,7 @@ const OpacityControl = (props) => {
               min="0"
               max="100"
               step="5"
-              aria-label={`Set opacity for base layer ${props.layer.title}`}
+              aria-label={`Set opacity for base layer ${layer.title}`}
               value={opacity / 0.01}
               onChange={(event) => updateOpacity(event)}
             />

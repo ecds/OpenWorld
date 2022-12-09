@@ -4,7 +4,7 @@ import { faLocationPin } from '@fortawesome/free-solid-svg-icons';
 export const markerIcon = (props) => {
   return L.divIcon(
     {
-      html: iconHTML(props, 6),
+      html: iconHTML(props, 6, 2),
       iconSize: 40,
       className: 'owa-location-marker'
     }
@@ -14,19 +14,19 @@ export const markerIcon = (props) => {
 export const activeMarkerIcon = (props) => {
   return L.divIcon(
     {
-      html: iconHTML(props, 5),
+      html: iconHTML(props, 5, 3),
       iconSize: 60,
       className: 'owa-location-marker'
     }
   );
 }
 
-const iconHTML = (props, size) => {
+const iconHTML = (props, textSize, margin) => {
   return `<span class="fs-3">
             <svg viewBox="0 0 512 512" role="image">
               <path d="${faLocationPin.icon[4]}"></path>
               <title>${props.title}</title>
-              <span class="fa-stack-1x text-center mt-2 me-2 owa-marker-number fs-${size}">${props.position}</span>
+              <span class="fa-stack-1x text-center mt-2 me-${margin} owa-marker-number fs-${textSize}">${props.position}</span>
             </svg>
           </span>`
 }
@@ -65,7 +65,7 @@ export const Tour = async (tourSlug) => {
                           onEachFeature
                         }
                       ),
-    tourDetails: tour
+    details: tour
   }
 }
 

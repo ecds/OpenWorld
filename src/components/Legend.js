@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from 'react';
 import { Accordion, ButtonGroup, Button } from 'react-bootstrap';
 import chroma from 'chroma-js';
 
@@ -68,16 +67,10 @@ const Legend = (props) => {
     props.filter(use);
   });
 
-  const [show, setShow] = useState(props.open);
-
-  useEffect(() => {
-    setShow(props.open)
-  }, [props])
-
   return (
     <Accordion
-      activeKey={show}
-      onSelect={(eventKey) => { setShow(eventKey)}}
+      activeKey={props.open}
+      onSelect={(eventKey) => { props.toggle(eventKey)}}
     >
       <Accordion.Item eventKey={1}>
         <Accordion.Header>Building Color Key</Accordion.Header>

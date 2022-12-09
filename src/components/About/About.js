@@ -34,7 +34,7 @@ const About = () => {
     } else {
       const expires = new Date();
       expires.setFullYear(2025);
-      cookies.save('suppressIntro', true, { path: '/', expires, maxAge: null });
+      cookies.save('suppressIntro', true, { path: '/', expires, maxAge: null, sameSite: 'strict' });
     }
     setSuppress(!suppress);
   }

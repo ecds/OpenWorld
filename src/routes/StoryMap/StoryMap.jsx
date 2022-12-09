@@ -1,20 +1,21 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
-import { StoryMaps } from './data';
+import { StoryMaps } from '../../data/StoryMapData';
 import './StoryMap.scss';
 
-const StoryMap = (props) => {
+const StoryMap = () => {
   const [show, setShow] = useState(false);
   const [storyMap, setStoryMap] = useState(null);
   const navigate = useNavigate();
+  let { story } = useParams();
 
   useEffect(() => {
-    const storyMap = StoryMaps.find(storyMap => storyMap.id === props.storyMap);
+    const storyMap = StoryMaps.find(storyMap => storyMap.id === story);
     setStoryMap(storyMap);
     setShow(true);
-  }, [storyMap, props]);
+  }, [story]);
 
   const unmount = () => {
     setShow(false);
@@ -25,7 +26,7 @@ const StoryMap = (props) => {
     return (
       <>
         <Button className="ps-0 nav-link fs-6" size="lg" variant="link" onClick={() => { setShow(true)}}>
-          {props.title}
+          {storyMap.title}
         </Button>
         <Modal
           show={show}

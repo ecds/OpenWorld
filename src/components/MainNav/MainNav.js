@@ -9,7 +9,8 @@ import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import { LinkContainer } from 'react-router-bootstrap'
 import About from '../About/About';
-import { tours } from '../Layers/OpenTour/data';
+import { tours } from '../../data/OpenTourData';
+import { StoryMaps } from '../../data/StoryMapData';
 import styles from './MainNav.module.scss';
 import Tutorials from '../Tutorials/Tutorials';
 
@@ -37,16 +38,16 @@ const FeaturesNav = () => (
   </>
 )
 
-const MainNav = (props) => {
+const MainNav = ({ setYear }) => {
   const { year } = useParams();
   const [searchParams] = useSearchParams();
 
   useEffect(() => {
     const searchYear = searchParams.get('year');
     if (searchYear) {
-      props.setYear(searchYear);
+      setYear(searchYear);
     } else {
-      props.setYear(year);
+      setYear(year);
     }
   });
 
@@ -100,9 +101,13 @@ const MainNav = (props) => {
                 );
               })}
               <NavDropdown.Item>
-                <LinkContainer to="/stories/cabbagetown_an_atlanta_neighborhood_in_the_1920s">
-                  <NavDropdown.Item>Cabbagetown: An Atlanta Neighborhood in the 1920s</NavDropdown.Item>
-                </LinkContainer>
+                {StoryMaps.map((story, index) => {
+                  return (
+                    <LinkContainer key={index} to={`/stories/${story.id}`}>
+                      <NavDropdown.Item>{story.title}</NavDropdown.Item>
+                    </LinkContainer>
+                  );
+                })}
               </NavDropdown.Item>
             </NavDropdown>
             <About />

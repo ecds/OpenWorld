@@ -127,10 +127,12 @@ const StreetcarLines = {
   ]
 };
 
+export const bounds = [[33.74970321,-84.41664912],[33.78203009,-84.3684032]];
+
 export const StreetcarLayers = async (year) => {
   const layers = [];
 
-  if (year) {
+  if (year && Object.keys(StreetcarLines).includes(year)) {
     // const colors = chroma.scale('Set1').correctLightness().colors(26).sort((a, b) => 0.5 - Math.random());
 
     for (const [index, line] of StreetcarLines[year].entries()) {
@@ -162,7 +164,8 @@ const onEachFeature = (feature, layer) => {
   layer.bindPopup(
     `<span style="color: ${layer.options.color}; backgroundColor: ${layer.options.fillColor};">${layer.options.label}</span>`,
     {
-      className: layer.options.fillColor === 'black' ? 'owa-streetcar-popup-dark' : ''
+      className: layer.options.fillColor === 'black' ? 'owa-streetcar-popup-dark' : '',
+      autoPan: false
     }
   );
 

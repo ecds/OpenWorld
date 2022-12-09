@@ -1,4 +1,3 @@
-import './App.scss';
 import MainNav from './components/MainNav/MainNav';
 import ErrorPage from './components/ErrorPage/ErrorPage';
 import React, { useState, useEffect } from 'react';
@@ -8,30 +7,32 @@ import {
   createBrowserRouter,
   RouterProvider
 } from "react-router-dom";
-import TileLayers from './components/Layers/TileLayers/TileLayers';
-import AnnexationRoute from './routes/AnnexationRoute';
-import BuildingsRoute from './routes/BuildingsRoute';
-import StreetcarLinesRoute from './routes/StreetcarLinesRoute';
-import WardRoute from './routes/WardsRoute';
-import OpenTourRoute from './routes/OpenTourRoute';
-import StoryMapRoute from './routes/StoryMapRoute';
+import TileLayers from './components/TileLayers/TileLayers';
+import Annexations from './routes/Annexations/Annexations';
+import Buildings from './routes/Buildings/Buildings';
+import StreetcarLines from './routes/StreetcarLines/StreetcarLines';
+import Wards from './routes/Wards/Wards';
+import OpenTour from './routes/OpenTour/OpenTour';
+import StoryMap from './routes/StoryMap/StoryMap';
 import LatLngContext from './components/LatLngContext';
+import { MapContext } from './map';
+import './App.scss';
+
+const mapOptions = {
+  center:      [33.7528, -84.3891],
+  minZoom:     13,
+  zoom:        15,
+  maxZoom:     20,
+  zoomControl: true,
+  maxBounds:   [[33.53, -84.61], [34.03, -84.11]],
+  attributionControl: false
+};
 
 function App() {
   const [leafletMap, setLeafletMap] = useState(null);
   const [year, setYear] = useState(null);
 
   useEffect(() => {
-    const mapOptions = {
-      center:      [33.75432, -84.38979],
-      minZoom:     13,
-      zoom:        15,
-      maxZoom:     20,
-      zoomControl: true,
-      maxBounds:   [[33.53, -84.61], [34.03, -84.11]],
-      attributionControl: false
-    };
-
     try {
       const map = L.map('map', mapOptions);
 
@@ -77,27 +78,27 @@ function App() {
       children: [
         {
           path: "buildings/:year",
-          element: <BuildingsRoute leafletMap={leafletMap} />
+          element: <Buildings />
         },
         {
           path: 'annexations',
-          element: <AnnexationRoute leafletMap={leafletMap} />
+          element: <Annexations />
         },
         {
           path: 'wards',
-          element: <WardRoute leafletMap={leafletMap} />
+          element: <Wards />
         },
         {
           path: 'streetcars/:year',
-          element: <StreetcarLinesRoute leafletMap={leafletMap} />
+          element: <StreetcarLines />
         },
         {
           path: 'tours/:tour',
-          element: <OpenTourRoute leafletMap={leafletMap} setYear={setYear} />
+          element: <OpenTour setYear={setYear} />
         },
         {
           path: 'stories/:story',
-          element: <StoryMapRoute />
+          element: <StoryMap />
         }
       ]
     }
@@ -105,9 +106,11 @@ function App() {
 
   return (
     <div className="App">
-      <RouterProvider router={router} />
-      <div id="map"></div>
-      <TileLayers leafletMap={leafletMap} year={year} />
+      <MapContext.Provider value={{ leafletMap, year, mapOptions }}>
+        <RouterProvider router={router} />
+        <div id="map"></div>
+        <TileLayers />
+      </MapContext.Provider>
     </div>
   );
 }

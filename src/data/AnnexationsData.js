@@ -26,7 +26,7 @@ export const YEARS = [
   1940,
   1943,
   1945
-]
+];
 
 export const Boundaries = async () => {
   const layers = [];
