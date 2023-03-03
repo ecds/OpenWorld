@@ -244,7 +244,7 @@ const Team = () => {
 
       <Row className="owa-sponsorship-row">
         <Col md="12">
-          <strong>Surbhi Shirvastava</strong>
+          <strong>Surbhi Shrivastava</strong>
             <p>
               Surbhi is a PhD student in Sociology. She works on data management for
               ECDS projects.  As a member of the Historical Research Team she helped
