@@ -9,6 +9,7 @@ import {
   ScrollRestoration,
 } from "@remix-run/react";
 import { ClientOnly } from "remix-utils";
+import { SSRProvider } from "react-bootstrap";
 import type { Map } from "maplibre-gl";
 import MapContext from "./mapContext";
 import BaseMap from "./components/BaseMap";
@@ -41,22 +42,24 @@ export default function App() {
         <Links />
       </head>
       <body>
-        <MapContext.Provider
-          value={{
-            mapState,
-            setMapState,
-            currentYearState,
-            setCurrentYearState
-          }}
-        >
-          <MainNav />
-          <BaseMap />
-          <TileLayers />
-          <Outlet />
-          <ScrollRestoration />
-          <Scripts />
-          <LiveReload />
-        </MapContext.Provider>
+        <SSRProvider>
+          <MapContext.Provider
+            value={{
+              mapState,
+              setMapState,
+              currentYearState,
+              setCurrentYearState
+            }}
+          >
+            <MainNav />
+            <BaseMap />
+            <TileLayers />
+            <Outlet />
+            <ScrollRestoration />
+            <Scripts />
+            <LiveReload />
+          </MapContext.Provider>
+        </SSRProvider>
       </body>
     </html>
   );
