@@ -1,43 +1,53 @@
-# OpenWorld Atlanta
+# Welcome to Remix!
 
-One Paragraph of project description goes here
+- [Remix Docs](https://remix.run/docs)
 
-## Getting Started
+## Development
 
-Clone the repository onto your machine by running the following command
+From your terminal:
 
-~~~bash
-git clone https://github.com/ecds/OpenWorld.git openworld
-~~~
+```sh
+npm run dev
+```
 
-### Prerequisites
+This starts your app in development mode, rebuilding assets on file changes.
 
-You'll need Node v18 or later in order to run the app. You can use [nvm](https://github.com/creationix/nvm#installation) (macOS/Linux) or [nvm-windows](https://github.com/coreybutler/nvm-windows#node-version-manager-nvm-for-windows).
+## Deployment
 
-### Installing
+First, build your app for production:
 
-Once you've cloned the git repository, you'll need to `cd` into the directory you've cloned it into.
+```sh
+npm run build
+```
 
-~~~bash
-cd OpenWorld
-~~~
+Then run the app in production mode:
 
-Then you'll need to install the dependencies.
-
-~~~bash
-npm install
-~~~
-
-This may take a few minutes. Once it is finished, you can start the development server with the following command.
-
-~~~bash
+```sh
 npm start
-~~~
+```
 
-## License
+Now you'll need to pick a host to deploy it to.
 
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+### DIY
 
-## Acknowledgments
+If you're familiar with deploying node applications, the built-in Remix app server is production-ready.
 
+Make sure to deploy the output of `remix build`
 
+- `build/`
+- `public/build/`
+
+### Using a Template
+
+When you ran `npx create-remix@latest` there were a few choices for hosting. You can run that again to create a new project, then copy over your `app/` folder to the new project that's pre-configured for your target server.
+
+```sh
+cd ..
+# create a new project, and pick a pre-configured host
+npx create-remix@latest
+cd my-new-remix-app
+# remove the new project's app (not the old one!)
+rm -rf app
+# copy your app over
+cp -R ../my-old-remix-app/app app
+```

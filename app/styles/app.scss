@@ -1,0 +1,34 @@
+@import "../../node_modules/maplibre-gl/dist/maplibre-gl.css";
+
+
+$primary: #dc3545;
+$navbar-light-color: #fff;
+$navbar-light-hover-color: #c9c9c9;
+$navbar-light-brand-color: #fff;
+$navbar-light-color: #fff;
+$navbar-dark-brand-color: #fff;
+$navbar-color: #fff;
+$nav-link-color: #fff;
+$navbar-light-brand-hover-color: #c9c9c9;
+$toast-background-color: "rgb(255 255 255 / 75%)";
+$accordion-bg: transparent;
+$offcanvas-horizontal-width: 25vw;
+$accordion-button-bg: $primary;
+$accordion-button-color: $navbar-light-color;
+$toast-max-width: 365px;
+
+@import "../../node_modules/bootstrap/scss/functions";
+@import "../../node_modules/bootstrap/scss/variables";
+@import "../../node_modules/bootstrap/scss/bootstrap";
+
+#map {
+  bottom: 0;
+  height: calc(100vh - 66px);
+  position: absolute;
+  top: 66px;
+  width: 100%;
+}
+
+.base-layer-control {
+  max-height: calc(100vh - 250px);
+}
