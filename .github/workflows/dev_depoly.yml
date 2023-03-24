@@ -3,7 +3,7 @@ name: Deploy
 on:
   push:
     branches:
-      - main
+      - develop
 
 jobs:
   build-and-deploy:
@@ -12,7 +12,7 @@ jobs:
 
     env:
       SSH_KEY: ${{secrets.SSH_KEY}}
-      REMOTE_HOST: ${{secrets.REMOTE_HOST}}
+      REMOTE_HOST: ${{secrets.REMOTE_DEV_HOST}}
       REMOTE_USER: ${{secrets.REMOTE_USER}}
 
 
@@ -27,4 +27,4 @@ jobs:
     - run: mkdir ~/.ssh
     - run: 'echo "$SSH_KEY" >> ~/.ssh/id_rsa'
     - run: chmod 400 ~/.ssh/id_rsa
-    - run: 'rsync -aze "ssh -o StrictHostKeyChecking=no" build/* $REMOTE_USER@$REMOTE_HOST:~/$REMOTE_HOST/build/'
+    - run: 'rsync -aze "ssh -o StrictHostKeyChecking=no" build/* $REMOTE_USER@$REMOTE_DEV_HOST:~/$REMOTE_DEV_HOST/'

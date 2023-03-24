@@ -15,6 +15,7 @@ $accordion-bg: transparent;
 $offcanvas-horizontal-width: 25vw;
 $accordion-button-bg: $primary;
 $accordion-button-color: $navbar-light-color;
+$toast-max-width: 365px;
 
 @import "../../node_modules/bootstrap/scss/functions";
 @import "../../node_modules/bootstrap/scss/variables";
@@ -22,9 +23,9 @@ $accordion-button-color: $navbar-light-color;
 
 #map {
   bottom: 0;
-  height: calc(100vh - 56px);
+  height: calc(100vh - 66px);
   position: absolute;
-  top: 56px;
+  top: 66px;
   width: 100%;
 }
 

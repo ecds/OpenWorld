@@ -34,6 +34,7 @@ export function links() {
 export default function App() {
   const [mapState, setMapState] = useState<Map | undefined>(undefined);
   const [currentYearState, setCurrentYearState] = useState<number|undefined>(undefined);
+  const center = [-84.3891, 33.7528];
 
   return (
     <html lang="en">
@@ -41,14 +42,15 @@ export default function App() {
         <Meta />
         <Links />
       </head>
-      <body>
+      <body id="root">
         <SSRProvider>
           <MapContext.Provider
             value={{
               mapState,
               setMapState,
               currentYearState,
-              setCurrentYearState
+              setCurrentYearState,
+              center
             }}
           >
             <MainNav />
