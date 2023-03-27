@@ -17532,7 +17532,7 @@ __export(root_exports, {
   links: () => links,
   meta: () => meta
 });
-var import_react6 = require("react"), import_react7 = require("@remix-run/react"), import_react_bootstrap3 = require("react-bootstrap");
+var import_react7 = require("react"), import_react8 = require("@remix-run/react"), import_react_bootstrap3 = require("react-bootstrap");
 
 // app/mapContext.ts
 var import_react2 = require("react"), MapContext = (0, import_react2.createContext)({
@@ -17614,30 +17614,17 @@ function BaseMap() {
 var app_default = "/_static/build/_assets/app-WGLPCIAZ.css";
 
 // app/components/MainNav.tsx
-var import_Navbar = __toESM(require("react-bootstrap/Navbar")), import_NavDropdown = __toESM(require("react-bootstrap/NavDropdown")), import_Nav = __toESM(require("react-bootstrap/Nav")), import_Container = __toESM(require("react-bootstrap/Container")), import_react_router_bootstrap = require("react-router-bootstrap"), import_jsx_runtime3 = require("react/jsx-runtime");
+var import_Navbar = __toESM(require("react-bootstrap/Navbar")), import_Nav = __toESM(require("react-bootstrap/Nav")), import_Container = __toESM(require("react-bootstrap/Container")), import_react4 = require("@remix-run/react"), import_jsx_runtime3 = require("react/jsx-runtime");
 function MainNav() {
   return /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(import_Navbar.default, { bg: "primary", expand: "lg", className: "nav", children: /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)(import_Container.default, { fluid: !0, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(import_react_router_bootstrap.LinkContainer, { to: "/", children: /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)(import_Navbar.default.Brand, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(
-        "img",
-        {
-          src: "/images/logo192.png",
-          width: "40px",
-          height: "40px",
-          alt: "",
-          role: "presentation",
-          className: "mx-lg-3"
-        }
-      ),
-      "Open World Atlanta"
-    ] }) }),
+    /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(import_react4.Link, { to: "/", children: "Home" }),
     /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(import_Navbar.default.Toggle, { "aria-controls": "main-nav" }),
-    /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(import_Navbar.default.Collapse, { id: "main-nav", className: "pb-1", children: /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(import_Nav.default, { className: "me-auto", children: /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(import_NavDropdown.default, { title: "Buildings", children: /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(import_react_router_bootstrap.LinkContainer, { to: "/buildings/1928", children: /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(import_NavDropdown.default.Item, { children: "1928" }) }) }) }) })
+    /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(import_Navbar.default.Collapse, { id: "main-nav", className: "pb-1", children: /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(import_Nav.default, { className: "me-auto", children: /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(import_react4.Link, { to: "/buildings/1928", children: "Buildings 1928" }) }) })
   ] }) });
 }
 
 // app/components/TileLayers.tsx
-var import_react5 = require("react"), import_react_bootstrap2 = require("react-bootstrap"), import_react_fontawesome2 = require("@fortawesome/react-fontawesome"), import_free_solid_svg_icons2 = require("@fortawesome/free-solid-svg-icons");
+var import_react6 = require("react"), import_react_bootstrap2 = require("react-bootstrap"), import_react_fontawesome2 = require("@fortawesome/react-fontawesome"), import_free_solid_svg_icons2 = require("@fortawesome/free-solid-svg-icons");
 
 // app/data/tileLayers.ts
 var geoserverUrl = (workspace, layer) => ({
@@ -17780,13 +17767,13 @@ var geoserverUrl = (workspace, layer) => ({
 ];
 
 // app/components/OpacityControl.tsx
-var import_react4 = require("react");
+var import_react5 = require("react");
 var import_react_fontawesome = require("@fortawesome/react-fontawesome"), import_free_solid_svg_icons = require("@fortawesome/free-solid-svg-icons"), import_free_regular_svg_icons = require("@fortawesome/free-regular-svg-icons"), import_react_bootstrap = require("react-bootstrap"), import_jsx_runtime4 = require("react/jsx-runtime");
 function OpacityControl({ layer }) {
-  let { mapState, currentYearState } = (0, import_react4.useContext)(mapContext_default), [opacityState, setOpacityState] = (0, import_react4.useState)(0);
-  return (0, import_react4.useEffect)(() => {
+  let { mapState, currentYearState } = (0, import_react5.useContext)(mapContext_default), [opacityState, setOpacityState] = (0, import_react5.useState)(0);
+  return (0, import_react5.useEffect)(() => {
     setOpacityState(currentYearState === layer.year ? 1 : 0);
-  }, [setOpacityState, currentYearState, layer]), (0, import_react4.useEffect)(() => {
+  }, [setOpacityState, currentYearState, layer]), (0, import_react5.useEffect)(() => {
     mapState != null && mapState.getLayer(layer.layer.id) && (mapState == null || mapState.setPaintProperty(
       layer.layer.id,
       "raster-opacity",
@@ -17845,8 +17832,8 @@ function OpacityControl({ layer }) {
 // app/components/TileLayers.tsx
 var import_jsx_runtime5 = require("react/jsx-runtime");
 function TileLayers() {
-  let { mapState, currentYearState } = (0, import_react5.useContext)(mapContext_default);
-  return (0, import_react5.useEffect)(() => {
+  let { mapState, currentYearState } = (0, import_react6.useContext)(mapContext_default);
+  return (0, import_react6.useEffect)(() => {
     for (let tileLayer of tileLayers)
       mapState == null || mapState.addSource(tileLayer.layer.id, tileLayer.source), mapState == null || mapState.addLayer(tileLayer.layer), console.log("\u{1F680} ~ file: TileLayers.tsx:15 ~ useEffect ~ tileLayer.layer.id:", tileLayer.layer.id);
     return () => {
@@ -17889,11 +17876,11 @@ function links() {
   ];
 }
 function App() {
-  let [mapState, setMapState] = (0, import_react6.useState)(void 0), [currentYearState, setCurrentYearState] = (0, import_react6.useState)(void 0), center = [-84.3891, 33.7528];
+  let [mapState, setMapState] = (0, import_react7.useState)(void 0), [currentYearState, setCurrentYearState] = (0, import_react7.useState)(void 0), center = [-84.3891, 33.7528];
   return /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("html", { lang: "en", children: [
     /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("head", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_react7.Meta, {}),
-      /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_react7.Links, {})
+      /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_react8.Meta, {}),
+      /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_react8.Links, {})
     ] }),
     /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("body", { id: "root", children: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_react_bootstrap3.SSRProvider, { children: /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(
       mapContext_default.Provider,
@@ -17909,10 +17896,10 @@ function App() {
           /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(MainNav, {}),
           /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(BaseMap, {}),
           /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(TileLayers, {}),
-          /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_react7.Outlet, {}),
-          /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_react7.ScrollRestoration, {}),
-          /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_react7.Scripts, {}),
-          /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_react7.LiveReload, {})
+          /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_react8.Outlet, {}),
+          /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_react8.ScrollRestoration, {}),
+          /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_react8.Scripts, {}),
+          /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_react8.LiveReload, {})
         ]
       }
     ) }) })
@@ -17925,7 +17912,7 @@ __export(buildings_year_exports, {
   default: () => Buildings,
   loader: () => loader
 });
-var import_react11 = require("@remix-run/react"), import_react12 = require("react"), import_react_bootstrap7 = require("react-bootstrap");
+var import_react12 = require("@remix-run/react"), import_react13 = require("react"), import_react_bootstrap7 = require("react-bootstrap");
 
 // app/buildingMetadata.ts
 var omekaURL = "https://dvl.ecdsdev.org/api", omekaKey = "23bd7efbce6d7e1ceeee3265cddf6060543f0459", uses = (use) => {
@@ -18083,9 +18070,9 @@ var buildings = {
 var camelToTitle = (string) => string.replace(/([A-Z])/g, (match) => ` ${match}`).replace(/^./, (match) => match.toUpperCase()).replace(/_/g, "").trim();
 
 // app/components/Images.tsx
-var import_react8 = require("react"), import_react_bootstrap4 = require("react-bootstrap"), import_jsx_runtime7 = require("react/jsx-runtime");
+var import_react9 = require("react"), import_react_bootstrap4 = require("react-bootstrap"), import_jsx_runtime7 = require("react/jsx-runtime");
 function Images({ images }) {
-  let [show, setShow] = (0, import_react8.useState)(!1);
+  let [show, setShow] = (0, import_react9.useState)(!1);
   return /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(import_react_bootstrap4.Carousel, { className: "my-3", interval: null, children: images.map((image, index) => /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)(import_react_bootstrap4.Carousel.Item, { children: [
     /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(
       "img",
@@ -18106,7 +18093,7 @@ function Images({ images }) {
 }
 
 // app/components/BuildingLgend.tsx
-var import_react9 = require("react");
+var import_react10 = require("react");
 var import_chroma_js = __toESM(require("chroma-js")), import_react_bootstrap5 = require("react-bootstrap");
 var import_jsx_runtime8 = require("react/jsx-runtime"), outlineStyle = (color) => ({
   backgroundColor: (0, import_chroma_js.default)(color).alpha(0.3),
@@ -18118,7 +18105,7 @@ var import_jsx_runtime8 = require("react/jsx-runtime"), outlineStyle = (color) =
   borderStyle: "solid",
   color: import_chroma_js.default.contrast(color, "white") > 4 ? "white" : "black"
 }), BuildingLegend = ({ open, toggle }) => {
-  let { mapState } = (0, import_react9.useContext)(mapContext_default), [currentFilter, setCurrentFilter] = (0, import_react9.useState)(void 0), filterByUse = (useCode) => {
+  let { mapState } = (0, import_react10.useContext)(mapContext_default), [currentFilter, setCurrentFilter] = (0, import_react10.useState)(void 0), filterByUse = (useCode) => {
     useCode ? mapState.setFilter("buildings1928", ["==", ["get", "Land_Use"], useCode]) : mapState == null || mapState.setFilter("buildings1928", void 0), setCurrentFilter(useCode);
   };
   return /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(
@@ -18157,9 +18144,9 @@ var import_jsx_runtime8 = require("react/jsx-runtime"), outlineStyle = (color) =
 }, BuildingLgend_default = BuildingLegend;
 
 // app/components/ToggleButton.tsx
-var import_react10 = require("react"), import_react_bootstrap6 = require("react-bootstrap"), import_jsx_runtime9 = require("react/jsx-runtime"), ToggleButton = ({ toggle, children }) => {
-  let toggleRef = (0, import_react10.useRef)();
-  return (0, import_react10.useEffect)(() => {
+var import_react11 = require("react"), import_react_bootstrap6 = require("react-bootstrap"), import_jsx_runtime9 = require("react/jsx-runtime"), ToggleButton = ({ toggle, children }) => {
+  let toggleRef = (0, import_react11.useRef)();
+  return (0, import_react11.useEffect)(() => {
     var _a;
     (_a = toggleRef.current) == null || _a.focus();
   }, [toggleRef]), /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(
@@ -18179,17 +18166,17 @@ var import_jsx_runtime10 = require("react/jsx-runtime"), loader = async ({ param
   return { year: params.year, buildingMetaData, ...buildings[params.year] };
 };
 function Buildings() {
-  let { year, source, buildingMetaData, layer } = (0, import_react11.useLoaderData)(), { mapState, setCurrentYearState, center } = (0, import_react12.useContext)(mapContext_default), [showDetails, setShowDetails] = (0, import_react12.useState)(!0), [showLegend, setShowLegend] = (0, import_react12.useState)(1), [selectedBuilding, setSelectedBuilding] = (0, import_react12.useState)(void 0), location = (0, import_react11.useLocation)();
-  return (0, import_react12.useEffect)(() => {
+  let { year, source, buildingMetaData, layer } = (0, import_react12.useLoaderData)(), { mapState, setCurrentYearState, center } = (0, import_react13.useContext)(mapContext_default), [showDetails, setShowDetails] = (0, import_react13.useState)(!0), [showLegend, setShowLegend] = (0, import_react13.useState)(1), [selectedBuilding, setSelectedBuilding] = (0, import_react13.useState)(void 0), location = (0, import_react12.useLocation)();
+  return (0, import_react13.useEffect)(() => {
     mapState == null || mapState.flyTo({
       bearing: 0,
       center,
       pitch: 60,
       zoom: 15
     });
-  }, [location, center, mapState]), (0, import_react12.useEffect)(() => (setCurrentYearState(parseInt(year)), () => {
+  }, [location, center, mapState]), (0, import_react13.useEffect)(() => (setCurrentYearState(parseInt(year)), () => {
     setCurrentYearState(void 0);
-  }), [year, setCurrentYearState]), (0, import_react12.useEffect)(() => {
+  }), [year, setCurrentYearState]), (0, import_react13.useEffect)(() => {
     let layerId = layer.id, clicked;
     mapState == null || mapState.addSource(layerId, source), mapState == null || mapState.addLayer(layer), mapState == null || mapState.once("idle", () => {
       mapState.getLayer(layerId) && mapState.moveLayer(layerId);
@@ -18250,7 +18237,7 @@ function Index() {
 }
 
 // server-assets-manifest:@remix-run/dev/assets-manifest
-var assets_manifest_default = { version: "f3fc89ee", entry: { module: "/_static/build/entry.client-JJGISC77.js", imports: ["/_static/build/_shared/chunk-W337WKPO.js", "/_static/build/_shared/chunk-BHXIG2AN.js"] }, routes: { root: { id: "root", parentId: void 0, path: "", index: void 0, caseSensitive: void 0, module: "/_static/build/root-MUMF7INW.js", imports: ["/_static/build/_shared/chunk-EZTW72HS.js"], hasAction: !1, hasLoader: !1, hasCatchBoundary: !1, hasErrorBoundary: !1 }, routes: { id: "routes", parentId: "root", path: void 0, index: void 0, caseSensitive: void 0, module: "/_static/build/routes-QJBWLW6N.js", imports: void 0, hasAction: !1, hasLoader: !1, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/buildings.$year": { id: "routes/buildings.$year", parentId: "root", path: "buildings/:year", index: void 0, caseSensitive: void 0, module: "/_static/build/routes/buildings.$year-YYUZ6EAJ.js", imports: void 0, hasAction: !1, hasLoader: !0, hasCatchBoundary: !1, hasErrorBoundary: !1 } }, cssBundleHref: void 0, hmr: void 0, url: "/_static/build/manifest-F3FC89EE.js" };
+var assets_manifest_default = { version: "96ce4cda", entry: { module: "/_static/build/entry.client-FOG6HB3S.js", imports: ["/_static/build/_shared/chunk-7BZRLQMO.js", "/_static/build/_shared/chunk-R73BVLX3.js"] }, routes: { root: { id: "root", parentId: void 0, path: "", index: void 0, caseSensitive: void 0, module: "/_static/build/root-OH2WZV5F.js", imports: ["/_static/build/_shared/chunk-UMBQOW4Z.js"], hasAction: !1, hasLoader: !1, hasCatchBoundary: !1, hasErrorBoundary: !1 }, routes: { id: "routes", parentId: "root", path: void 0, index: void 0, caseSensitive: void 0, module: "/_static/build/routes-SVW56CYE.js", imports: void 0, hasAction: !1, hasLoader: !1, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/buildings.$year": { id: "routes/buildings.$year", parentId: "root", path: "buildings/:year", index: void 0, caseSensitive: void 0, module: "/_static/build/routes/buildings.$year-VSXS32SB.js", imports: void 0, hasAction: !1, hasLoader: !0, hasCatchBoundary: !1, hasErrorBoundary: !1 } }, cssBundleHref: void 0, hmr: void 0, url: "/_static/build/manifest-96CE4CDA.js" };
 
 // server-entry-module:@remix-run/dev/server-build
 var assetsBuildDirectory = "public/build", future = { unstable_cssModules: !1, unstable_cssSideEffectImports: !1, unstable_dev: !1, unstable_postcss: !1, unstable_tailwind: !1, unstable_vanillaExtract: !1, v2_errorBoundary: !1, v2_meta: !1, v2_routeConvention: !0 }, publicPath = "/_static/build/", entry = { module: entry_server_exports }, routes = {

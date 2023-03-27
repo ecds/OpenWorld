@@ -2,13 +2,15 @@ import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import Nav from "react-bootstrap/Nav";
 import Container from "react-bootstrap/Container";
-import { LinkContainer } from 'react-router-bootstrap'
+// import { LinkContainer } from 'react-router-bootstrap'
+import { Link } from "@remix-run/react";
 
 export default function MainNav() {
   return (
     <Navbar bg="primary" expand="lg" className="nav">
       <Container fluid>
-        <LinkContainer to="/">
+        <Link to="/">Home</Link>
+        {/* <LinkContainer to="/">
           <Navbar.Brand>
             <img
               src="/images/logo192.png"
@@ -20,15 +22,16 @@ export default function MainNav() {
             />
             Open World Atlanta
           </Navbar.Brand>
-        </LinkContainer>
+        </LinkContainer> */}
         <Navbar.Toggle aria-controls="main-nav" />
         <Navbar.Collapse id="main-nav" className="pb-1">
           <Nav className="me-auto">
-            <NavDropdown title="Buildings">
+            {/* <NavDropdown title="Buildings">
               <LinkContainer to="/buildings/1928">
                 <NavDropdown.Item>1928</NavDropdown.Item>
               </LinkContainer>
-            </NavDropdown>
+            </NavDropdown> */}
+            <Link to="/buildings/1928">Buildings 1928</Link>
           </Nav>
         </Navbar.Collapse>
       </Container>
