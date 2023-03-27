@@ -8,7 +8,6 @@ import {
   Scripts,
   ScrollRestoration,
 } from "@remix-run/react";
-import { ClientOnly } from "remix-utils";
 import { SSRProvider } from "react-bootstrap";
 import type { Map } from "maplibre-gl";
 import MapContext from "./mapContext";

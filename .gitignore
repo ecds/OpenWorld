@@ -3,6 +3,8 @@
 # dependencies
 /node_modules
 /node_modules*
+app/node_modules
+app/node_modules*
 /.pnp
 .pnp.js
 
@@ -14,6 +16,7 @@
 
 # misc
 .DS_Store
+.env*
 .env.local
 .env.development.local
 .env.test.local
@@ -29,3 +32,5 @@ katherine.txt
 public/resources/layers/*
 
 *.bk
+
+sam*
