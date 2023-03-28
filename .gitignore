@@ -34,3 +34,6 @@ public/resources/layers/*
 *.bk
 
 sam*
+
+server/*
+server/index*

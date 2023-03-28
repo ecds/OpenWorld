@@ -1,10 +1,10 @@
 @app
-open-world-atlanta
+open-world-atlanta2
 
 @http
 /*
   method any
-  src app
+  src server
 
 @static
 

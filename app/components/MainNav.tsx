@@ -1,37 +1,43 @@
 import Navbar from "react-bootstrap/Navbar";
-import NavDropdown from 'react-bootstrap/NavDropdown';
+import Dropdown from 'react-bootstrap/Dropdown';
+import DropdownButton from "react-bootstrap/DropdownButton";
 import Nav from "react-bootstrap/Nav";
 import Container from "react-bootstrap/Container";
-// import { LinkContainer } from 'react-router-bootstrap'
 import { Link } from "@remix-run/react";
+import logo from "~/images/logo192.png";
 
 export default function MainNav() {
   return (
     <Navbar bg="primary" expand="lg" className="nav">
       <Container fluid>
-        <Link to="/">Home</Link>
-        {/* <LinkContainer to="/">
+        <Link to="/">
           <Navbar.Brand>
             <img
-              src="/images/logo192.png"
+              src={logo}
               width="40px"
               height="40px"
               alt=""
               role="presentation"
               className="mx-lg-3"
             />
-            Open World Atlanta
-          </Navbar.Brand>
-        </LinkContainer> */}
+              Open World Atlanta
+            </Navbar.Brand>
+          </Link>
         <Navbar.Toggle aria-controls="main-nav" />
         <Navbar.Collapse id="main-nav" className="pb-1">
           <Nav className="me-auto">
-            {/* <NavDropdown title="Buildings">
-              <LinkContainer to="/buildings/1928">
-                <NavDropdown.Item>1928</NavDropdown.Item>
-              </LinkContainer>
-            </NavDropdown> */}
-            <Link to="/buildings/1928">Buildings 1928</Link>
+            <Dropdown navbar={true}>
+              <DropdownButton title="Buildings" id="buildings-nav">
+                <Dropdown.Item
+                  eventKey={1}
+                  active={false}
+                  as={Link}
+                  to="/buildings/1928"
+                >
+                  1928
+                </Dropdown.Item>
+              </DropdownButton>
+            </Dropdown>
           </Nav>
         </Navbar.Collapse>
       </Container>

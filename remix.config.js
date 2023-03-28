@@ -3,7 +3,7 @@ module.exports = {
   ignoredRouteFiles: ["**/.*"],
   server: "./server.ts",
   publicPath: "/_static/build/",
-  serverBuildPath: "app/index.js",
+  serverBuildPath: "server/index.js",
   future: {
     v2_routeConvention: true,
     v2_normalizeFormMethod: true,

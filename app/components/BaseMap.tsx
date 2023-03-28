@@ -4,7 +4,7 @@ import MapContext from '~/mapContext';
 import lngLatContext from "./lngLatContext";
 
 export default function BaseMap() {
-  const { mapState, setMapState, center } = useContext(MapContext);
+  const { mapState, setMapState, center, zoom } = useContext(MapContext);
   const mapContainerRef = useRef();
 
   useEffect(() => {
@@ -13,7 +13,7 @@ export default function BaseMap() {
       map = new maplibregl.Map({
         container: "map",
         center,
-        zoom: 16,
+        zoom,
         style: {
           version: 8,
           sources: {
@@ -42,7 +42,6 @@ export default function BaseMap() {
       setMapState(map);
 
       map.on('contextmenu', ({ lngLat }) => {
-        console.log("🚀 ~ file: BaseMap.tsx:50 ~ map.on ~ lngLat:", lngLat)
         const popup = new maplibregl.Popup();
         popup.setLngLat(lngLat);
         popup.setDOMContent(lngLatContext(lngLat, popup));

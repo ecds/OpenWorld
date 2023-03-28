@@ -2,10 +2,12 @@
   "private": true,
   "sideEffects": false,
   "scripts": {
-    "build": "remix build",
+    "build": "run-s build:*",
     "build:css": "./node_modules/node-sass/bin/node-sass ./app/styles/app.scss -o ./app/styles --output-style compressed",
     "dev:css": "npm run build:css && ./node_modules/node-sass/bin/node-sass -rw ./styles -o ./app/styles",
-    "dev": "npm run build:css && remix dev",
+    "build:remix": "remix build",
+    "dev": "run-p dev:*",
+    "dev:remix": "remix watch",
     "dev:arc": "node ./dev sandbox",
     "start": "remix-serve build",
     "typecheck": "tsc"
@@ -13,7 +15,7 @@
   "prettier": {},
   "eslintIgnore": [
     "/node_modules",
-    "/app/index.js",
+    "/server/index.js",
     "/public/build"
   ],
   "dependencies": {
@@ -45,6 +47,7 @@
     "@types/react-dom": "^18.0.8",
     "eslint": "^8.27.0",
     "eslint-config-prettier": "^8.8.0",
+    "msw": "^1.2.1",
     "npm-run-all": "^4.1.5",
     "prettier": "^2.8.7",
     "typescript": "^4.8.4"

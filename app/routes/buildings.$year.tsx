@@ -1,6 +1,6 @@
 // import maplibregl from 'maplibre-gl'
 import { useLoaderData, useLocation } from "@remix-run/react";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { Offcanvas, Col, Row } from "react-bootstrap";
 import { omekaMetadata, omekaImages, shapeFileMetadata } from '~/buildingMetadata';
 import MapContext from "~/mapContext";
@@ -11,12 +11,14 @@ import BuildingLegend from "~/components/BuildingLgend";
 import ToggleButton from "~/components/ToggleButton";
 
 export const loader = async ({ params }) => {
-  const buildingMetaData = await omekaMetadata();
-  return { year: params.year, buildingMetaData, ...buildings[params.year] };
+  // const buildingMetaData = await omekaMetadata();
+  // const buildingMetaData = [];
+  return { year: params.year, ...buildings[params.year] };
 }
 
 export default function Buildings() {
-  const { year, source, buildingMetaData, layer } = useLoaderData<typeof loader>();
+  const omekaDataRef = useRef();
+  const { year, source, layer } = useLoaderData<typeof loader>();
   const { mapState,  setCurrentYearState, center } = useContext(MapContext);
   const [showDetails, setShowDetails] = useState<boolean>(true);
   const [showLegend, setShowLegend] = useState<number>(1);
@@ -41,10 +43,18 @@ export default function Buildings() {
   }, [year, setCurrentYearState]);
 
   useEffect(() => {
+    const fetchOmekaData = async () => {
+      omekaDataRef.current = await omekaMetadata();
+    };
+
+    fetchOmekaData();
+
     const layerId = layer.id;
     let clicked = undefined;
-    mapState?.addSource(layerId, source);
-    mapState?.addLayer(layer);
+
+    if (mapState && !mapState.getSource(layerId)) mapState?.addSource(layerId, source);
+    if (mapState && !mapState.getLayer(layerId)) mapState?.addLayer(layer);
+
     mapState?.once('idle', () => {
       if (mapState.getLayer(layerId)) mapState.moveLayer(layerId);
     });
@@ -64,7 +74,7 @@ export default function Buildings() {
 
       clicked = properties.Identifier;
 
-      const omekaBuilding = await buildingMetaData.find(bldg => bldg.bldgID === properties.Identifier);
+      const omekaBuilding = await omekaDataRef.current.find(bldg => bldg.bldgID === properties.Identifier);
       if (omekaBuilding) {
         if (omekaBuilding.fileCount > 0 && omekaBuilding.images.length === 0) {
           omekaBuilding.images = await omekaImages(omekaBuilding.omekaID);
@@ -93,11 +103,11 @@ export default function Buildings() {
     }));
 
     return () => {
-      // mapState?.off('idle', layerId, () => mapState.moveLayer(layerId));
+      mapState?.off('idle', layerId, () => mapState.moveLayer(layerId));
       mapState?.removeLayer(layerId);
       mapState?.removeSource(layerId);
     }
-  }, [mapState, source, layer, buildingMetaData, setSelectedBuilding]);
+  }, [mapState, source, layer, omekaDataRef, setSelectedBuilding]);
 
   return(
     <section>

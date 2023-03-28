@@ -21,11 +21,15 @@ $toast-max-width: 365px;
 @import "../../node_modules/bootstrap/scss/variables";
 @import "../../node_modules/bootstrap/scss/bootstrap";
 
+body {
+  background-color: #869c46;
+}
+
 #map {
   bottom: 0;
-  height: calc(100vh - 66px);
+  height: calc(100vh - 60px);
   position: absolute;
-  top: 66px;
+  top: 60px;
   width: 100%;
 }
 

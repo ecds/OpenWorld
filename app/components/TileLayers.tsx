@@ -20,17 +20,18 @@ export default function TileLayers() {
 
   useEffect(() => {
     for (const tileLayer of tileLayers) {
-      mapState?.addSource(tileLayer.layer.id, tileLayer.source);
-      mapState?.addLayer(tileLayer.layer);
-      console.log("🚀 ~ file: TileLayers.tsx:15 ~ useEffect ~ tileLayer.layer.id:", tileLayer.layer.id)
-    }
-
-    return () => {
-      for (const tileLayer of tileLayers) {
-        mapState?.removeLayer(tileLayer.layer.id);
-        mapState?.removeSource(tileLayer.layer.id);
+      if (mapState && !mapState.getLayer(tileLayer.layer.id)) {
+        mapState?.addSource(tileLayer.layer.id, tileLayer.source);
+        mapState?.addLayer(tileLayer.layer);
       }
     }
+
+    // return () => {
+    //   for (const tileLayer of tileLayers) {
+    //     mapState?.removeLayer(tileLayer.layer.id);
+    //     mapState?.removeSource(tileLayer.layer.id);
+    //   }
+    // }
   }, [mapState, currentYearState]);
   return (
     <ToastContainer position="bottom-start" className="ms-2 mb-2 overflow-hidden" tabIndex={0}>

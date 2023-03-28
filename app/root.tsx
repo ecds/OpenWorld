@@ -34,6 +34,7 @@ export default function App() {
   const [mapState, setMapState] = useState<Map | undefined>(undefined);
   const [currentYearState, setCurrentYearState] = useState<number|undefined>(undefined);
   const center = [-84.3891, 33.7528];
+  const zoom = 16;
 
   return (
     <html lang="en">
@@ -49,7 +50,8 @@ export default function App() {
               setMapState,
               currentYearState,
               setCurrentYearState,
-              center
+              center,
+              zoom
             }}
           >
             <MainNav />
