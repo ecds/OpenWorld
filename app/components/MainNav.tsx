@@ -38,6 +38,30 @@ export default function MainNav() {
                 </Dropdown.Item>
               </DropdownButton>
             </Dropdown>
+            <Dropdown navbar={true}>
+              <DropdownButton title="Boundaries" id="boundaries-nav">
+                <Dropdown.Item
+                  eventKey={1}
+                  active={false}
+                  as={Link}
+                  to="/annexations"
+                >
+                  Annexations
+                </Dropdown.Item>
+              </DropdownButton>
+            </Dropdown>
+            <Dropdown navbar={true}>
+              <DropdownButton title="Transportation" id="transportation-nav">
+                <Dropdown.Item
+                  eventKey={1}
+                  active={false}
+                  as={Link}
+                  to="/streetcars/1928"
+                >
+                  Streetcars 1928
+                </Dropdown.Item>
+              </DropdownButton>
+            </Dropdown>
           </Nav>
         </Navbar.Collapse>
       </Container>

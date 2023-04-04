@@ -1,5 +1,4 @@
 const lngLatContext = (lngLat, popup) => {
-  console.log("🚀 ~ file: lngLatContext.ts:2 ~ lngLatContext ~ lngLat, popup:", lngLat, popup)
   const { lat, lng } = lngLat;
   const button = document.createElement('button');
   button.classList.add('btn', 'btn-outline-primary');
@@ -7,7 +6,6 @@ const lngLatContext = (lngLat, popup) => {
   button.innerText = `${lat}, ${lng}`;
   button.setAttribute('type', 'button');
   button.setAttribute('title', 'Click to copy coordinates to your clipboard.');
-  console.log("🚀 ~ file: lngLatContext.ts:12 ~ lngLatContext ~ button:", button)
   return button;
 }
 

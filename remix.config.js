@@ -9,7 +9,8 @@ module.exports = {
     v2_normalizeFormMethod: true,
   },
   serverDependenciesToBundle: [
-    "maplibre-gl"
+    "maplibre-gl",
+    "three"
   ]
   // appDirectory: "app",
   // assetsBuildDirectory: "public/build",

@@ -141,4 +141,6 @@ export const tileLayers = [
       'paint': defaultPaintOptions
     }
   }
-]
+];
+
+export const YEARS = tileLayers.map((layer) => layer.year);

@@ -4,7 +4,7 @@ import MapContext from '~/mapContext';
 import lngLatContext from "./lngLatContext";
 
 export default function BaseMap() {
-  const { mapState, setMapState, center, zoom } = useContext(MapContext);
+  const { mapState, setMapState, center, zoom, pitch, bearing } = useContext(MapContext);
   const mapContainerRef = useRef();
 
   useEffect(() => {
@@ -14,6 +14,8 @@ export default function BaseMap() {
         container: "map",
         center,
         zoom,
+        pitch,
+        bearing,
         style: {
           version: 8,
           sources: {
@@ -48,8 +50,10 @@ export default function BaseMap() {
         popup.addTo(map);
       });
 
+      // configuration of the custom layer for a 3D model per the CustomLayerInterface
+
       // map.on('style.load', function () {
-      //   map.addLayer(modelLayer);
+      //   map.addLayer(customLayer);
       //   });
     }
 

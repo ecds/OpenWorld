@@ -4,13 +4,15 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSun as fasSun } from '@fortawesome/free-solid-svg-icons';
 import { faSun as farSun } from '@fortawesome/free-regular-svg-icons';
 import { Col, Row } from 'react-bootstrap';
+import { YEARS } from "~/data/tileLayers";
 
 export default function OpacityControl({ layer }) {
   const { mapState, currentYearState } = useContext(MapContext);
   const [ opacityState, setOpacityState ] = useState<float>(0.0);
 
   useEffect(() => {
-    setOpacityState(currentYearState === layer.year ? 1.0 : 0.0);
+    // setOpacityState(currentYearState === layer.year ? 1.0 : 0.0);
+    setOpacityState(Math.max(...YEARS.filter(y => y <= currentYearState)) === layer.year ? 1.0 : 0.0);
   }, [setOpacityState, currentYearState, layer]);
 
   useEffect(() => {

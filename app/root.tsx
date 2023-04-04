@@ -1,5 +1,6 @@
 import { createContext, useRef, useState } from "react";
 import type { MetaFunction } from "@remix-run/node";
+import { useSearchParams } from "@remix-run/react";
 import {
   Links,
   LiveReload,
@@ -31,10 +32,15 @@ export function links() {
 
 
 export default function App() {
+  const [searchParams, setSearchParams] = useSearchParams();
   const [mapState, setMapState] = useState<Map | undefined>(undefined);
   const [currentYearState, setCurrentYearState] = useState<number|undefined>(undefined);
-  const center = [-84.3891, 33.7528];
-  const zoom = 16;
+  const centerLng = searchParams.get("centerLng") ?? -84.3891;
+  const centerLat = searchParams.get("centerLat") ?? 33.7528;
+  const center = [centerLng, centerLat];
+  const zoom = parseFloat(searchParams.get("zoom")) ?? 11;
+  const pitch = parseFloat(searchParams.get("pitch")) ?? 0;
+  const bearing = parseFloat(searchParams.get("bearing")) ?? 0;
 
   return (
     <html lang="en">
@@ -51,7 +57,9 @@ export default function App() {
               currentYearState,
               setCurrentYearState,
               center,
-              zoom
+              zoom,
+              pitch,
+              bearing
             }}
           >
             <MainNav />

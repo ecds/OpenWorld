@@ -7,19 +7,18 @@ import MapContext from "~/mapContext";
 import { buildings } from "~/data/buildings";
 import { camelToTitle } from '~/utils';
 import Images from "~/components/Images";
-import BuildingLegend from "~/components/BuildingLgend";
+import BuildingLegend from "~/components/BuildingLgened";
 import ToggleButton from "~/components/ToggleButton";
+import { customLayer } from "~/data/model";
 
 export const loader = async ({ params }) => {
-  // const buildingMetaData = await omekaMetadata();
-  // const buildingMetaData = [];
   return { year: params.year, ...buildings[params.year] };
 }
 
 export default function Buildings() {
   const omekaDataRef = useRef();
   const { year, source, layer } = useLoaderData<typeof loader>();
-  const { mapState,  setCurrentYearState, center } = useContext(MapContext);
+  const { mapState,  setCurrentYearState, center, bearing, pitch, zoom } = useContext(MapContext);
   const [showDetails, setShowDetails] = useState<boolean>(true);
   const [showLegend, setShowLegend] = useState<number>(1);
   const [selectedBuilding, setSelectedBuilding] = useState(undefined);
@@ -27,12 +26,12 @@ export default function Buildings() {
 
   useEffect(() => {
     mapState?.flyTo({
-      bearing: 0,
+      bearing: bearing ?? 0,
       center,
-      pitch: 60,
-      zoom: 15
+      pitch: pitch ?? 60,
+      zoom: zoom ?? 15
     });
-  }, [location, center, mapState]);
+  }, [location, center, mapState, bearing, pitch, zoom]);
 
   useEffect(() => {
     setCurrentYearState(parseInt(year));
@@ -54,12 +53,14 @@ export default function Buildings() {
 
     if (mapState && !mapState.getSource(layerId)) mapState?.addSource(layerId, source);
     if (mapState && !mapState.getLayer(layerId)) mapState?.addLayer(layer);
+    if (mapState && !mapState.getLayer('3d-model')) mapState?.addLayer(customLayer);
 
     mapState?.once('idle', () => {
       if (mapState.getLayer(layerId)) mapState.moveLayer(layerId);
     });
 
     const getBuilding = async (properties) => {
+      console.log("🚀 ~ file: buildings.$year.tsx:63 ~ getBuilding ~ properties:", properties)
       if (clicked) {
         mapState.setFeatureState(
           { source: layerId, sourceLayer: layer['source-layer'], id: clicked },
@@ -84,6 +85,8 @@ export default function Buildings() {
         setSelectedBuilding(shapeFileMetadata(properties));
       }
     }
+
+    mapState?.setFilter('buildings1928', ["!=", ["get", "Identifier"], "BD26475"]);
 
     // When a click event occurs on a feature in the states layer, open a popup at the
     // location of the click, with description HTML from its properties.

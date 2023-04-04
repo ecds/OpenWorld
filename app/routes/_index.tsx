@@ -4,9 +4,11 @@ import MapContext from "~/mapContext";
 
 export default function Index() {
   const location = useLocation();
-  const { mapState, center, zoom } = useContext(MapContext);
+  const { mapState, center, zoom, setCurrentYearState } = useContext(MapContext);
+
 
   useEffect(() => {
+    setCurrentYearState(undefined);
     mapState?.flyTo({
       bearing: 0,
       center,
