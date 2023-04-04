@@ -3,7 +3,7 @@ import * as THREE from 'three';
 import {
   GLTFLoader
 } from "../../node_modules/three/examples/jsm/loaders/GLTFLoader";
-import model from "~/images/Mill_1_Test.glb";
+// import model from "~/images/Mill_1_Test.glb";
 
 // parameters to ensure the model is georeferenced correctly on the map
 // const modelOrigin = [-84.36853504007205, ];
@@ -50,7 +50,7 @@ export const customLayer = {
     // use the three.js GLTF loader to add the 3D model to the three.js scene
     const loader = new GLTFLoader();
     loader.load(
-      model,
+      "https://readux.s3.amazonaws.com/Mill_1_Test.glb",
       function (gltf) {
         this.scene.add(gltf.scene);
       }.bind(this)

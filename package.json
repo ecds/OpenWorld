@@ -10,7 +10,8 @@
     "dev:remix": "remix watch",
     "dev:arc": "node ./dev sandbox",
     "start": "remix-serve build",
-    "typecheck": "tsc"
+    "typecheck": "tsc",
+    "deploy:dev": "npm run build && arc deploy --staging --prune"
   },
   "prettier": {},
   "eslintIgnore": [
