@@ -50,7 +50,7 @@ export const terminalStation = {
     // use the three.js GLTF loader to add the 3D model to the three.js scene
     const loader = new GLTFLoader();
     loader.load(
-      "https://readux.s3.amazonaws.com/terminal_station.glb",
+      "https://readux.s3.amazonaws.com/terminal_station_04-05-2023.glb",
       function (gltf) {
         this.scene.add(gltf.scene);
       }.bind(this)

@@ -17,6 +17,8 @@ export const buildings = {
         "fill-extrusion-color": [
           "case",
           ['boolean', ['feature-state', 'clicked'], false], "deeppink",
+          ["==", ["get", "Identifier"], "BD36344"], "#4f452e",
+          ["==", ["get", "Identifier"], "BD26475"], "#4f452e",
           ["==", ["get", "Land_Use"], "M"], "#AB59C9",
           ["==", ["get", "Land_Use"], "C"], "#E83333",
           ["==", ["get", "Land_Use"], "P"], "#2E6DFF",
@@ -26,7 +28,12 @@ export const buildings = {
           ["==", ["get", "Land_Use"], "W"], "#5D4037",
           "#EBEBEB"
         ],
-        "fill-extrusion-height": ["*", ["get", "calc_ht"], 0.3048],
+        "fill-extrusion-height": [
+          "case",
+          ["==", ["get", "Identifier"], "BD36344"], 0,
+          ["==", ["get", "Identifier"], "BD26475"], 0,
+          ["*", ["get", "calc_ht"], 0.3048]
+        ],
         // "fill-extrusion-base": [
         //   "interpolate",
         //   ["linear"],

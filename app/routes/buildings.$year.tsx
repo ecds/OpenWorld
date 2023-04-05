@@ -88,13 +88,13 @@ export default function Buildings() {
       }
     }
 
-    mapState?.setFilter(
-      'buildings1928',
-      ["all",
-      ["!=", ["get", "Identifier"], "BD36344"],
-      ["!=", ["get", "Identifier"], "BD26475"]
-      ]
-    );
+    // mapState?.setFilter(
+    //   'buildings1928',
+    //   ["all",
+    //   ["!=", ["get", "Identifier"], "BD36344"],
+    //   ["!=", ["get", "Identifier"], "BD26475"]
+    //   ]
+    // );
 
     // When a click event occurs on a feature in the states layer, open a popup at the
     // location of the click, with description HTML from its properties.
