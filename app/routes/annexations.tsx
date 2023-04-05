@@ -12,7 +12,6 @@ const Annexations = () => {
   const { mapState, currentYearState, setCurrentYearState } = useContext(MapContext);
   const [searchParams] = useSearchParams();
 
-  // console.log("🚀 ~ file: annexations.tsx:6 ~ AnnexDetails:", AnnexDetails)
   const initialYearFilter = useRef(
     Math.max(...YEARS.filter(year => year <= (searchParams.get("year") ?? Math.min(...YEARS)))).toString()
   );
