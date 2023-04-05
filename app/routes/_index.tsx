@@ -15,7 +15,7 @@ export default function Index() {
       pitch: 0,
       zoom
     });
-  }, [location, center, mapState, zoom]);
+  }, [location, center, mapState, zoom, setCurrentYearState]);
 
   return (
     <>

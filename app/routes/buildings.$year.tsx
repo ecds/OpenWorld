@@ -7,9 +7,10 @@ import MapContext from "~/mapContext";
 import { buildings } from "~/data/buildings";
 import { camelToTitle } from '~/utils';
 import Images from "~/components/Images";
-import BuildingLegend from "~/components/BuildingLgened";
+import BuildingLegend from "~/components/BuildingLegend";
 import ToggleButton from "~/components/ToggleButton";
 import { customLayer } from "~/data/model";
+import { terminalStation } from "~/data/terminalStation";
 
 export const loader = async ({ params }) => {
   return { year: params.year, ...buildings[params.year] };
@@ -54,6 +55,7 @@ export default function Buildings() {
     if (mapState && !mapState.getSource(layerId)) mapState?.addSource(layerId, source);
     if (mapState && !mapState.getLayer(layerId)) mapState?.addLayer(layer);
     if (mapState && !mapState.getLayer('3d-model')) mapState?.addLayer(customLayer);
+    if (mapState && !mapState.getLayer('terminalStation')) mapState?.addLayer(terminalStation);
 
     mapState?.once('idle', () => {
       if (mapState.getLayer(layerId)) mapState.moveLayer(layerId);
@@ -86,7 +88,13 @@ export default function Buildings() {
       }
     }
 
-    mapState?.setFilter('buildings1928', ["!=", ["get", "Identifier"], "BD26475"]);
+    mapState?.setFilter(
+      'buildings1928',
+      ["all",
+      ["!=", ["get", "Identifier"], "BD36344"],
+      ["!=", ["get", "Identifier"], "BD26475"]
+      ]
+    );
 
     // When a click event occurs on a feature in the states layer, open a popup at the
     // location of the click, with description HTML from its properties.

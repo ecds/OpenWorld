@@ -28,7 +28,11 @@ const BuildingLegend = ({ open, toggle }) => {
 
   const filterByUse = (useCode) => {
     if (useCode) {
-      mapState.setFilter('buildings1928', ["==", ["get", "Land_Use"], useCode]);
+      mapState.setFilter('buildings1928',
+        [
+          ["==", ["get", "Land_Use"], useCode]
+        ]
+      );
     } else {
       mapState?.setFilter('buildings1928', undefined);
     }

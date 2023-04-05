@@ -1,21 +1,19 @@
 import maplibregl from "maplibre-gl";
 import { useContext, useEffect, useRef } from "react";
+import { useSearchParams } from "@remix-run/react";
 import MapContext from '~/mapContext';
 import lngLatContext from "./lngLatContext";
 
 export default function BaseMap() {
+  const [searchParams, setSearchParams] = useSearchParams();
   const { mapState, setMapState, center, zoom, pitch, bearing } = useContext(MapContext);
   const mapContainerRef = useRef();
 
   useEffect(() => {
     let map = undefined;
-    if (!mapState && mapContainerRef.current) {
+    if (mapContainerRef.current) {
       map = new maplibregl.Map({
         container: "map",
-        center,
-        zoom,
-        pitch,
-        bearing,
         style: {
           version: 8,
           sources: {
@@ -49,6 +47,17 @@ export default function BaseMap() {
         popup.setDOMContent(lngLatContext(lngLat, popup));
         popup.addTo(map);
       });
+
+      // map.on('moveend', (event) => {
+      //   setSearchParams(
+      //     {
+      //       zoom: map.getZoom(),
+      //       bearing: map.getBearing(),
+      //       pitch: map.getPitch(),
+      //       center: map.getCenter()
+      //     }
+      //   )
+      // });
 
       // configuration of the custom layer for a 3D model per the CustomLayerInterface
 
