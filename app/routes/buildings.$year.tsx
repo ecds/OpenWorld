@@ -62,7 +62,6 @@ export default function Buildings() {
     });
 
     const getBuilding = async (properties) => {
-      console.log("🚀 ~ file: buildings.$year.tsx:63 ~ getBuilding ~ properties:", properties)
       if (clicked) {
         mapState.setFeatureState(
           { source: layerId, sourceLayer: layer['source-layer'], id: clicked },
@@ -115,6 +114,8 @@ export default function Buildings() {
 
     return () => {
       mapState?.off('idle', layerId, () => mapState.moveLayer(layerId));
+      mapState?.removeLayer('3d-model');
+      mapState?.removeLayer('terminalStation');
       mapState?.removeLayer(layerId);
       mapState?.removeSource(layerId);
     }

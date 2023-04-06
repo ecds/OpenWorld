@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState, useRef } from "react";
 import { useParams } from "@remix-run/react";
 import MapContext from "~/mapContext";
 import { Offcanvas, ListGroup } from "react-bootstrap";
@@ -7,36 +7,42 @@ import chroma from "chroma-js";
 import { streetcarLines } from "~/data/streetcarData";
 
 const popupContent = (features, year) => {
+  features = [...new Set(features)];
   const list = document.createElement('div');
   list.classList.add('btn-group-vertical');
 
   for (const line of features) {
     const lineData = streetcarLines[year].find(streetcarLine => streetcarLine.number == line.properties.Route_num)
     const item = document.createElement('div');
-    item.classList.add('btn')
-    item.style.backgroundColor = lineData.color;
-    item.style.color = chroma.contrast(lineData.color, 'white') > 3.5 ? 'white': 'black'
-    item.innerText = `${line.properties.Route_num}: ${line.properties.R_Name}`;
-    list.appendChild(item);
+    if (!list.innerText.includes(line.properties.R_Name)) {
+      item.classList.add('btn')
+      item.style.backgroundColor = lineData.color;
+      item.style.color = chroma.contrast(lineData.color, 'white') > 3.5 ? 'white': 'black'
+      item.innerText = `${line.properties.Route_num}: ${line.properties.R_Name}`;
+      list.appendChild(item);
+    }
   }
   return list;
-  // return (
-  //   <li>
-  //     {features.map((feature, index) => {
-  //       return (
-  //         <li key={index}>
-  //           {feature.properties.R_Name}
-  //         </li>
-  //       )
-  //     })}
-  //   </li>
-  // )
 }
+
+const singlePopupContent = (lineData) => {
+  const element = document.createElement('div');
+  element.classList.add('btn');
+  element.style.backgroundColor = lineData.color;
+  element.style.color = chroma.contrast(lineData.color, 'white') > 3.5 ? 'white': 'black'
+  element.innerText = `${lineData.number}: ${lineData.name}`;
+  return element;
+}
+
+const popup = new Popup({
+  closeButton: false,
+  closeOnClick: false
+});
 
 const Streetcars = () => {
   const { mapState, currentYearState, setCurrentYearState } = useContext(MapContext);
   const { year } = useParams();
-  const [activeLine, setActiveLine] = useState<number|undefined>(undefined);
+  const activeLines = useRef([]);
   const [showDetails, setShowDetails] = useState<boolean>(true);
 
   useEffect(() => {
@@ -52,6 +58,7 @@ const Streetcars = () => {
         mapState?.addSource("streetcarLines", {
           type: "geojson",
           promoteId: "Route_num",
+          // lineMetrics: true,
           data
         });
 
@@ -61,10 +68,13 @@ const Streetcars = () => {
             type: "line",
             source: "streetcarLines",
             paint: {
-              'line-width': 4,
+              'line-width': [
+                "case",
+                ['boolean', ['feature-state', 'active'], false], 8,
+                4
+              ],
               'line-color': [
                 "case",
-                ['boolean', ['feature-state', 'clicked'], false], "deeppink",
                 ["==", ["get", "Route_num"], "1"], "#ff0000",
                 ["==", ["get", "Route_num"], "2"], "#ed7940",
                 ["==", ["get", "Route_num"], "3"], "#ffff00",
@@ -91,7 +101,7 @@ const Streetcars = () => {
                 ["==", ["get", "Route_num"], "24"], "#73ffdf",
                 "black"
               ],
-              'line-dasharray': [5, 5],
+              'line-dasharray': [1, 1]
               // 'line-offset': [
               //   "case",
               //   // ["==", ["%", ["get", "Route_num"], 2], 20], 0.2,
@@ -121,21 +131,32 @@ const Streetcars = () => {
 
           // }));
 
-          const popup = new Popup({
-            closeButton: false,
-            closeOnClick: false
-          });
-
           mapState?.on('mouseenter', 'streetcarLines', ({ lngLat, features }) => {
+            activeLines.current = features;
+            for (const line of features) {
+              mapState.setFeatureState(
+                { source: "streetcarLines", id: line.properties.Route_num },
+                { active: true }
+              );
+            }
             mapState.getCanvas().style.cursor = 'pointer';
             popup.setLngLat(lngLat);
-            popup.setDOMContent(popupContent(features, currentYearState));
+            popup.setDOMContent(popupContent([...new Set(features)], currentYearState));
             popup.addTo(mapState);
           });
 
           mapState?.on('mouseleave', 'streetcarLines', () => {
+            console.log("🚀 ~ file: streetcars.$year.tsx:147 ~ mapState?.on ~ activeLines:", activeLines)
+            for (const line of activeLines.current) {
+              console.log("🚀 ~ file: streetcars.$year.tsx:148 ~ mapState?.on ~ line:", line)
+              mapState.setFeatureState(
+                { source: "streetcarLines", id: line.properties.Route_num },
+                { active: false }
+              );
+            }
             mapState.getCanvas().style.cursor = '';
             popup.remove();
+            activeLines.current = [];
           })
 
           mapState?.setPitch(0);
@@ -151,7 +172,28 @@ const Streetcars = () => {
       if (mapState?.getSource('streetcarLines')) mapState.removeSource('streetcarLines');
 
     }
-  }, [mapState]);
+  }, [mapState, currentYearState]);
+
+  const handleMouseEnter = (line) => {
+    const { number, center } = line
+    mapState.setFeatureState(
+      { source: "streetcarLines", id: number },
+      { active: true }
+    );
+    popup.setLngLat(center);
+    popup.setDOMContent(singlePopupContent(line));
+    popup.addTo(mapState);
+
+  };
+
+  const handleMouseExit = (number) => {
+    mapState.setFeatureState(
+      { source: "streetcarLines", id: number },
+      { active: false }
+    );
+    popup.remove();
+  };
+
   return (
     <Offcanvas show={showDetails} placement="end" scroll={true} backdrop={false} >
       <Offcanvas.Header closeButton onHide={() => setShowDetails(false)}>
@@ -169,8 +211,8 @@ const Streetcars = () => {
                     backgroundColor: line.color,
                     color: chroma.contrast(line.color, 'white') > 3.5 ? 'white': 'black'
                   }}
-                  onMouseEnter={() => setActiveLine(line.number)}
-                  onMouseLeave={() => setActiveLine(undefined)}
+                  onMouseEnter={() => handleMouseEnter(line)}
+                  onMouseLeave={() => handleMouseExit(line.number)}
                 >
                   {line.number}: {line.name}
                 </ListGroup.Item>
