@@ -1,11 +1,11 @@
 import maplibregl from "maplibre-gl";
 import { useContext, useEffect, useRef } from "react";
-import { useSearchParams } from "@remix-run/react";
+// import { useSearchParams } from "@remix-run/react";
 import MapContext from '~/mapContext';
 import lngLatContext from "./lngLatContext";
 
 export default function BaseMap() {
-  const [searchParams, setSearchParams] = useSearchParams();
+  // const [searchParams, setSearchParams] = useSearchParams();
   const { mapState, setMapState, center, zoom, pitch, bearing } = useContext(MapContext);
   const mapContainerRef = useRef();
 
@@ -14,6 +14,7 @@ export default function BaseMap() {
     if (mapContainerRef.current) {
       map = new maplibregl.Map({
         container: "map",
+        maxPitch: 85,
         style: {
           version: 8,
           sources: {
@@ -73,6 +74,6 @@ export default function BaseMap() {
   }, [setMapState, mapContainerRef]);
 
   return (
-    <div ref={mapContainerRef} id="map"></div>
+    <div ref={mapContainerRef} id="map"><input placeholder="poop" /></div>
   )
 }

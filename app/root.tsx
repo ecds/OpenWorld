@@ -34,19 +34,20 @@ export default function App() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [mapState, setMapState] = useState<Map | undefined>(undefined);
   const [currentYearState, setCurrentYearState] = useState<number|undefined>(undefined);
-  const center = [searchParams.get("centerLng") ?? -84.3891, searchParams.get("centerLat") ?? 33.7528];
-  const zoom = searchParams.get("zoom") ?? 11.0;
+  const centerLng = searchParams.get("centerLng") ?? -84.3891;
+  const centerLat = searchParams.get("centerLat") ?? 33.7528;
+  const zoom = searchParams.get("zoom") ?? 15.0;
   const pitch = searchParams.get("pitch") ?? 0.0;
   const bearing = searchParams.get("bearing") ?? 0.0;
 
   useEffect(() => {
     mapState?.flyTo({
       bearing,
-      center,
+      center: [centerLng, centerLat],
       pitch,
       zoom
     })
-  }, [mapState, bearing, center, pitch, zoom]);
+  }, [mapState, bearing, pitch, zoom, centerLng, centerLat]);
 
   return (
     <html lang="en">
@@ -62,7 +63,7 @@ export default function App() {
               setMapState,
               currentYearState,
               setCurrentYearState,
-              center,
+              center: [centerLng, centerLat],
               zoom,
               pitch,
               bearing

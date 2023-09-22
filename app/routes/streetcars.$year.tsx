@@ -102,43 +102,19 @@ const Streetcars = () => {
                 "black"
               ],
               'line-dasharray': [1, 1]
-              // 'line-offset': [
-              //   "case",
-              //   // ["==", ["%", ["get", "Route_num"], 2], 20], 0.2,
-              //   ["==", ["get", "Route_num"], "2"], 2,
-              //   ["==", ["get", "Route_num"], "4"], 2,
-              //   ["==", ["get", "Route_num"], "6"], 2,
-              //   ["==", ["get", "Route_num"], "8"], 2,
-              //   ["==", ["get", "Route_num"], "8"], 2,
-              //   ["==", ["get", "Route_num"], "10"], 2,
-              //   ["==", ["get", "Route_num"], "12"], 2,
-              //   ["==", ["get", "Route_num"], "14"], 2,
-              //   ["==", ["get", "Route_num"], "16"], 2,
-              //   ["==", ["get", "Route_num"], "18"], 2,
-              //   ["==", ["get", "Route_num"], "20"], 2,
-              //   ["==", ["get", "Route_num"], "22"], 2,
-              //   ["==", ["get", "Route_num"], "24"], 2,
-              //   -2
-              // ]
             }
           });
 
-          // mapState?.on('click', 'streetcarLines', (({ features }) => {
-          //   console.log("🚀 ~ file: annexations.tsx:42 ~ mapState?.on ~ features:", features)
-          // }));
-          // mapState?.on('mouseenter', 'streetcarLines', (({ features }) => {
-          // console.log("🚀 ~ file: streetcars.$year.tsx:74 ~ mapState?.on ~ features:", features)
-
-          // }));
-
           mapState?.on('mouseenter', 'streetcarLines', ({ lngLat, features }) => {
             activeLines.current = features;
+
             for (const line of features) {
               mapState.setFeatureState(
                 { source: "streetcarLines", id: line.properties.Route_num },
                 { active: true }
               );
             }
+
             mapState.getCanvas().style.cursor = 'pointer';
             popup.setLngLat(lngLat);
             popup.setDOMContent(popupContent([...new Set(features)], currentYearState));
@@ -146,14 +122,13 @@ const Streetcars = () => {
           });
 
           mapState?.on('mouseleave', 'streetcarLines', () => {
-            console.log("🚀 ~ file: streetcars.$year.tsx:147 ~ mapState?.on ~ activeLines:", activeLines)
             for (const line of activeLines.current) {
-              console.log("🚀 ~ file: streetcars.$year.tsx:148 ~ mapState?.on ~ line:", line)
               mapState.setFeatureState(
                 { source: "streetcarLines", id: line.properties.Route_num },
                 { active: false }
               );
             }
+
             mapState.getCanvas().style.cursor = '';
             popup.remove();
             activeLines.current = [];
@@ -170,20 +145,20 @@ const Streetcars = () => {
     return () => {
       if (mapState?.getLayer('streetcarLines')) mapState.removeLayer('streetcarLines');
       if (mapState?.getSource('streetcarLines')) mapState.removeSource('streetcarLines');
-
     }
   }, [mapState, currentYearState]);
 
   const handleMouseEnter = (line) => {
     const { number, center } = line
+
     mapState.setFeatureState(
       { source: "streetcarLines", id: number },
       { active: true }
     );
+
     popup.setLngLat(center);
     popup.setDOMContent(singlePopupContent(line));
     popup.addTo(mapState);
-
   };
 
   const handleMouseExit = (number) => {
@@ -191,6 +166,7 @@ const Streetcars = () => {
       { source: "streetcarLines", id: number },
       { active: false }
     );
+
     popup.remove();
   };
 

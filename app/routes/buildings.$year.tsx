@@ -1,6 +1,7 @@
 // import maplibregl from 'maplibre-gl'
 import { useLoaderData, useLocation } from "@remix-run/react";
 import { useContext, useEffect, useRef, useState } from "react";
+import { useSearchParams } from "@remix-run/react";
 import { Offcanvas, Col, Row } from "react-bootstrap";
 import { omekaMetadata, omekaImages, shapeFileMetadata } from '~/buildingMetadata';
 import MapContext from "~/mapContext";
@@ -11,6 +12,8 @@ import BuildingLegend from "~/components/BuildingLegend";
 import ToggleButton from "~/components/ToggleButton";
 import { customLayer } from "~/data/model";
 import { terminalStation } from "~/data/terminalStation";
+
+const params = ['centerLat', 'centerLng', 'zoom', 'pitch', 'bearing'];
 
 export const loader = async ({ params }) => {
   return { year: params.year, ...buildings[params.year] };
@@ -24,15 +27,20 @@ export default function Buildings() {
   const [showLegend, setShowLegend] = useState<number>(1);
   const [selectedBuilding, setSelectedBuilding] = useState(undefined);
   const location = useLocation();
+  const [searchParams, setSearchParams] = useSearchParams();
+  console.log("🚀 ~ file: buildings.$year.tsx:29 ~ Buildings ~ useSearchParams:", searchParams)
 
   useEffect(() => {
-    mapState?.flyTo({
-      bearing: bearing ?? 0,
-      center,
-      pitch: pitch ?? 60,
-      zoom: zoom ?? 15
-    });
-  }, [location, center, mapState, bearing, pitch, zoom]);
+    if (!params.some(param => searchParams.has(param))) {
+      console.log("🚀 ~ file: buildings.$year.tsx:35 ~ useEffect ~ params.some(param => searchParams.has(param)):", params.some(param => searchParams.has(param)))
+      mapState?.flyTo({
+        bearing: 0,
+        center,
+        pitch: 60,
+        zoom: 15
+      });
+    }
+  }, [location, searchParams, center, mapState]);
 
   useEffect(() => {
     setCurrentYearState(parseInt(year));
