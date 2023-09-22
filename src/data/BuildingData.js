@@ -208,7 +208,10 @@ export const omekaMetadata = async () => {
         businesses: building.element_texts.find(el => el.element.id === 72)?.text,
         residents: building.element_texts.find(el => el.element.id === 58)?.text,
         race: building.element_texts.find(el => el.element.id === 59)?.text,
-        removed: building.element_texts.find(el => el.element.id === 63)?.text
+        removed: building.element_texts.find(el => el.element.id === 63)?.text,
+        source: building.element_texts.find(el => el.element.id === 48)?.text,
+        publisher: building.element_texts.find(el => el.element.id === 45)?.text,
+        copyright: building.element_texts.find(el => el.element.id === 47)?.text
       },
       landUse: building.element_texts.find(el => el.element.id === 49).text[0],
       location: building.element_texts.find(el => el.element.id === 4).text.split(', ').map(c => {return parseFloat(c)}),

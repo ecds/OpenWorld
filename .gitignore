@@ -29,3 +29,7 @@ katherine.txt
 public/resources/layers/*
 
 *.bk
+
+public/build
+server/
+app/

@@ -23,7 +23,14 @@ const BuildingDetails = ({ loaded, building }) => {
               return (
                 <Row as="dl" key={index}>
                   <Col className="text-truncate" sm={12} as="dt">{camelToTitle(key)}</Col>
-                  <Col as="dd" sm={12}>{building.metadata[key]}</Col>
+                  <Col
+                    ass="dd"
+                    sm={12}
+                    // eslint-disable-next-line react/no-danger
+                    dangerouslySetInnerHTML={{
+                      __html: building.metadata[key],
+                    }}
+                  />
                 </Row>
               );
             } else {
