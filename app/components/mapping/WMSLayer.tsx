@@ -44,11 +44,6 @@ const WMSLayer = ({ layer }: Props) => {
         setOpacity(0);
       }
     }
-
-    return () => {
-      console.log("returning");
-      // setOpacity(0);
-    };
   }, [currentYear, map, layer]);
 
   const handleOpacityChange = (newValue: string) => {

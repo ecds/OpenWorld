@@ -35,7 +35,6 @@ const Buildings = () => {
   useEffect(() => {
     const fetchData = async () => {
       const data = await omekaMetadata();
-      console.log("🚀 ~ fetchData ~ data:", data);
       setOmekaData(data);
     };
 
@@ -59,10 +58,6 @@ const Buildings = () => {
       setActive(shapeFileMetadata(selectedFeature));
     }
   }, [selectedFeature, omekaData]);
-
-  useEffect(() => {
-    console.log("🚀 ~ Buildings ~ activeBuilding:", activeBuilding);
-  }, [activeBuilding]);
 
   useEffect(() => {
     const handleClick = ({
@@ -121,7 +116,7 @@ const Buildings = () => {
                 if (activeBuilding.metadata[key]) {
                   return (
                     <dl key={activeBuilding?.title}>
-                      <dt className="text-truncate">{activeBuilding.title}</dt>
+                      <dt className="text-truncate capitalize">{key}</dt>
                       <dd>{activeBuilding.metadata[key]}</dd>
                     </dl>
                   );

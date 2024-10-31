@@ -39,7 +39,7 @@ const ContentPanel = ({
         <div className="p-4">{children}</div>
       </div>
       <button
-        className={`absolute bg-accent/80 text-white px-3 py-1 rounded-md top-1/2 right-6 w-auto z-50 transition-transform duration-700 ${isOpen ? "translate-x-[150%]" : "translate-x-0"}`}
+        className={`absolute bg-accent/80 text-white px-3 py-1 rounded-md top-4 right-6 w-auto z-50 transition-transform duration-700 ${isOpen ? "translate-x-[150%]" : "translate-x-0"}`}
         onClick={() => setIsOpen(true)}
       >
         {showButton ?? `Show ${title}`}

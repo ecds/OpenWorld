@@ -1,3 +1,4 @@
+import chroma from "chroma-js";
 import { useContext, useState } from "react";
 import { buildingUses } from "~/data/buildings";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -45,10 +46,10 @@ const Legend = () => {
         </span>
       </button>
       <ul className={``}>
-        {buildingUses.map((use) => (
+        {buildingUses.map((use, index) => (
           <li key={use.label}>
             <button
-              className={`bg-[${use.color}] p-2 text-xl my-1 w-full text-left`}
+              className={`bg-[${use.color}] text-${chroma.contrast(use.color, "white") > 3.5 ? "white" : "black"} p-2 text-xl border border-black w-full text-left ${index === buildingUses.length - 1 ? "rounded-b-md" : ""}`}
               onClick={() => filterByUse(use.code)}
             >
               {use.label}
