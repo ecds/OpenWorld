@@ -1,89 +1,56 @@
-export const buildings = {
+type TVectorTileLayer = {
+  [key: string]: {
+    id: string;
+    bounds: Array<number[]>;
+    center: [number, number];
+  };
+};
+export const buildings: TVectorTileLayer = {
   "1928": {
-    "source": {
-      "type": "vector",
-      "scheme": "tms",
-      "tiles": [
-        "https://geoserver.ecds.emory.edu/gwc/service/tms/1.0.0/ATLMaps:OWAbuildings07OCT22@EPSG:900913@pbf/{z}/{x}/{y}.pbf"
-      ],
-      "promoteId": "Identifier"
-    },
-    "layer": {
-      "id": "buildings1928",
-      "type": "fill-extrusion",
-      "source": "buildings1928",
-      "source-layer": "OWAbuildings07OCT22",
-      "paint": {
-        "fill-extrusion-color": [
-          "case",
-          ['boolean', ['feature-state', 'clicked'], false], "deeppink",
-          ["==", ["get", "Identifier"], "BD36344"], "#4f452e",
-          ["==", ["get", "Identifier"], "BD26475"], "#4f452e",
-          ["==", ["get", "Land_Use"], "M"], "#AB59C9",
-          ["==", ["get", "Land_Use"], "C"], "#E83333",
-          ["==", ["get", "Land_Use"], "P"], "#2E6DFF",
-          ["==", ["get", "Land_Use"], "R"], "#FFFF00",
-          ["==", ["get", "Land_Use"], "TU"], "#FFCCFF",
-          ["==", ["get", "Land_Use"], "TR"], "#FF6F00",
-          ["==", ["get", "Land_Use"], "W"], "#5D4037",
-          "#EBEBEB"
-        ],
-        "fill-extrusion-height": [
-          "case",
-          ["==", ["get", "Identifier"], "BD36344"], 0,
-          ["==", ["get", "Identifier"], "BD26475"], 0,
-          ["*", ["get", "calc_ht"], 0.3048]
-        ],
-        // "fill-extrusion-base": [
-        //   "interpolate",
-        //   ["linear"],
-        //   ["zoom"],
-        //   15,
-        //   0,
-        //   15.05,
-        //   ["get", "min_height"]
-        // ],
-        "fill-extrusion-opacity": 0.6
-      }
-    }
-  }
-}
+    id: "OWAbuildings07OCT22",
+    bounds: [
+      [-84.4295658336286, 33.73107756260961],
+      [-84.34658604514821, 33.79524918165538],
+    ],
+    center: [-84.38812858886877, 33.74937124416094],
+  },
+};
 
 export const buildingUses = [
   {
-    label: 'Residential',
-    color: '#FFFF00',
-    code: 'R'
+    label: "Residential",
+    color: "#FFFF00",
+    code: "R",
   },
   {
-    label: 'Residential Transient',
-    color: '#FF6F00',
-    code: 'TR'
+    label: "Residential Transient",
+    color: "#FF6F00",
+    code: "TR",
   },
   {
-    label: 'Commercial/Office',
-    color: '#E83333',
-    code: 'C'
+    label: "Commercial/Office",
+    color: "#E83333",
+    code: "C",
   },
   {
-    label: 'Warehouse',
-    color: '#5D4037',
-    code: 'W'
+    label: "Warehouse",
+    color: "#5D4037",
+    code: "W",
   },
   {
-    label: 'Manufacturing/Industrial',
-    color: '#AB59C9',
-    code: 'M'
+    label: "Manufacturing/Industrial",
+    color: "#AB59C9",
+    code: "M",
   },
   {
-    label: 'Public/Institutional',
-    color: '#2E6DFF',
-    code: 'P'
+    label: "Public/Institutional",
+    color: "#2E6DFF",
+    code: "P",
   },
   {
-    label: 'Transportation/Utility',
-    color: '#FFCCFF',
-    code: 'TU'
+    label: "Transportation/Utility",
+    color: "#FFCCFF",
+    code: "TU",
   },
   // {
   //   label: 'Vacant/No Data',

@@ -1,204 +1,101 @@
-import { useContext, useEffect, useState, useRef } from "react";
-import { useParams } from "@remix-run/react";
-import MapContext from "~/mapContext";
-import { Offcanvas, ListGroup } from "react-bootstrap";
-import { Popup } from "maplibre-gl";
-import chroma from "chroma-js";
+import { useContext, useEffect, useState } from "react";
+import ContentPanel from "~/components/layout/ContentPanel";
+import { MapContext } from "~/contexts";
+import { streetcars } from "~/mapStyles";
 import { streetcarLines } from "~/data/streetcarData";
-
-const popupContent = (features, year) => {
-  features = [...new Set(features)];
-  const list = document.createElement('div');
-  list.classList.add('btn-group-vertical');
-
-  for (const line of features) {
-    const lineData = streetcarLines[year].find(streetcarLine => streetcarLine.number == line.properties.Route_num)
-    const item = document.createElement('div');
-    if (!list.innerText.includes(line.properties.R_Name)) {
-      item.classList.add('btn')
-      item.style.backgroundColor = lineData.color;
-      item.style.color = chroma.contrast(lineData.color, 'white') > 3.5 ? 'white': 'black'
-      item.innerText = `${line.properties.Route_num}: ${line.properties.R_Name}`;
-      list.appendChild(item);
-    }
-  }
-  return list;
-}
-
-const singlePopupContent = (lineData) => {
-  const element = document.createElement('div');
-  element.classList.add('btn');
-  element.style.backgroundColor = lineData.color;
-  element.style.color = chroma.contrast(lineData.color, 'white') > 3.5 ? 'white': 'black'
-  element.innerText = `${lineData.number}: ${lineData.name}`;
-  return element;
-}
-
-const popup = new Popup({
-  closeButton: false,
-  closeOnClick: false
-});
+import { fitToLayerBounds } from "~/utils";
+import StreetcarLine from "~/components/StreetcarLine";
+import PopupContainer from "~/components/mapping/PopupContainer.client";
+import StreetcarPopupContent from "~/components/transportaion/StreetcarPopupContent";
+import type { TStreetcarLine } from "~/types";
+import type { LngLat, MapGeoJSONFeature, MapMouseEvent } from "maplibre-gl";
+import { ClientOnly } from "remix-utils/client-only";
 
 const Streetcars = () => {
-  const { mapState, currentYearState, setCurrentYearState } = useContext(MapContext);
-  const { year } = useParams();
-  const activeLines = useRef([]);
-  const [showDetails, setShowDetails] = useState<boolean>(true);
+  const { map } = useContext(MapContext);
+  const [showContent, setShowContent] = useState<boolean>(true);
+  const [activeLines, setActiveLines] = useState<TStreetcarLine[]>([]);
+  const [popupCoords, setPopupCoords] = useState<LngLat | undefined>(undefined);
 
   useEffect(() => {
-    setCurrentYearState(year)
-  }, [setCurrentYearState, year]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const response = await fetch('https://geoserver.ecds.emory.edu/StreetcarRoutes/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=StreetcarRoutes:streetcars1924&maxFeatures=500&outputFormat=application%2Fjson');
-      const data = await response.json();
-
-      if (!mapState?.getSource("streetcarLines")) {
-        mapState?.addSource("streetcarLines", {
-          type: "geojson",
-          promoteId: "Route_num",
-          // lineMetrics: true,
-          data
-        });
-
-        if (!mapState?.getLayer("streetcarLines")) {
-          mapState?.addLayer({
-            id: "streetcarLines",
-            type: "line",
-            source: "streetcarLines",
-            paint: {
-              'line-width': [
-                "case",
-                ['boolean', ['feature-state', 'active'], false], 8,
-                4
-              ],
-              'line-color': [
-                "case",
-                ["==", ["get", "Route_num"], "1"], "#ff0000",
-                ["==", ["get", "Route_num"], "2"], "#ed7940",
-                ["==", ["get", "Route_num"], "3"], "#ffff00",
-                ["==", ["get", "Route_num"], "4"], "#e600a9",
-                ["==", ["get", "Route_num"], "5"], "#409679",
-                ["==", ["get", "Route_num"], "6"], "#4094ff",
-                ["==", ["get", "Route_num"], "7"], "#6677cd",
-                ["==", ["get", "Route_num"], "8"], "#8400a8",
-                ["==", ["get", "Route_num"], "9"], "#be4040",
-                ["==", ["get", "Route_num"], "10"], "#d3d37f",
-                ["==", ["get", "Route_num"], "11"], "#ca7af5",
-                ["==", ["get", "Route_num"], "12"], "#cdf57a",
-                ["==", ["get", "Route_num"], "13"], "#ff7fe2",
-                ["==", ["get", "Route_num"], "14"], "#267300",
-                ["==", ["get", "Route_num"], "15"], "#ff7f7f",
-                ["==", ["get", "Route_num"], "16"], "#a6a6a6",
-                ["==", ["get", "Route_num"], "17"], "#407abe",
-                ["==", ["get", "Route_num"], "18"], "#e69800",
-                ["==", ["get", "Route_num"], "19"], "#40d4ff",
-                ["==", ["get", "Route_num"], "20"], "#be40a3",
-                ["==", ["get", "Route_num"], "21"], "#38a800",
-                ["==", ["get", "Route_num"], "22"], "#00a884",
-                ["==", ["get", "Route_num"], "23"], "#ffb9ef",
-                ["==", ["get", "Route_num"], "24"], "#73ffdf",
-                "black"
-              ],
-              'line-dasharray': [1, 1]
-            }
-          });
-
-          mapState?.on('mouseenter', 'streetcarLines', ({ lngLat, features }) => {
-            activeLines.current = features;
-
-            for (const line of features) {
-              mapState.setFeatureState(
-                { source: "streetcarLines", id: line.properties.Route_num },
-                { active: true }
-              );
-            }
-
-            mapState.getCanvas().style.cursor = 'pointer';
-            popup.setLngLat(lngLat);
-            popup.setDOMContent(popupContent([...new Set(features)], currentYearState));
-            popup.addTo(mapState);
-          });
-
-          mapState?.on('mouseleave', 'streetcarLines', () => {
-            for (const line of activeLines.current) {
-              mapState.setFeatureState(
-                { source: "streetcarLines", id: line.properties.Route_num },
-                { active: false }
-              );
-            }
-
-            mapState.getCanvas().style.cursor = '';
-            popup.remove();
-            activeLines.current = [];
-          })
-
-          mapState?.setPitch(0);
-          mapState?.fitBounds([[-84.25462256154452,33.81246005549207],[-84.49819653886276,33.69852787511353]]);
-        }
+    if (!map) return;
+    const mouseEnter = (
+      event: MapMouseEvent & { features?: MapGeoJSONFeature[] }
+    ) => {
+      const { features } = event;
+      if (!features) return;
+      setPopupCoords(event.lngLat);
+      const lines = [];
+      for (const feature of features) {
+        const lineDetails = streetcarLines.find(
+          (line) => parseInt(feature.properties.Route_num) == line.number
+        );
+        if (lineDetails) lines.push(lineDetails);
       }
+
+      setActiveLines(lines);
+      map.getCanvas().style.cursor = "pointer";
+    };
+
+    const mouseLeave = () => {
+      if (!map) return;
+      map.getCanvas().style.cursor = "";
+
+      setActiveLines([]);
+      setPopupCoords(undefined);
+    };
+
+    for (const line of streetcars.layers) {
+      map.setLayoutProperty(line.id, "visibility", "visible");
+      map.on("mouseenter", line.id, mouseEnter);
+      map.on("mouseleave", line.id, mouseLeave);
     }
 
-    fetchData();
+    fitToLayerBounds(map, "streetcars1924");
 
     return () => {
-      if (mapState?.getLayer('streetcarLines')) mapState.removeLayer('streetcarLines');
-      if (mapState?.getSource('streetcarLines')) mapState.removeSource('streetcarLines');
-    }
-  }, [mapState, currentYearState]);
-
-  const handleMouseEnter = (line) => {
-    const { number, center } = line
-
-    mapState.setFeatureState(
-      { source: "streetcarLines", id: number },
-      { active: true }
-    );
-
-    popup.setLngLat(center);
-    popup.setDOMContent(singlePopupContent(line));
-    popup.addTo(mapState);
-  };
-
-  const handleMouseExit = (number) => {
-    mapState.setFeatureState(
-      { source: "streetcarLines", id: number },
-      { active: false }
-    );
-
-    popup.remove();
-  };
+      for (const line of streetcars.layers) {
+        map.setLayoutProperty(line.id, "visibility", "none");
+        map.off("mouseenter", line.id, mouseEnter);
+        map.off("mouseleave", line.id, mouseLeave);
+      }
+    };
+  }, [map]);
 
   return (
-    <Offcanvas show={showDetails} placement="end" scroll={true} backdrop={false} >
-      <Offcanvas.Header closeButton onHide={() => setShowDetails(false)}>
-        <h4>Streetcar Lines {currentYearState}</h4>
-      </Offcanvas.Header>
-      <Offcanvas.Body className="pt-0">
-        {currentYearState &&
-          <ListGroup>
-            {streetcarLines[currentYearState]?.map((line, index) => {
-              return (
-                <ListGroup.Item
-                  key={index}
-                  role="button"
-                  style={{
-                    backgroundColor: line.color,
-                    color: chroma.contrast(line.color, 'white') > 3.5 ? 'white': 'black'
-                  }}
-                  onMouseEnter={() => handleMouseEnter(line)}
-                  onMouseLeave={() => handleMouseExit(line.number)}
-                >
-                  {line.number}: {line.name}
-                </ListGroup.Item>
-              )
-            })}
-          </ListGroup>
-        }
-      </Offcanvas.Body>
-    </Offcanvas>
-  )
+    <ContentPanel
+      title="Streetcars"
+      isOpen={showContent}
+      setIsOpen={setShowContent}
+      showButton="Show Streetcar List"
+    >
+      <ul>
+        {streetcarLines.map((line) => {
+          return (
+            <li key={`list-${line.number}`}>
+              <StreetcarLine
+                line={line}
+                active={activeLines.includes(line)}
+                setActive={setActiveLines}
+              />
+            </li>
+          );
+        })}
+      </ul>
+      {(popupCoords || activeLines.length > 0) && (
+        <ClientOnly>
+          {() => (
+            <PopupContainer
+              show={activeLines.length > 0}
+              coordinates={popupCoords ?? activeLines[0].center}
+            >
+              <StreetcarPopupContent lines={activeLines} />
+            </PopupContainer>
+          )}
+        </ClientOnly>
+      )}
+    </ContentPanel>
+  );
 };
 
 export default Streetcars;

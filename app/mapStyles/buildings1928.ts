@@ -1,0 +1,78 @@
+import { wmsURL } from "~/utils";
+import type { StyleSpecification } from "maplibre-gl";
+
+export const buildings1928: StyleSpecification = {
+  version: 8,
+  name: "1928 Buildings",
+  sources: {
+    OWAbuildings07OCT22: {
+      type: "vector",
+      tiles: [
+        wmsURL({
+          layer: "OWAbuildings07OCT22",
+          workspace: "ATLMaps",
+          format: "vector",
+        }),
+      ],
+      promoteId: "Identifier",
+      minzoom: 0,
+      maxzoom: 20,
+      // tileSize: 256,
+    },
+  },
+  layers: [
+    {
+      id: "OWAbuildings07OCT22",
+      type: "fill-extrusion",
+      source: "OWAbuildings07OCT22",
+      "source-layer": "OWAbuildings07OCT22",
+      layout: { visibility: "none" },
+      paint: {
+        "fill-extrusion-color": [
+          "case",
+          ["boolean", ["feature-state", "clicked"], false],
+          "deeppink",
+          ["==", ["get", "Identifier"], "BD36344"],
+          "#4f452e",
+          ["==", ["get", "Identifier"], "BD26475"],
+          "#4f452e",
+          ["==", ["get", "Land_Use"], "M"],
+          "#AB59C9",
+          ["==", ["get", "Land_Use"], "C"],
+          "#E83333",
+          ["==", ["get", "Land_Use"], "P"],
+          "#2E6DFF",
+          ["==", ["get", "Land_Use"], "R"],
+          "#FFFF00",
+          ["==", ["get", "Land_Use"], "TU"],
+          "#FFCCFF",
+          ["==", ["get", "Land_Use"], "TR"],
+          "#FF6F00",
+          ["==", ["get", "Land_Use"], "W"],
+          "#5D4037",
+          "#EBEBEB",
+        ],
+        "fill-extrusion-height": [
+          "case",
+          ["==", ["get", "Identifier"], "BD36344"],
+          0,
+          ["==", ["get", "Identifier"], "BD26475"],
+          0,
+          ["*", ["get", "calc_ht"], 0.3048],
+        ],
+        // "fill-extrusion-base": [
+        //   "interpolate",
+        //   ["linear"],
+        //   ["zoom"],
+        //   15,
+        //   0,
+        //   15.05,
+        //   ["get", "min_height"]
+        // ],
+        "fill-extrusion-opacity": 0.6,
+      },
+      minzoom: 0,
+      maxzoom: 20,
+    },
+  ],
+};

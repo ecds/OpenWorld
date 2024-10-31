@@ -1,126 +1,108 @@
-import { useSearchParams } from "@remix-run/react";
-import { useRef, useContext, useEffect, useState } from "react";
-import MapContext from "~/mapContext";
-import { Offcanvas } from "react-bootstrap";
-import { YEARS, AnnexDetails } from "~/data/annexationData";
-import TimeSlider from "~/components/TimeSlider";
+import { bbox } from "@turf/turf";
+import { useContext, useEffect, useState } from "react";
+import ContentPanel from "~/components/layout/ContentPanel";
+import YearTicks from "~/components/layout/YearTicks";
+import { MapContext } from "~/contexts";
+import { annexDetails, YEARS } from "~/data/annexationData";
+import { annexations } from "~/mapStyles";
+import type { TAnnexDetails } from "~/types";
+import { fitToLayerBounds } from "~/utils";
 
-const annexationFilter = ["==", ["get", "TYPE"], "annexation"];
-const boundaryFilter = ["==", ["get", "TYPE"], "boundary"];
+const START_YEAR = Math.min(...YEARS);
+const END_YEAR = Math.max(...YEARS);
 
 const Annexations = () => {
-  const { mapState, currentYearState, setCurrentYearState } = useContext(MapContext);
-  const [searchParams] = useSearchParams();
-
-  const initialYearFilter = useRef(
-    Math.max(...YEARS.filter(year => year <= (searchParams.get("year") ?? Math.min(...YEARS)))).toString()
-  );
-
-  const [details, setDetails] = useState(AnnexDetails[initialYearFilter.current]);
+  const { map, currentYear, setCurrentYear } = useContext(MapContext);
+  const [isOpen, setIsOpen] = useState<boolean>(true);
+  const [content, setContent] = useState<TAnnexDetails | undefined>();
 
   useEffect(() => {
-    const fetchData = async () => {
-      const response = await fetch("https://geoserver.ecds.emory.edu/AtlantaAnnexations/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=AtlantaAnnexations:annexations_1847-1945&maxFeatures=500&outputFormat=application%2Fjson");
-      const data = await response.json();
+    setCurrentYear(START_YEAR);
+  }, [setCurrentYear]);
 
-      if (!mapState?.getSource("allAnnexations")) {
-        mapState?.addSource("allAnnexations", {
-          type: "geojson",
-          promoteId: "id",
-          data
-        });
+  useEffect(() => {
+    if (!map) return;
+    for (const annexation of annexations.layers) {
+      if (currentYear && YEARS.includes(currentYear)) {
+        map.setFilter(annexation.id, [
+          "all",
+          ["==", ["to-number", ["get", "YEAR"]], currentYear],
+        ]);
+
+        if (annexation.type === "fill") {
+          map.setPaintProperty(annexation.id, "fill-opacity", [
+            "case",
+            [
+              "all",
+              ["==", ["to-number", ["get", "YEAR"]], currentYear],
+              ["in", "part", ["get", "id"]],
+            ],
+            0.4,
+            0,
+          ]);
+        }
       }
-
-      if (!mapState?.getLayer("annexations")) {
-        mapState?.addLayer({
-          id: "annexations",
-          type: "fill",
-          source: "allAnnexations",
-          paint: {
-            'fill-color': '#E65100',
-            'fill-opacity': 0.4,
-            'fill-outline-color': "#0D47A1"
-          },
-          filter: ["all",
-            annexationFilter,
-            ["==", ["get", "YEAR"], initialYearFilter.current]
-          ]
-        });
-
-        // mapState?.on('click', 'annexations', (({ features }) => {
-        //   console.log("🚀 ~ file: annexations.tsx:42 ~ mapState?.on ~ features:", features)
-        // }));
-      }
-
-      if (!mapState?.getLayer("boundaries")) {
-        mapState?.addLayer({
-          id: "boundaries",
-          type: "line",
-          source: "allAnnexations",
-          paint: {
-            'line-color': "#0D47A1",
-            'line-width': 4
-          },
-          filter: ["all",
-            boundaryFilter,
-            ["==", ["get", "YEAR"], initialYearFilter.current]
-          ]
-        });
-      }
-
-      mapState?.setPitch(0);
-      mapState?.fitBounds([[-84.48687037559027,33.69864192995179],[-84.24557749909809,33.81150767366269]]);
-    };
-
-    if (!mapState?.getSource('allAnnexations')) fetchData();
+      map.setLayoutProperty(annexation.id, "visibility", "visible");
+    }
 
     return () => {
-      if (mapState?.getLayer('annexations')) mapState.removeLayer('annexations');
-      if (mapState?.getLayer('boundaries')) mapState.removeLayer('boundaries');
-      if (mapState?.getSource('allAnnexations')) mapState.removeSource('allAnnexations');
-    }
-  }, [mapState, initialYearFilter]);
+      for (const annexation of annexations.layers) {
+        map.setLayoutProperty(annexation.id, "visibility", "none");
+      }
+    };
+  }, [map, currentYear]);
 
   useEffect(() => {
-    setCurrentYearState(
-      Math.max(...YEARS.filter(year => year <= (searchParams.get("year") ?? Math.min(...YEARS))))
-    )
-  }, [setCurrentYearState, searchParams]);
-
-  useEffect(() => {
-    if (
-      mapState &&
-      mapState.getLayer('annexations')
-    ) {
-      mapState?.setFilter(
-        'annexations',
-        ["all",
-          annexationFilter,
-          ["==", ["get", "YEAR"], currentYearState?.toString()]
-      ]);
-      mapState?.setFilter(
-        'boundaries',
-        ["all",
-          boundaryFilter,
-          ["==", ["get", "YEAR"], currentYearState?.toString()]
-      ]);
+    if (currentYear && YEARS.includes(currentYear)) {
+      if (annexDetails && map) {
+        setContent(annexDetails.find((annex) => annex.year === currentYear));
+        fitToLayerBounds(map, "annexations_1847-1945");
+      }
     }
+  }, [currentYear, map]);
 
-    setDetails(AnnexDetails[currentYearState?.toString()]);
-  }, [currentYearState, mapState]);
+  const handleChange = (newValue: string) => {
+    setCurrentYear(parseInt(newValue));
+  };
 
   return (
-    <Offcanvas show={true} placement="end" scroll={true} backdrop={false}>
-      <Offcanvas.Header closeButton onHide={() => setShowDetails(false)}>
-        <h4>Annexations</h4>
-      </Offcanvas.Header>
-      <Offcanvas.Body className="pt-0">
-        <TimeSlider years={YEARS} label="City Boundaries in" />
-        <article>
-          {details?.areas}
-        </article>
-      </Offcanvas.Body>
-    </Offcanvas>
+    <ContentPanel title="Annexations" isOpen={isOpen} setIsOpen={setIsOpen}>
+      <div>
+        City Boundaries in{" "}
+        <input
+          className="ml-2 w-16 p-1"
+          type="number"
+          min={START_YEAR}
+          max={END_YEAR}
+          step={1}
+          value={currentYear ?? START_YEAR}
+          onInput={({ target }) =>
+            handleChange((target as HTMLInputElement).value)
+          }
+        />
+      </div>
+      <div className="flex">
+        <div className="flex-grow">{START_YEAR}</div>
+        <div className="">{END_YEAR}</div>
+      </div>
+      <div>
+        <YearTicks years={YEARS} start={START_YEAR} end={END_YEAR} />
+      </div>
+      <div>
+        <input
+          type="range"
+          className="cursor-ew-resize w-full accent-red-600/50"
+          min={START_YEAR}
+          max={END_YEAR}
+          step={1}
+          value={currentYear ?? START_YEAR}
+          onChange={({ target }) =>
+            handleChange((target as HTMLInputElement).value)
+          }
+        />
+      </div>
+      <div>{content?.areas ?? ""}</div>
+    </ContentPanel>
   );
 };
 
