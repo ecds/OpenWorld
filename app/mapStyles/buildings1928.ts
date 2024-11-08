@@ -1,4 +1,4 @@
-import { wmsURL } from "~/utils";
+import { tmsURL } from "~/utils";
 import type { StyleSpecification } from "maplibre-gl";
 
 export const buildings1928: StyleSpecification = {
@@ -7,11 +7,11 @@ export const buildings1928: StyleSpecification = {
   sources: {
     OWAbuildings07OCT22: {
       type: "vector",
+      scheme: "tms",
       tiles: [
-        wmsURL({
+        tmsURL({
           layer: "OWAbuildings07OCT22",
           workspace: "ATLMaps",
-          format: "vector",
         }),
       ],
       promoteId: "Identifier",

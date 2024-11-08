@@ -49,17 +49,15 @@ export const wmsURL = ({
 export const tmsURL = ({
   workspace,
   layer,
-  format,
 }: {
   workspace: string;
   layer: string;
-  format: "raster" | "vector";
 }) => {
-  const url = new URL(
-    `${geoserverHost}/gwc/service/tms/1.0.0/${workspace}:${layer}@EPSG:3857@pbf/{z}/{x}/{y}.pbf`
-  );
-  return decodeURI(url.toString());
+  return `${geoserverHost}/gwc/service/tms/1.0.0/${workspace}:${layer}@EPSG:900913@pbf/{z}/{x}/{y}.pbf`;
 };
+
+// https://geoserver.ecds.emory.edu/gwc/service/tms/1.0.0/ATLMaps:OWAbuildings07OCT22@EPSG:900913@pbf/{z}/{x}/{y}.pbf
+// https://geoserver.ecds.emory.edu/gwc/service/tms/1.0.0/ATLMaps:OWAbuildings07OCT22@EPSG:900913@pbf/{z}/{x}/{y}.pbf
 
 export const geojsonURL = ({
   layer,

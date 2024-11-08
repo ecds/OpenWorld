@@ -1,4 +1,4 @@
-import type { LngLat, LngLatLike } from "maplibre-gl";
+import type { LngLatLike } from "maplibre-gl";
 
 export type THistoricLayer = {
   id: string;
@@ -61,6 +61,15 @@ export type TBuildingFeatureProps = {
   Date_BD?: string;
 };
 
+export type TOmekaMetadataKey =
+  | "landUse"
+  | "type"
+  | "residents"
+  | "race"
+  | "removed"
+  | "date"
+  | "businesses";
+
 export type TOmekaBuilding = {
   omekaID: number | string;
   fileCount: number;
@@ -79,7 +88,11 @@ export type TOmekaBuilding = {
   };
   landUse: string;
   location: [number, number];
-  images: string[];
+  images: {
+    caption: string;
+    full: string;
+    thumb: string;
+  }[];
   Land_Use?: string;
 };
 
