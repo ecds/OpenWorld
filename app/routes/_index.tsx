@@ -1,24 +1,21 @@
-import { useLocation } from "@remix-run/react";
 import { useContext, useEffect } from "react";
-import MapContext from "~/mapContext";
+import { mapDefaults } from "~/config";
+import { MapContext } from "~/contexts";
 
-export default function Index() {
-  const location = useLocation();
-  const { mapState, center, zoom, setCurrentYearState } = useContext(MapContext);
-
+const HomePage = () => {
+  const { map, setCurrentYear } = useContext(MapContext);
+  setCurrentYear(undefined);
 
   useEffect(() => {
-    setCurrentYearState(undefined);
-    mapState?.flyTo({
-      bearing: 0,
-      center,
-      pitch: 0,
-      zoom
-    });
-  }, [location, center, mapState, zoom, setCurrentYearState]);
+    const { bounds, pitch } = mapDefaults;
+    if (map && bounds) {
+      map.fitBounds(bounds, {
+        pitch,
+        speed: 2,
+      });
+    }
+  }, [map]);
+  return <></>;
+};
 
-  return (
-    <>
-    </>
-  );
-}
+export default HomePage;
