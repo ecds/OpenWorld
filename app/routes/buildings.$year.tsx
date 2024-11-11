@@ -1,4 +1,3 @@
-import { Carousel } from "nuka-carousel";
 import { useLoaderData } from "@remix-run/react";
 import { useContext, useEffect, useRef, useState } from "react";
 import { ClientOnly } from "remix-utils/client-only";
@@ -15,11 +14,8 @@ import {
 
 import type { MapGeoJSONFeature, MapMouseEvent } from "maplibre-gl";
 import type { LoaderFunctionArgs } from "@remix-run/node";
-import type {
-  TBuildingFeatureProps,
-  TOmekaBuilding,
-  TOmekaMetadataKey,
-} from "~/types";
+import type { TBuildingFeatureProps, TOmekaBuilding } from "~/types";
+import BuildingDetails from "~/components/buildings/BuildingDetails";
 
 export const loader = async ({
   params,
@@ -158,41 +154,7 @@ const Buildings = () => {
         setIsOpen={setShowContent}
       >
         <Legend expand={expandLegend} setExpand={setExpandLegend} />
-        <div>
-          {activeBuilding && (
-            <>
-              {activeBuilding.fileCount > 0 && (
-                <Carousel>
-                  {activeBuilding.images.map((image) => {
-                    return <img key={image.full} src={image.full} alt="" />;
-                  })}
-                </Carousel>
-              )}
-              <h5 className="text-xl">{activeBuilding.title}</h5>
-              <p className="lead my-4">{activeBuilding.description}</p>
-              <table className="table-auto w-full">
-                <tbody>
-                  {Object.keys(activeBuilding.metadata).map((key, index) => {
-                    if (activeBuilding.metadata[key as TOmekaMetadataKey]) {
-                      return (
-                        <tr
-                          key={`${activeBuilding.omekaID}-${key}`}
-                          className="border-b border-slate-500 border-spacing-y-2"
-                        >
-                          <td className="capitalize p-2">{key}</td>
-                          <td className="p-2">
-                            {activeBuilding.metadata[key as TOmekaMetadataKey]}
-                          </td>
-                        </tr>
-                      );
-                    }
-                    return <span key={index}></span>;
-                  })}
-                </tbody>
-              </table>
-            </>
-          )}
-        </div>
+        {activeBuilding && <BuildingDetails building={activeBuilding} />}
       </ContentPanel>
     </>
   );

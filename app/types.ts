@@ -1,4 +1,4 @@
-import { FeatureCollection } from "geojson";
+import type { FeatureCollection } from "geojson";
 import type { LngLatLike } from "maplibre-gl";
 
 export type THistoricLayer = {
@@ -71,6 +71,13 @@ export type TOmekaMetadataKey =
   | "date"
   | "businesses";
 
+export type TOmekaImage = {
+  caption: string;
+  full: string;
+  thumb: string;
+  title?: string;
+};
+
 export type TOmekaBuilding = {
   omekaID: number | string;
   fileCount: number;
@@ -89,11 +96,7 @@ export type TOmekaBuilding = {
   };
   landUse: string;
   location: [number, number];
-  images: {
-    caption: string;
-    full: string;
-    thumb: string;
-  }[];
+  images: TOmekaImage[];
   Land_Use?: string;
 };
 
@@ -198,10 +201,11 @@ export type TTour = {
   [key in TTourTitle]: TTourDetails;
 };
 
-type TTourImage = {
+export type TTourImage = {
   caption: string;
   full: string;
   thumb: string;
+  title?: string;
 };
 
 type TFeaturePropsBase = {

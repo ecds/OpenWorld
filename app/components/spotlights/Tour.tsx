@@ -5,8 +5,14 @@ import { tours } from "~/data/tours";
 import { openTours } from "~/mapStyles/openTour";
 import ContentPanel from "../layout/ContentPanel";
 import { center } from "@turf/turf";
+import ImageModal from "../layout/ImageModal";
 import type { MapGeoJSONFeature, MapMouseEvent } from "maplibre-gl";
-import type { TTourFeatureProps, TTourGeoJSON, TTourTitle } from "~/types";
+import type {
+  TTourFeatureProps,
+  TTourGeoJSON,
+  TTourImage,
+  TTourTitle,
+} from "~/types";
 
 interface Props {
   tour: TTourTitle;
@@ -14,17 +20,24 @@ interface Props {
 }
 
 const TourContent = ({ feature }: { feature: TTourFeatureProps }) => {
+  const [activeImage, setActiveImage] = useState<TTourImage | undefined>(
+    undefined
+  );
+
   return (
     <>
-      <Carousel>
+      <Carousel showDots>
         {feature.images.map((image) => {
           return (
-            <img
-              key={image.full}
-              src={image.thumb}
-              alt={image.caption}
-              className="mx-auto"
-            />
+            <button key={image.thumb} onClick={() => setActiveImage(image)}>
+              <img src={image.full} alt={image.caption} />
+              <span className="sr-only">{image.caption}</span>
+              <ImageModal
+                image={image}
+                isOpen={Boolean(activeImage)}
+                setIsOpen={setActiveImage}
+              />
+            </button>
           );
         })}
       </Carousel>
