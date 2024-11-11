@@ -17,7 +17,6 @@ import RouteError from "./components/errorResponses/RouteError";
 import CodeError from "./components/errorResponses/CodeError";
 import { MapContext } from "./contexts";
 import { ClientOnly } from "remix-utils/client-only";
-// import StyleSwitcher from "./components/mapping/StyleSwitcher";
 import Map from "./components/mapping/Map.client";
 // import { topBarHeight } from "./config";
 // https://stackoverflow.com/a/59429852/1792144
@@ -31,6 +30,7 @@ import type { LinksFunction, MetaFunction } from "@remix-run/node";
 import type { Map as TMap } from "maplibre-gl";
 import LayerControl from "./components/mapping/LayerControl";
 import AboutModal from "./components/AboutModal";
+import TutorialModal from "./components/TutorialModal";
 
 const topBarHeight = "6rem";
 
@@ -60,6 +60,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
   );
 
   const [aboutModalOpen, setAboutModalOpen] = useState<boolean>(false);
+  const [tutorialModalOpen, setTutorialModalOpen] = useState<boolean>(false);
 
   useEffect(() => {
     if (year) setCurrentYear(parseInt(year));
@@ -77,7 +78,10 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <a href="#main" className="sr-only">
           skip to main content
         </a>
-        <Navbar setAboutModalOpen={setAboutModalOpen} />
+        <Navbar
+          setAboutModalOpen={setAboutModalOpen}
+          setTutorialModalOpen={setTutorialModalOpen}
+        />
         <MapContext.Provider
           value={{
             map,
@@ -113,6 +117,10 @@ export function Layout({ children }: { children: React.ReactNode }) {
             </div>
             {children}
             <AboutModal isOpen={aboutModalOpen} setIsOpen={setAboutModalOpen} />
+            <TutorialModal
+              isOpen={tutorialModalOpen}
+              setIsOpen={setTutorialModalOpen}
+            />
           </main>
         </MapContext.Provider>
         <Loading />

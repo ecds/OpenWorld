@@ -8,6 +8,7 @@ import type { Dispatch, ReactNode, SetStateAction } from "react";
 
 interface Props {
   setAboutModalOpen: Dispatch<SetStateAction<boolean>>;
+  setTutorialModalOpen: Dispatch<SetStateAction<boolean>>;
 }
 
 const NavMenuItems = ({ children }: { children: ReactNode }) => {
@@ -22,7 +23,7 @@ const NavMenuItems = ({ children }: { children: ReactNode }) => {
   );
 };
 
-const Navbar = ({ setAboutModalOpen }: Props) => {
+const Navbar = ({ setAboutModalOpen, setTutorialModalOpen }: Props) => {
   return (
     <nav className="bg-accent fixed top-0 w-screen px-6 h-11 flex justify-between items-center z-50">
       <ul className="flex flex-row space-x-6 items-center ml-6 text-white">
@@ -77,6 +78,9 @@ const Navbar = ({ setAboutModalOpen }: Props) => {
         })}
         <li>
           <button onClick={() => setAboutModalOpen(true)}>About</button>
+        </li>
+        <li>
+          <button onClick={() => setTutorialModalOpen(true)}>Tutorials</button>
         </li>
       </ul>
     </nav>
