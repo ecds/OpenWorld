@@ -9,6 +9,9 @@ interface IMap {
   setMapLoaded: Dispatch<SetStateAction<boolean>>;
   currentYear: number | undefined;
   setCurrentYear: Dispatch<SetStateAction<number | undefined>>;
+  setZoom: Dispatch<SetStateAction<number | string>>;
+  setPitch: Dispatch<SetStateAction<number | string>>;
+  setBearing: Dispatch<SetStateAction<number | string>>;
   zoom: number | string;
   bearing: number | string;
   pitch: number | string;
@@ -28,6 +31,15 @@ export const MapContext = createContext<IMap>({
     console.error(
       "setCurrentYearState not implemented. Did you pass it to context?"
     );
+  },
+  setZoom: (_: SetStateAction<number | string>) => {
+    console.error("setZoom not implemented. Did you pass it to context?");
+  },
+  setPitch: (_: SetStateAction<number | string>) => {
+    console.error("setPitch not implemented. Did you pass it to context?");
+  },
+  setBearing: (_: SetStateAction<number | string>) => {
+    console.error("setBearing not implemented. Did you pass it to context?");
   },
   zoom: 15,
   pitch: 0,

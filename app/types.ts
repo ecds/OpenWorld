@@ -1,3 +1,4 @@
+import { FeatureCollection } from "geojson";
 import type { LngLatLike } from "maplibre-gl";
 
 export type THistoricLayer = {
@@ -171,3 +172,46 @@ export type TOmekaImageFiles = {
   };
   original_filename: string;
 };
+
+type TPage = {
+  label: string;
+  route: string;
+};
+
+export type TPageGroup = {
+  heading: string;
+  pages: TPage[];
+};
+
+export type TTourTitle = "theaters-1934-1935";
+
+export type TTourDetails = {
+  title: string;
+  slug: string;
+  url: string;
+  year: number;
+  intro: string;
+  layerSource: string;
+};
+
+export type TTour = {
+  [key in TTourTitle]: TTourDetails;
+};
+
+type TTourImage = {
+  caption: string;
+  full: string;
+  thumb: string;
+};
+
+type TFeaturePropsBase = {
+  title: string;
+  description: string;
+  images: TTourImage[];
+};
+
+export type TTourFeatureProps = TFeaturePropsBase & {
+  position: number;
+};
+
+export type TTourGeoJSON = FeatureCollection & { meta: TTourFeatureProps };

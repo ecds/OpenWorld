@@ -84,7 +84,6 @@ const Buildings = () => {
     if (!selectedFeature || !omekaData) return;
     const setActive = async (building: TOmekaBuilding) => {
       if (building.fileCount > 0 && building.images.length === 0) {
-        console.log("🚀 ~ setActive ~ building:", building);
         building.images = await omekaImages(building.omekaID);
       }
       setActiveBuilding(building);
@@ -106,7 +105,6 @@ const Buildings = () => {
       features,
       lngLat,
     }: MapMouseEvent & { features?: MapGeoJSONFeature[] }) => {
-      console.log("🚀 ~ useEffect ~ rest:");
       if (!features) return;
       if (
         features[0].properties.Identifier ===

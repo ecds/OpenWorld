@@ -7,7 +7,6 @@ import {
   ScrollRestoration,
   useRouteError,
   isRouteErrorResponse,
-  useLocation,
   useSearchParams,
   useParams,
 } from "@remix-run/react";
@@ -28,37 +27,21 @@ import "@fortawesome/fontawesome-svg-core/styles.css";
 // Prevent fontawesome from adding its CSS since we did it manually above:
 import { config } from "@fortawesome/fontawesome-svg-core";
 config.autoAddCss = false; /* eslint-disable import/first */
-import type { LinksFunction } from "@remix-run/node";
+import type { LinksFunction, MetaFunction } from "@remix-run/node";
 import type { Map as TMap } from "maplibre-gl";
 import LayerControl from "./components/mapping/LayerControl";
+import AboutModal from "./components/AboutModal";
 
 const topBarHeight = "6rem";
 
-export const links: LinksFunction = () => [{ rel: "stylesheet", href: styles }];
-
-const ChildContent = ({
-  children,
-  isMapRoute,
-}: {
-  children: React.ReactNode;
-  isMapRoute: boolean;
-}) => {
-  if (isMapRoute) {
-    return (
-      <div
-        className={`flex flex-row overflow-hidden h-[calc(100vh-${topBarHeight})]`}
-      >
-        {children}
-        <div className="hidden md:block flex-grow">
-          <ClientOnly>
-            {() => <Map>{/* <StyleSwitcher></StyleSwitcher> */}</Map>}
-          </ClientOnly>
-        </div>
-      </div>
-    );
-  }
-  return <>{children}</>;
+export const meta: MetaFunction = () => {
+  return [{ title: "OpenWorld Atlanta" }];
 };
+
+export const links: LinksFunction = () => [
+  { rel: "stylesheet", href: styles },
+  { rel: "icon", href: "/images/logo192.png", type: "image/png" },
+];
 
 export function Layout({ children }: { children: React.ReactNode }) {
   const { year } = useParams();
@@ -76,6 +59,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
     searchParams.get("bearing") ?? 0.0
   );
 
+  const [aboutModalOpen, setAboutModalOpen] = useState<boolean>(false);
+
   useEffect(() => {
     if (year) setCurrentYear(parseInt(year));
   }, [year]);
@@ -92,7 +77,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <a href="#main" className="sr-only">
           skip to main content
         </a>
-        <Navbar />
+        <Navbar setAboutModalOpen={setAboutModalOpen} />
         <MapContext.Provider
           value={{
             map,
@@ -104,6 +89,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
             zoom,
             pitch,
             bearing,
+            setZoom,
+            setBearing,
+            setPitch,
           }}
         >
           <main
@@ -124,6 +112,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
               </div>
             </div>
             {children}
+            <AboutModal isOpen={aboutModalOpen} setIsOpen={setAboutModalOpen} />
           </main>
         </MapContext.Provider>
         <Loading />

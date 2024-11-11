@@ -3,7 +3,8 @@ import { mapDefaults } from "~/config";
 import { MapContext } from "~/contexts";
 
 const HomePage = () => {
-  const { map } = useContext(MapContext);
+  const { map, setCurrentYear } = useContext(MapContext);
+  setCurrentYear(undefined);
 
   useEffect(() => {
     const { bounds, pitch } = mapDefaults;

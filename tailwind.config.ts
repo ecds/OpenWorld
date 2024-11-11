@@ -18,6 +18,7 @@ export default {
         black: "#1C1817",
         white: "#FDF9F6",
         accent: "#dc3545",
+        "white-true": "#FFFFFF",
       },
     },
   },

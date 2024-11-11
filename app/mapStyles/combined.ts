@@ -9,6 +9,7 @@ import { modernLand } from "./modernLand";
 import { buildings1928 } from "./buildings1928";
 import { annexations } from "./annexations";
 import { streetcars } from "./streetcars";
+import { openTours } from "./openTour";
 
 export const combined: StyleSpecification = {
   version: 8,
@@ -23,6 +24,7 @@ export const combined: StyleSpecification = {
     ...buildings1928.sources,
     ...annexations.sources,
     ...streetcars.sources,
+    ...openTours.sources,
   },
   layers: [
     ...base.layers,
@@ -35,5 +37,6 @@ export const combined: StyleSpecification = {
     ...streetcars.layers,
     ...satellite.layers,
     ...modernLabels.layers,
+    ...openTours.layers,
   ],
 };

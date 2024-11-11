@@ -1,4 +1,43 @@
 import maplibregl from "maplibre-gl";
+import type { TPageGroup } from "~/types";
+
+export const pageGroups: TPageGroup[] = [
+  {
+    heading: "Buildings",
+    pages: [
+      {
+        label: "1928",
+        route: "/buildings/1928",
+      },
+    ],
+  },
+  {
+    heading: "Boundaries",
+    pages: [{ label: "Annexations", route: "/annexations" }],
+  },
+  {
+    heading: "Transportation",
+    pages: [
+      {
+        label: "Streetcars 1928",
+        route: "/streetcars/1928",
+      },
+    ],
+  },
+  {
+    heading: "Spotlights",
+    pages: [
+      {
+        label: "Cabbagetown",
+        route: "/spotlight/cabbagetown",
+      },
+      {
+        label: '1934-1935 run of "Imitation of Life" in Atlanta Movie Theaters',
+        route: "spotlight/theaters-1934-1935",
+      },
+    ],
+  },
+];
 
 export const geoserverHost = "https://geoserver.ecds.emory.edu";
 
