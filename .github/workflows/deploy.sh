@@ -10,16 +10,16 @@ echo "Logged in successfully"
 
 echo "Building Docker image for ${BRANCH}"
 # if [ "$BRANCH" == "main" ]; then
-docker build -t open-world --no-cache .
+docker build -t owa --no-cache .
 # else
-#   docker build -t open-world --no-cache --file Dockerfile-dev .
+#   docker build -t owa --no-cache --file Dockerfile-dev .
 # fi
 
 echo "Tagging image with ${TAG}"
-docker tag open-world "${AWS_ECR}/open-world:${TAG}"
+docker tag owa "${AWS_ECR}/owa:${TAG}"
 
 echo "Pushing image"
-docker push "${AWS_ECR}/open-world:${TAG}"
+docker push "${AWS_ECR}/owa:${TAG}"
 
 echo "Forcing new deployment"
 aws ecs update-service --cluster ${AWS_ECS_CLUSTER} --service ${AWS_ECS_SERVICE} --force-new-deployment --region ${AWS_REGION}
