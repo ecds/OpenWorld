@@ -15,11 +15,11 @@ docker build -t owa --no-cache .
 #   docker build -t owa --no-cache --file Dockerfile-dev .
 # fi
 
-echo "Tagging image with ${TAG}"
-docker tag owa "${AWS_ECR}/owa:${TAG}"
+echo "Tagging image with latest"
+docker tag owa "${AWS_ECR}/owa:latest"
 
 echo "Pushing image"
-docker push "${AWS_ECR}/owa:${TAG}"
+docker push "${AWS_ECR}/owa:latest"
 
 echo "Forcing new deployment"
 aws ecs update-service --cluster ${AWS_ECS_CLUSTER} --service ${AWS_ECS_SERVICE} --force-new-deployment --region ${AWS_REGION}
