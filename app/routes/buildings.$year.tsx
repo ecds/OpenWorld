@@ -12,10 +12,10 @@ import {
   shapeFileMetadata,
 } from "~/buildingMetadata";
 
+import BuildingDetails from "~/components/buildings/BuildingDetails";
 import type { MapGeoJSONFeature, MapMouseEvent } from "maplibre-gl";
 import type { LoaderFunctionArgs } from "@remix-run/node";
 import type { TBuildingFeatureProps, TOmekaBuilding } from "~/types";
-import BuildingDetails from "~/components/buildings/BuildingDetails";
 
 export const loader = async ({
   params,
@@ -50,8 +50,8 @@ const Buildings = () => {
       map.setFeatureState(
         {
           source: "OWAbuildings07OCT22",
-          sourceLayer: "OWAbuildings07OCT22",
-          id: selectedFeatureRef.current.Identifier,
+          sourceLayer: "buildings1928",
+          id: selectedFeatureRef.current.id,
         },
         { clicked: false }
       );
@@ -60,8 +60,8 @@ const Buildings = () => {
       map.setFeatureState(
         {
           source: "OWAbuildings07OCT22",
-          sourceLayer: "OWAbuildings07OCT22",
-          id: selectedFeature.Identifier,
+          sourceLayer: "buildings1928",
+          id: selectedFeature.id,
         },
         { clicked: true }
       );
@@ -86,7 +86,7 @@ const Buildings = () => {
     };
 
     const building = omekaData.find(
-      (bldData) => bldData.bldgID === selectedFeature.Identifier
+      (bldData) => bldData.bldgID === selectedFeature.id
     );
 
     if (building) {
@@ -102,14 +102,11 @@ const Buildings = () => {
       lngLat,
     }: MapMouseEvent & { features?: MapGeoJSONFeature[] }) => {
       if (!features) return;
-      if (
-        features[0].properties.Identifier ===
-        selectedFeatureRef.current?.Identifier
-      )
+      if (features[0].properties.id === selectedFeatureRef.current?.id)
         setSelectedFeature(undefined);
       else {
         setSelectedFeature(features[0].properties as TBuildingFeatureProps);
-        map?.flyTo({ center: lngLat, minZoom: 17 });
+        map?.flyTo({ center: lngLat });
       }
     };
 

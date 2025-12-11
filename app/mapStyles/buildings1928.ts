@@ -1,4 +1,3 @@
-import { tmsURL } from "~/utils";
 import type { StyleSpecification } from "maplibre-gl";
 
 export const buildings1928: StyleSpecification = {
@@ -7,16 +6,11 @@ export const buildings1928: StyleSpecification = {
   sources: {
     OWAbuildings07OCT22: {
       type: "vector",
-      scheme: "tms",
-      tiles: [
-        tmsURL({
-          layer: "OWAbuildings07OCT22",
-          workspace: "ATLMaps",
-        }),
-      ],
-      promoteId: "Identifier",
-      minzoom: 0,
-      maxzoom: 20,
+      scheme: "xyz",
+      url: "https://d3j4mgzjrheeg2.cloudfront.net/atl-1928.json",
+      promoteId: "id",
+      // minzoom: 0,
+      // maxzoom: 20,
       // tileSize: 256,
     },
   },
@@ -25,8 +19,8 @@ export const buildings1928: StyleSpecification = {
       id: "OWAbuildings07OCT22",
       type: "fill-extrusion",
       source: "OWAbuildings07OCT22",
-      "source-layer": "OWAbuildings07OCT22",
-      layout: { visibility: "none" },
+      "source-layer": "buildings1928",
+      // layout: { visibility: "none" },
       paint: {
         "fill-extrusion-color": [
           "case",

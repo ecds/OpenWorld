@@ -35,7 +35,7 @@ export type TBuildingFeatureProps = {
   Desc_URL: number;
   Format: string;
   Format_URL: "";
-  Identifier: "BD15725";
+  id: "BD15725";
   Join_Count: number;
   Land_Use: string;
   Language: string;
