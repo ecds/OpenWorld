@@ -1,7 +1,7 @@
 import maplibregl from "maplibre-gl";
 import { useContext, useEffect, useRef } from "react";
 import { MapContext } from "~/contexts";
-import { defaultBounds, mapDefaults, topBarHeight } from "~/config";
+import { mapDefaults } from "~/config";
 import { combined } from "~/mapStyles";
 import "maplibre-gl/dist/maplibre-gl.css";
 import type { ReactNode } from "react";
@@ -51,10 +51,7 @@ const Map = ({ children }: Props) => {
 
   return (
     <div className="relative">
-      <div
-        ref={mapContainerRef}
-        className={`h-[calc(100vh-${topBarHeight})]`}
-      ></div>
+      <div ref={mapContainerRef} className={`h-screen`}></div>
       {children}
     </div>
   );

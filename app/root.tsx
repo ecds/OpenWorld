@@ -11,7 +11,6 @@ import {
   useParams,
 } from "@remix-run/react";
 import styles from "./index.css?url";
-import Navbar from "./components/layout/Navbar";
 import Loading from "./components/layout/Loading";
 import RouteError from "./components/errorResponses/RouteError";
 import CodeError from "./components/errorResponses/CodeError";
@@ -31,8 +30,6 @@ import type { Map as TMap } from "maplibre-gl";
 import LayerControl from "./components/mapping/LayerControl";
 import AboutModal from "./components/AboutModal";
 import TutorialModal from "./components/TutorialModal";
-
-const topBarHeight = "6rem";
 
 export const meta: MetaFunction = () => {
   return [{ title: "OpenWorld Atlanta" }];
@@ -78,10 +75,10 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <a href="#main" className="sr-only">
           skip to main content
         </a>
-        <Navbar
+        {/* <Navbar
           setAboutModalOpen={setAboutModalOpen}
           setTutorialModalOpen={setTutorialModalOpen}
-        />
+        /> */}
         <MapContext.Provider
           value={{
             map,
@@ -99,12 +96,10 @@ export function Layout({ children }: { children: React.ReactNode }) {
           }}
         >
           <main
-            className={`mx-auto relative mt-11 bg-white overflow-hidden`}
+            className={`mx-auto relative bg-white overflow-hidden`}
             id="main"
           >
-            <div
-              className={`flex flex-row overflow-hidden h-[calc(100vh-${topBarHeight})]`}
-            >
+            <div className={`flex flex-row overflow-hidden h-screen`}>
               <div className="hidden md:block flex-grow">
                 <ClientOnly>
                   {() => (

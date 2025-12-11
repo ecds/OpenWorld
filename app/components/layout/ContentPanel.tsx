@@ -1,6 +1,5 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faClose } from "@fortawesome/free-solid-svg-icons";
-import { topBarHeight } from "~/config";
 
 import type { ReactNode, Dispatch, SetStateAction } from "react";
 
@@ -22,7 +21,7 @@ const ContentPanel = ({
   return (
     <>
       <div
-        className={`absolute h-[calc(100vh-${topBarHeight})] overflow-auto bg-white/80 top-0 right-0 w-1/4 z-50 transition-transform duration-700 ${isOpen ? "translate-x-0" : "translate-x-full"}`}
+        className={`absolute h-screen overflow-auto bg-white/80 top-0 right-0 w-1/4 z-50 transition-transform duration-700 ${isOpen ? "translate-x-0" : "translate-x-full"}`}
       >
         <div
           className={`flex flex-row-reverse w-full sticky top-0 p-4 bg-white shadow-md`}
