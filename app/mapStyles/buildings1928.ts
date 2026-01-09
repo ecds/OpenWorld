@@ -20,7 +20,7 @@ export const buildings1928: StyleSpecification = {
       type: "fill-extrusion",
       source: "OWAbuildings07OCT22",
       "source-layer": "buildings1928",
-      // layout: { visibility: "none" },
+      layout: { visibility: "none" },
       paint: {
         "fill-extrusion-color": [
           "case",
