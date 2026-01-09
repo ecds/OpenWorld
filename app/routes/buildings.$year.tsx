@@ -128,6 +128,7 @@ const Buildings = () => {
     });
 
     map?.setLayoutProperty(layer.id, "visibility", "visible");
+    console.log("🚀 ~ Buildings ~ layer.id:", layer.id);
 
     map.on("click", layer.id, handleClick);
     map.on("mouseenter", layer.id, mouseEnter);
